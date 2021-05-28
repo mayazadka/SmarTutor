@@ -10,5 +10,6 @@
     <color name="dark_gray">#FF394047</color>
     <color name="cyan">#FF00A4D3</color>
     <color name="dark_cyan">#006987</color>
+    <color name="light_gray">#B1B1B1</color>
 
 </resources>
