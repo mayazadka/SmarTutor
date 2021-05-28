@@ -20,4 +20,10 @@
         android:name="com.example.smartutor.TutorSignUp"
         android:label="fragment_tutor_sign_up"
         tools:layout="@layout/fragment_tutor_sign_up" />
+    <action android:id="@+id/action_global_studentSignUp" app:destination="@id/studentSignUp" />
+    <action
+        android:id="@+id/action_global_signIn"
+        app:destination="@id/signIn"
+        app:popUpTo="@id/signIn"
+        app:popUpToInclusive="true" />
 </navigation>

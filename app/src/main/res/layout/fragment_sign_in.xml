@@ -7,7 +7,7 @@
     tools:context=".SignIn">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/signIn_logo_img"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="32dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/signIn_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -30,10 +30,10 @@
         android:textSize="@dimen/title_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_logo_img" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/signIn_subTitle_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -45,10 +45,10 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_title_tv" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/signIn_email_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -60,26 +60,26 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_subTitle_tv" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/signIn_email_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Enter your email."
+        android:hint="Your email."
         android:inputType="textPersonName"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_email_tv" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/signIn_password_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -91,82 +91,70 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_email_et" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/signIn_showHide_imgbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:background="#00FFFFFF"
         android:src="@android:drawable/ic_menu_view"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/signIn_password_et"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/signIn_password_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Enter your password."
+        android:hint="Your password."
         android:inputType="textPassword"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/signIn_showHide_imgbtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/signIn_identify_rg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:checkedButton="@id/signIn_student_rb"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword">
+        app:layout_constraintTop_toBottomOf="@+id/signIn_password_et">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/signIn_student_rb"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left">
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Student"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Student"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/signIn_tutor_rb"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left">
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Tutor"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size" />
 
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Tutor"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size" />
-        </LinearLayout>
     </RadioGroup>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signIn_signIn_btn"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="32dp"
@@ -179,11 +167,11 @@
         android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/signIn_identify_rg"
         app:rippleColor="?attr/colorOnPrimary" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/signIn_question_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -194,13 +182,13 @@
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/signIn_signUp_tv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/signIn_signUp_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -209,10 +197,10 @@
         android:text="Sign Up"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintBottom_toBottomOf="@+id/signIn_question_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintStart_toEndOf="@+id/signIn_question_tv"
+        app:layout_constraintTop_toTopOf="@+id/signIn_question_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
