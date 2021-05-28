@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/log_in_nav_graph"
+    app:startDestination="@id/signIn">
+
+    <fragment
+        android:id="@+id/signIn"
+        android:name="com.example.smartutor.SignIn"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" />
+    <fragment
+        android:id="@+id/studentSignUp"
+        android:name="com.example.smartutor.StudentSignUp"
+        android:label="fragment_student_sign_up"
+        tools:layout="@layout/fragment_student_sign_up" />
+    <fragment
+        android:id="@+id/tutorSignUp"
+        android:name="com.example.smartutor.TutorSignUp"
+        android:label="fragment_tutor_sign_up"
+        tools:layout="@layout/fragment_tutor_sign_up" />
+</navigation>
