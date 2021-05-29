@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,11 +32,12 @@ public class TutorSignUp extends Fragment {
     //views
     private TextView signIn;
     private Spinner gender;
-    private ImageButton passwordShowHide;
-    private ImageButton confirmShowHide;
     private EditText password;
     private EditText confirm;
     private MultiSpinner profesions;
+    private Button chooseDate;
+    private EditText date;
+
 
     public TutorSignUp() {
         // Required empty public constructor
@@ -48,11 +51,11 @@ public class TutorSignUp extends Fragment {
         // views setup
         signIn = view.findViewById(R.id.signUpTutor_signIn_tv);
         gender = view.findViewById(R.id.signUpTutor_gender_spn);
-        //passwordShowHide = view.findViewById(R.id.signUpTutor_passwordShowHide_imgbtn);
-        //confirmShowHide = view.findViewById(R.id.signUpTutor_confirmPasswordShowHide_imgbtn);
         password = view.findViewById(R.id.signUpTutor_password_et);
         confirm = view.findViewById(R.id.signUpTutor_confirmPassword_et);
         profesions = view.findViewById(R.id.signUpTutor_professions_spn);
+        chooseDate = view.findViewById(R.id.signUpTutor_birthdayDate_btn);
+        date = view.findViewById(R.id.signUpTutor_birthdayDate_et);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
@@ -62,30 +65,18 @@ public class TutorSignUp extends Fragment {
 
         // events setup
         signIn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_global_signIn));
-/*
-        passwordShowHide.setOnTouchListener((v, event) -> {
-            switch(event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    password.setTransformationMethod(null);
-                    return false; // if you want to handle the touch event
-                case MotionEvent.ACTION_UP:
-                    password.setTransformationMethod(new PasswordTransformationMethod());
-                    return false; // if you want to handle the touch event
-            }
-            return false;
+
+        chooseDate.setOnClickListener(v -> {
+            DatePicker picker = new DatePicker(getContext());
+            picker.setCalendarViewShown(false);
+            picker.setMaxDate(new Date().getTime());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogStyle)
+                    .setView(picker)
+                    .setPositiveButton("OK", (dialog, which) -> dialog.cancel())
+                    .setOnCancelListener(dialog -> date.setText(picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear()));
+            builder.show();
         });
-        confirmShowHide.setOnTouchListener((v, event) -> {
-            switch(event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    confirm.setTransformationMethod(null);
-                    return false; // if you want to handle the touch event
-                case MotionEvent.ACTION_UP:
-                    confirm.setTransformationMethod(new PasswordTransformationMethod());
-                    return false; // if you want to handle the touch event
-            }
-            return false;
-        });
-*/
+
 
         return view;
     }

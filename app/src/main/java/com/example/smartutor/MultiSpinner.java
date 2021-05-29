@@ -67,7 +67,7 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.multipleChoiceStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogStyle);
         builder.setMultiChoiceItems(
                 items.toArray(new CharSequence[items.size()]), selected, this);
         builder.setPositiveButton(android.R.string.ok,

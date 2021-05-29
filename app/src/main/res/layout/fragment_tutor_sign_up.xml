@@ -11,8 +11,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Sign Up - Tutor"
@@ -36,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Email"
                 android:textColor="@color/cyan"
@@ -59,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Last Name"
@@ -83,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="First Name"
@@ -107,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Gender"
@@ -127,31 +129,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Birthday Date"
                 android:textColor="@color/cyan"
                 android:textSize="@dimen/text_size" />
 
-            <EditText
-                android:id="@+id/signUpTutor_birthdayDate_et"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand_bold"
-                android:hint="Your birthday date."
-                android:inputType="date"
-                android:textSize="@dimen/text_size" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/signUpTutor_birthdayDate_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:inputType="date"
+                    android:textSize="@dimen/text_size" />
+
+                <Button
+                    android:id="@+id/signUpTutor_birthdayDate_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Choose Date" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/signUpTutor_professions_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Professions"
@@ -170,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="About Me"
@@ -184,6 +200,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:ems="10"
+                android:fontFamily="@font/quicksand_bold"
                 android:gravity="start|top"
                 android:hint="Tell about yourself."
                 android:inputType="textMultiLine" />
@@ -193,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Password"
@@ -218,7 +235,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Confirm Password"
@@ -243,7 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Sign Up"
@@ -254,8 +271,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <TextView
@@ -279,6 +298,7 @@
                     android:text="Sign In"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_size" />
+
             </LinearLayout>
 
         </LinearLayout>
