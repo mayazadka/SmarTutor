@@ -15,4 +15,20 @@
         <item>"History"</item>
     </array>
 
+    <array name="grade">
+        <item>"1st grade"</item>
+        <item>"2nd grade"</item>
+        <item>"3rd grade"</item>
+        <item>"4th grade"</item>
+        <item>"5th grade"</item>
+        <item>"6th grade"</item>
+        <item>"7th grade"</item>
+        <item>"8th grade"</item>
+        <item>"9th grade"</item>
+        <item>"10th grade"</item>
+        <item>"11th grade"</item>
+        <item>"12th grade"</item>
+
+    </array>
+
 </resources>

@@ -6,28 +6,83 @@
     android:layout_height="match_parent"
     tools:context=".TutorSignUp">
 
+    <EditText
+        android:id="@+id/signUpTutor_confirmPassword_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand_bold"
+        android:hint="Conform your password."
+        android:inputType="textPassword"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmOassword_tv" />
+
+    <ImageButton
+        android:id="@+id/signUpTutor_passwordShowHide_imgbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="#00FFFFFF"
+        android:src="@android:drawable/ic_menu_view"
+        app:layout_constraintBottom_toTopOf="@+id/signUpTutor_confirmOassword_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/signUpTutor_password_et" />
+
+    <EditText
+        android:id="@+id/signUpTutor_password_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand_bold"
+        android:hint="Your password."
+        android:inputType="textPassword"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_password_tv" />
+
+    <ImageButton
+        android:id="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="#00FFFFFF"
+        android:src="@android:drawable/ic_menu_view"
+        app:layout_constraintBottom_toBottomOf="@+id/signUpTutor_confirmPassword_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/signUpTutor_confirmPassword_et" />
+
     <TextView
         android:id="@+id/signUpTutor_question_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/quicksand_bold"
-        android:text="Have an Account?"
+        android:text="Have an account?"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_signin_tv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_signIn_tv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_signup_btn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/signUpTutor_signin_tv"
+        android:id="@+id/signUpTutor_signIn_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="Sign In"
         android:textColor="?android:attr/textColorSecondary"
@@ -38,48 +93,19 @@
         app:layout_constraintStart_toEndOf="@+id/signUpTutor_question_tv"
         app:layout_constraintTop_toTopOf="@+id/signUpTutor_question_tv" />
 
-    <EditText
-        android:id="@+id/signUpTutor_confirmpassword_et"
+    <TextView
+        android:id="@+id/signUpTutor_confirmOassword_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_bold"
-        android:hint="Your Password Again"
-        android:inputType="textPersonName"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmpassword_tv" />
-
-    <TextView
-        android:id="@+id/signUpTutor_confirmpassword_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="Confirm Password"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_password_et"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_password_et" />
-
-    <EditText
-        android:id="@+id/signUpTutor_password_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_bold"
-        android:hint="Your Password"
-        android:inputType="textPersonName"
-        android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_password_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_password_et" />
 
     <TextView
         android:id="@+id/signUpTutor_password_tv"
@@ -89,37 +115,37 @@
         android:text="Password"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextMultiLine"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+        app:layout_constraintStart_toStartOf="@+id/signYpTutor_aboutMe_etml"
+        app:layout_constraintTop_toBottomOf="@+id/signYpTutor_aboutMe_etml" />
 
     <TextView
-        android:id="@+id/signUpTutor_birthday_tv"
+        android:id="@+id/signUpTutor_birthdayDate_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="Birthday Date"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_gendet_spinner"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_gendet_spinner" />
+        app:layout_constraintStart_toStartOf="@+id/signUpTutor_gender_spn"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_gender_spn" />
 
     <EditText
-        android:id="@+id/signUpTutor_birthday_et"
+        android:id="@+id/signUpTutor_birthdayDate_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Your Birthday"
-        android:inputType="textPersonName"
+        android:hint="Your birthday date."
+        android:inputType="date"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_birthday_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_birthdayDate_tv" />
 
     <TextView
-        android:id="@+id/signUpTutor_aboutme_tv"
+        android:id="@+id/signUpTutor_aboutMe_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
@@ -138,7 +164,7 @@
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
         app:layout_constraintStart_toStartOf="@+id/signUpTutor_professions_et"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_birthday_et" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_birthdayDate_et" />
 
     <TextView
         android:id="@+id/signUpTutor_gender_tv"
@@ -148,8 +174,8 @@
         android:text="Gender"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_firstname_et"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_firstname_et" />
+        app:layout_constraintStart_toStartOf="@+id/signUpTutor_firstName_et"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_firstName_et" />
 
     <EditText
         android:id="@+id/signUpTutor_professions_et"
@@ -159,7 +185,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Your Professions"
+        android:hint="Your professions."
         android:inputType="textPersonName"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
@@ -167,48 +193,48 @@
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_professions_tv" />
 
     <EditText
-        android:id="@+id/signUpTutor_firstname_et"
+        android:id="@+id/signUpTutor_firstName_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Your first name"
+        android:hint="Your first name."
         android:inputType="textPersonName"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_firstname_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_firstName_tv" />
 
     <EditText
-        android:id="@+id/signUpTutor_lastname_et"
+        android:id="@+id/signUpTutor_lastName_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Your last name"
+        android:hint="Your last name."
         android:inputType="textPersonName"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_lastname_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_lastName_tv" />
 
     <TextView
-        android:id="@+id/signUpTutor_firstname_tv"
+        android:id="@+id/signUpTutor_firstName_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="First Name"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_lastname_et"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_lastname_et" />
+        app:layout_constraintStart_toStartOf="@+id/signUpTutor_lastName_et"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_lastName_et" />
 
     <TextView
-        android:id="@+id/signUpTutor_lastname_tv"
+        android:id="@+id/signUpTutor_lastName_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
@@ -234,7 +260,7 @@
         android:id="@+id/signUpTutor_email_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="Email"
         android:textColor="@color/cyan"
@@ -250,7 +276,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/quicksand_bold"
-        android:hint="Your email address"
+        android:hint="Your email."
         android:inputType="textPersonName"
         android:textSize="@dimen/text_size"
         app:layout_constraintEnd_toEndOf="parent"
@@ -258,21 +284,21 @@
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_email_tv" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/signYpTutor_aboutMe_etml"
         android:layout_width="0dp"
-        android:layout_height="58dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Tell about yourself"
+        android:hint="Tell about yourself."
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_aboutme_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_aboutMe_tv" />
 
     <Spinner
-        android:id="@+id/signUpTutor_gendet_spinner"
+        android:id="@+id/signUpTutor_gender_spn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -283,7 +309,7 @@
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_gender_tv" />
 
     <Button
-        android:id="@+id/signUpTutor_signup_btn"
+        android:id="@+id/signUpTutor_signUp_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -291,8 +317,9 @@
         android:fontFamily="@font/quicksand_bold"
         android:text="Sign Up"
         android:textAllCaps="false"
+        android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmpassword_et" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmPassword_et" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

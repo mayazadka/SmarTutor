@@ -25,5 +25,5 @@
         android:id="@+id/action_global_signIn"
         app:destination="@id/signIn"
         app:popUpTo="@id/signIn"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true" /><action android:id="@+id/action_global_tutorSignUp" app:destination="@id/tutorSignUp"/>
 </navigation>
