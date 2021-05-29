@@ -30,7 +30,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Sign Up - Tutor"
-                android:textColor="@color/dark_gray"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/title_size" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Email"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <EditText
@@ -54,6 +54,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:hint="Your email."
                 android:inputType="textPersonName"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/text_size" />
 
             <TextView
@@ -65,7 +66,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Last Name"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <EditText
@@ -78,6 +79,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:hint="Your last name."
                 android:inputType="textPersonName"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/text_size" />
 
             <TextView
@@ -89,7 +91,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="First Name"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <EditText
@@ -102,6 +104,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:hint="Your first name."
                 android:inputType="textPersonName"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/text_size" />
 
             <TextView
@@ -113,7 +116,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Gender"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <Spinner
@@ -133,7 +136,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Birthday Date"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <LinearLayout
@@ -151,6 +154,7 @@
                     android:enabled="false"
                     android:fontFamily="@font/quicksand_bold"
                     android:inputType="date"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size" />
 
                 <Button
@@ -159,7 +163,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Choose Date" />
+                    android:text="Choose Date"
+                    android:textAllCaps="false" />
             </LinearLayout>
 
             <TextView
@@ -171,7 +176,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Professions"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <com.example.smartutor.MultiSpinner
@@ -203,7 +208,8 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:gravity="start|top"
                 android:hint="Tell about yourself."
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/signUpTutor_password_tv"
@@ -214,7 +220,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Password"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <EditText
@@ -239,7 +245,7 @@
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Confirm Password"
-                android:textColor="@color/cyan"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size" />
 
             <EditText
