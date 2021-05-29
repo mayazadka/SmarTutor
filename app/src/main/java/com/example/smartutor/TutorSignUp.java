@@ -48,8 +48,8 @@ public class TutorSignUp extends Fragment {
         // views setup
         signIn = view.findViewById(R.id.signUpTutor_signIn_tv);
         gender = view.findViewById(R.id.signUpTutor_gender_spn);
-        passwordShowHide = view.findViewById(R.id.signUpTutor_passwordShowHide_imgbtn);
-        confirmShowHide = view.findViewById(R.id.signUpTutor_confirmPasswordShowHide_imgbtn);
+        //passwordShowHide = view.findViewById(R.id.signUpTutor_passwordShowHide_imgbtn);
+        //confirmShowHide = view.findViewById(R.id.signUpTutor_confirmPasswordShowHide_imgbtn);
         password = view.findViewById(R.id.signUpTutor_password_et);
         confirm = view.findViewById(R.id.signUpTutor_confirmPassword_et);
         profesions = view.findViewById(R.id.signUpTutor_professions_spn);
@@ -62,7 +62,7 @@ public class TutorSignUp extends Fragment {
 
         // events setup
         signIn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_global_signIn));
-
+/*
         passwordShowHide.setOnTouchListener((v, event) -> {
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -85,7 +85,7 @@ public class TutorSignUp extends Fragment {
             }
             return false;
         });
-
+*/
 
         return view;
     }

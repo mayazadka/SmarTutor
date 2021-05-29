@@ -49,8 +49,8 @@ public class StudentSignUp extends Fragment {
         signIn = view.findViewById(R.id.signUpStudent_signIn_tv);
         gender = view.findViewById(R.id.signUpStudent_gender_spn);
         grade = view.findViewById(R.id.signUpStudent_grade_spn);
-        passwordShowHide = view.findViewById(R.id.signUpStudent_passwordShowHide_imgbtn);
-        confirmShowHide = view.findViewById(R.id.signUpStudent_confirmPasswordShowHide_imgbtn);
+        //passwordShowHide = view.findViewById(R.id.signUpStudent_passwordShowHide_imgbtn);
+        //confirmShowHide = view.findViewById(R.id.signUpStudent_confirmPasswordShowHide_imgbtn);
         password = view.findViewById(R.id.signUpStudent_password_et);
         confirm = view.findViewById(R.id.signUpStudent_confirmPassword_et);
 
@@ -62,7 +62,7 @@ public class StudentSignUp extends Fragment {
 
         // events setup
         signIn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_global_signIn));
-        passwordShowHide.setOnTouchListener((v, event) -> {
+       /* passwordShowHide.setOnTouchListener((v, event) -> {
             switch(event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     password.setTransformationMethod(null);
@@ -83,7 +83,7 @@ public class StudentSignUp extends Fragment {
                     return false; // if you want to handle the touch event
             }
             return false;
-        });
+        });*/
 
         return view;
     }
