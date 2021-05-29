@@ -18,7 +18,7 @@
         android:inputType="textPassword"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_confirmPasswordShowHide_imgbtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmOassword_tv" />
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:background="#00FFFFFF"
+        android:background="?android:selectableItemBackground"
         android:src="@android:drawable/ic_menu_view"
         app:layout_constraintBottom_toTopOf="@+id/signUpTutor_confirmOassword_tv"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,16 +45,16 @@
         android:inputType="textPassword"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        app:layout_constraintEnd_toStartOf="@+id/signUpTutor_confirmPasswordShowHide_imgbtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_password_tv" />
 
     <ImageButton
-        android:id="@+id/signUpTutor_conformPasswordShowHide_imgbtn"
+        android:id="@+id/signUpTutor_confirmPasswordShowHide_imgbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:background="#00FFFFFF"
+        android:background="?android:selectableItemBackground"
         android:src="@android:drawable/ic_menu_view"
         app:layout_constraintBottom_toBottomOf="@+id/signUpTutor_confirmPassword_et"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,24 +146,36 @@
 
     <TextView
         android:id="@+id/signUpTutor_aboutMe_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="About Me"
-        android:textColor="@color/cyan"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_professions_et"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_professions_et" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_professions_spn" />
+
+    <com.example.smartutor.MultiSpinner
+        android:id="@+id/signUpTutor_professions_spn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_professions_tv" />
 
     <TextView
         android:id="@+id/signUpTutor_professions_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="Professions"
         android:textColor="@color/cyan"
         android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="@+id/signUpTutor_professions_et"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_birthdayDate_et" />
 
     <TextView
@@ -176,21 +188,6 @@
         android:textSize="@dimen/text_size"
         app:layout_constraintStart_toStartOf="@+id/signUpTutor_firstName_et"
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_firstName_et" />
-
-    <EditText
-        android:id="@+id/signUpTutor_professions_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_bold"
-        android:hint="Your professions."
-        android:inputType="textPersonName"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTutor_professions_tv" />
 
     <EditText
         android:id="@+id/signUpTutor_firstName_et"
@@ -321,5 +318,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpTutor_confirmPassword_et" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
