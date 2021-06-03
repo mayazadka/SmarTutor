@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import androidx.appcompat.widget.AppCompatSpinner;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
 
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogStyle);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialogStyle);
         builder.setMultiChoiceItems(
                 items.toArray(new CharSequence[items.size()]), selected, this);
         builder.setPositiveButton(android.R.string.ok,

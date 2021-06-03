@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="AlertDialogStyle" parent="ThemeOverlay.AppCompat.DayNight">
         <item name="fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 </resources>
+
+<!--    parent="ThemeOverlay.MaterialComponents.Dialog.Alert"-->

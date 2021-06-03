@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -70,7 +72,7 @@ public class TutorSignUp extends Fragment {
             DatePicker picker = new DatePicker(getContext());
             picker.setCalendarViewShown(false);
             picker.setMaxDate(new Date().getTime());
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogStyle)
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialogStyle)
                     .setView(picker)
                     .setPositiveButton("OK", (dialog, which) -> dialog.cancel())
                     .setOnCancelListener(dialog -> date.setText(picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear()));
