@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:background="?android:selectableItemBackground"
-        android:src="@android:drawable/ic_menu_view"
+        android:src="@drawable/ic_eye"
         app:layout_constraintBottom_toBottomOf="@+id/signIn_password_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />

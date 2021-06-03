@@ -1,5 +1,6 @@
 package com.example.smartutor;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -24,6 +26,7 @@ public class SignIn extends Fragment {
     private RadioButton isTutor;
     private ImageButton showHide;
     private EditText password;
+    private Button signIn;
 
     public SignIn() {
         // Required empty public constructor
@@ -40,6 +43,7 @@ public class SignIn extends Fragment {
         isTutor = view.findViewById(R.id.signIn_tutor_rb);
         showHide = view.findViewById(R.id.signIn_showHide_imgbtn);
         password = view.findViewById(R.id.signIn_password_et);
+        signIn = view.findViewById(R.id.signIn_signIn_btn);
 
         // events setup
         signUp.setOnClickListener(v -> {
@@ -57,7 +61,10 @@ public class SignIn extends Fragment {
                 }
                 return false;
             });
-
+        signIn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+            startActivity(intent);
+        });
 
 
         return view;
