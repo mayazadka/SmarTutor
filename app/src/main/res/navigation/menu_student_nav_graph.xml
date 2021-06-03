@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_student_nav_graph"
+    app:startDestination="@+id/nav_home_student">
+
+    <fragment
+        android:id="@+id/nav_home_student"
+        android:name="com.example.smartutor.ui.home_student.HomeStudentFragment"
+        android:label="@string/menu_home_student"
+        tools:layout="@layout/fragment_home_student" />
+
+    <fragment
+        android:id="@+id/nav_edit_details_student"
+        android:name="com.example.smartutor.ui.edit_details_student.EditDetailsStudentFragment"
+        android:label="@string/menu_edit_details_student"
+        tools:layout="@layout/fragment_edit_details" />
+
+    <fragment
+        android:id="@+id/nav_search_tutors_student"
+        android:name="com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragment"
+        android:label="@string/menu_search_tutors_student"
+        tools:layout="@layout/fragment_search_tutors_student" />
+</navigation>
