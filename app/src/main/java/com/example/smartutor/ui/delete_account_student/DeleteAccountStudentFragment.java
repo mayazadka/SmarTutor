@@ -21,13 +21,6 @@ public class DeleteAccountStudentFragment extends Fragment {
         deleteAccountStudentViewModel =
                 new ViewModelProvider(this).get(DeleteAccountStudentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_delete_account_student, container, false);
-        final TextView textView = root.findViewById(R.id.deleteAccountStudent_title_tv);
-        deleteAccountStudentViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }
