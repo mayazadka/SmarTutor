@@ -2,6 +2,7 @@ package com.example.smartutor.ui.search_tutors_student;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,12 @@ public class SearchTutorsStudentFragment extends Fragment {
         tutorsList.setLayoutManager(manager);
         MyAdapter adapter = new MyAdapter();
         tutorsList.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Log.d("TAG", "Tutor " + position + " clicked");
+            }
+        });
 
         tutorsListData = new LinkedList<String>();
         for(int i = 0; i < 20; i++){
@@ -69,15 +76,28 @@ public class SearchTutorsStudentFragment extends Fragment {
 
 
     static class SearchTutorsViewHolder extends RecyclerView.ViewHolder{
+        OnItemClickListener listener;
         TextView nameTv;
         LinearLayout subjectsList;
         View item;
 
-        public SearchTutorsViewHolder(@NonNull View itemView) {
+        public SearchTutorsViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             item = itemView;
             nameTv = itemView.findViewById(R.id.listTutorsStudentsRow_tutorName_tv);
             subjectsList = itemView.findViewById(R.id.listTutorsStudentsRow_subjects_linearLayout);
+            this.listener = listener;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         public void bind(String name, int index){
@@ -95,14 +115,22 @@ public class SearchTutorsStudentFragment extends Fragment {
             nameTv.setText(name);
         }
     }
+    public interface OnItemClickListener {
+        void onClick(int position);
+    }
     class MyAdapter extends RecyclerView.Adapter<SearchTutorsViewHolder>{
+        OnItemClickListener listener;
+
+        public void setOnItemClickListener(OnItemClickListener listener){
+            this.listener = listener;
+        }
 
         @NonNull
         @Override
         public SearchTutorsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(R.layout.search_tutors_student_tutors_list_row, parent, false);
-            SearchTutorsViewHolder holder = new SearchTutorsViewHolder(view);
+            SearchTutorsViewHolder holder = new SearchTutorsViewHolder(view, listener);
             return holder;
         }
 
