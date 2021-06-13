@@ -7,17 +7,63 @@
     android:layout_height="match_parent"
     tools:context=".ui.search_tutors_student.SearchTutorsStudentFragment" >
 
-    <TextView
-        android:id="@+id/searchTutorsStudent_title_tv"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/searchTutorsStudent_tutor_et"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand_bold"
+        android:gravity="center"
+        android:hint="Search Tuotors"
+        android:inputType="textPersonName"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/searchTutorsStudent_filter_radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:foregroundGravity="left"
+        android:gravity="left"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTutorsStudent_tutor_et">
+
+        <RadioButton
+            android:id="@+id/searchTutorsStudent_byName_radioBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="By Name"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size" />
+
+        <RadioButton
+            android:id="@+id/searchTutorsStudent_bySubject_radioBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="By Subject"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size" />
+    </RadioGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchTutorsStudent_listTutors_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchTutorsStudent_filter_radioGroup" />
 </androidx.constraintlayout.widget.ConstraintLayout>
