@@ -348,7 +348,7 @@
         app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv13">
 
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:alpha="0"
@@ -457,7 +457,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -521,7 +521,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -585,7 +585,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -649,7 +649,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -713,7 +713,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -777,7 +777,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -841,7 +841,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -905,7 +905,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -969,7 +969,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -1033,7 +1033,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -1097,7 +1097,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -1161,7 +1161,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
@@ -1225,7 +1225,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/quicksand_bold"
