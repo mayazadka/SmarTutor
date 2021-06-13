@@ -16,18 +16,9 @@ public class HomeStudentFragment extends Fragment {
 
     private HomeStudentViewModel homeStudentViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
-        homeStudentViewModel =
-                new ViewModelProvider(this).get(HomeStudentViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        homeStudentViewModel = new ViewModelProvider(this).get(HomeStudentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home_student, container, false);
-        final TextView textView = root.findViewById(R.id.homeStudent_title_tv);
-        homeStudentViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }

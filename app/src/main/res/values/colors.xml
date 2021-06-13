@@ -15,5 +15,8 @@
     <color name="white_gray">#E3E3E3</color>
     <color name="light_blue">#86BBFC</color>
     <color name="blue">#FF0033B3</color>
+    <color name="circle1">#FF2AEEBA</color>
+    <color name="circle2">#FF00FFD9</color>
+    <color name="circle3">#FF00E5FF</color>
 
 </resources>
