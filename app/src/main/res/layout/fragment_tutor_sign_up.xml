@@ -209,7 +209,8 @@
                 android:gravity="start|top"
                 android:hint="Tell about yourself."
                 android:inputType="textMultiLine"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size" />
 
             <TextView
                 android:id="@+id/signUpTutor_password_tv"

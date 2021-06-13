@@ -7,7 +7,7 @@
     tools:context=".ui.home_student.HomeStudentFragment">
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv14"
+        android:id="@+id/homeStudent_msg_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv13"
+        android:id="@+id/homeStudent_calendar_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -36,10 +36,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv12" />
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_date_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv11"
+        android:id="@+id/homeStudent_dateTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -49,10 +49,10 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv8" />
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_tutorTitle_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv9"
+        android:id="@+id/homeStudent_tutor_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -60,13 +60,13 @@
         android:text="Omer Asher"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorTertiary"
-        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_hello_tv8"
-        app:layout_constraintEnd_toEndOf="@+id/homeStudent_hello_tv5"
-        app:layout_constraintStart_toEndOf="@+id/homeStudent_hello_tv8"
-        app:layout_constraintTop_toTopOf="@+id/homeStudent_hello_tv8" />
+        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_tutorTitle_tv"
+        app:layout_constraintEnd_toEndOf="@+id/homeStudent_subject_tv"
+        app:layout_constraintStart_toEndOf="@+id/homeStudent_tutorTitle_tv"
+        app:layout_constraintTop_toTopOf="@+id/homeStudent_tutorTitle_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv12"
+        android:id="@+id/homeStudent_date_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,13 +74,13 @@
         android:text="05/05/2021 - 15:00"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorTertiary"
-        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_hello_tv11"
-        app:layout_constraintEnd_toEndOf="@+id/homeStudent_hello_tv5"
-        app:layout_constraintStart_toEndOf="@+id/homeStudent_hello_tv11"
-        app:layout_constraintTop_toTopOf="@+id/homeStudent_hello_tv11" />
+        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_dateTitle_tv"
+        app:layout_constraintEnd_toEndOf="@+id/homeStudent_subject_tv"
+        app:layout_constraintStart_toEndOf="@+id/homeStudent_dateTitle_tv"
+        app:layout_constraintTop_toTopOf="@+id/homeStudent_dateTitle_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv8"
+        android:id="@+id/homeStudent_tutorTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -90,10 +90,10 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv6" />
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_subjectTitle_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv6"
+        android:id="@+id/homeStudent_subjectTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -102,13 +102,13 @@
         android:text="Subject:"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/homeStudent_hello_tv5"
+        app:layout_constraintEnd_toStartOf="@+id/homeStudent_subject_tv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv3" />
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_nextLesson_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv5"
+        android:id="@+id/homeStudent_subject_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -116,13 +116,13 @@
         android:text="Math"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorTertiary"
-        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_hello_tv6"
-        app:layout_constraintEnd_toStartOf="@+id/imageView8"
-        app:layout_constraintStart_toEndOf="@+id/homeStudent_hello_tv6"
-        app:layout_constraintTop_toTopOf="@+id/homeStudent_hello_tv6" />
+        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_subjectTitle_tv"
+        app:layout_constraintEnd_toStartOf="@+id/homeStudent_subject_img"
+        app:layout_constraintStart_toEndOf="@+id/homeStudent_subjectTitle_tv"
+        app:layout_constraintTop_toTopOf="@+id/homeStudent_subjectTitle_tv" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv3"
+        android:id="@+id/homeStudent_nextLesson_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -136,10 +136,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_statistics_ll" />
 
     <TextView
-        android:id="@+id/homeStudent_hello_tv2"
+        android:id="@+id/homeStudent_yourLessons_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -171,22 +171,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/homeStudent_statistics_ll"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv2"
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_yourLessons_tv"
         tools:layout_editor_absoluteX="178dp">
 
         <LinearLayout
+            android:id="@+id/homeStudent_thisWewk_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/homeStudent_thisWewk_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -196,24 +197,25 @@
                 android:textSize="@dimen/text_size" />
 
             <RelativeLayout
+                android:id="@+id/homeStudent_thisWeek_rl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/homeStudent_thisWeek_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_hoop"
                     app:tint="@color/circle1" />
 
                 <TextView
-                    android:id="@+id/myImageViewText"
+                    android:id="@+id/homeStudent_thisWeakNumber_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/imageView5"
-                    android:layout_alignTop="@id/imageView5"
-                    android:layout_alignRight="@id/imageView5"
-                    android:layout_alignBottom="@id/imageView5"
+                    android:layout_alignLeft="@id/homeStudent_thisWeek_img"
+                    android:layout_alignTop="@id/homeStudent_thisWeek_img"
+                    android:layout_alignRight="@id/homeStudent_thisWeek_img"
+                    android:layout_alignBottom="@id/homeStudent_thisWeek_img"
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="1dp"
@@ -228,13 +230,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/homeStudent_remain_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/homeStudent_remain_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -244,24 +247,25 @@
                 android:textSize="@dimen/text_size" />
 
             <RelativeLayout
+                android:id="@+id/homeStudent_remain_rl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/homeStudent_remain_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_hoop"
                     app:tint="@color/circle2" />
 
                 <TextView
-                    android:id="@+id/myImageViewText1"
+                    android:id="@+id/homeStudent_remainNumber_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/imageView6"
-                    android:layout_alignTop="@id/imageView6"
-                    android:layout_alignRight="@id/imageView6"
-                    android:layout_alignBottom="@id/imageView6"
+                    android:layout_alignLeft="@id/homeStudent_remain_img"
+                    android:layout_alignTop="@id/homeStudent_remain_img"
+                    android:layout_alignRight="@id/homeStudent_remain_img"
+                    android:layout_alignBottom="@id/homeStudent_remain_img"
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="1dp"
@@ -276,13 +280,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/homeStudent_total_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/homeStudent_total_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
@@ -296,20 +301,20 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/homeStudent_total_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_hoop"
                     app:tint="@color/circle3" />
 
                 <TextView
-                    android:id="@+id/myImageViewText2"
+                    android:id="@+id/homeStudent_totalNumber_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/imageView7"
-                    android:layout_alignTop="@id/imageView7"
-                    android:layout_alignRight="@id/imageView7"
-                    android:layout_alignBottom="@id/imageView7"
+                    android:layout_alignLeft="@id/homeStudent_total_img"
+                    android:layout_alignTop="@id/homeStudent_total_img"
+                    android:layout_alignRight="@id/homeStudent_total_img"
+                    android:layout_alignBottom="@id/homeStudent_total_img"
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="1dp"
@@ -325,18 +330,18 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/homeStudent_subject_img"
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_math"
-        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_hello_tv12"
+        app:layout_constraintBottom_toBottomOf="@+id/homeStudent_date_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/homeStudent_hello_tv5"
+        app:layout_constraintTop_toTopOf="@+id/homeStudent_subject_tv"
         app:tint = "?android:textColorTertiary"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/homeStudent_daysTitle_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -345,9 +350,10 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeStudent_hello_tv13">
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_calendar_tv">
 
         <TextView
+            android:id="@+id/homeStudent_blank_tv"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -358,7 +364,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/homeStudent_sun_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -369,7 +375,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/homeStudent_mon_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -380,7 +386,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/homeStudent_tue_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -391,7 +397,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/homeStudent_wed_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -402,7 +408,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/homeStudent_thu_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -413,7 +419,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/homeStudent_fri_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -424,7 +430,7 @@
             android:textSize="@dimen/text_size" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/homeStudent_sat_tv"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -441,10 +447,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/homeStudent_hello_tv14"
+        app:layout_constraintBottom_toTopOf="@+id/homeStudent_msg_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/homeStudent_daysTitle_ll">
 
         <LinearLayout
             android:layout_width="match_parent"

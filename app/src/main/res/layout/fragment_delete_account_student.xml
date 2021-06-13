@@ -7,7 +7,7 @@
     tools:context=".ui.delete_account_student.DeleteAccountStudentFragment">
 
     <TextView
-        android:id="@+id/deleteAccountStudent_title_tv2"
+        android:id="@+id/deleteAccountStudent_subtitle_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="@+id/deleteAccountStudent_yes_btn" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/deleteAccountStudent_trash_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -77,6 +77,6 @@
         app:layout_constraintBottom_toTopOf="@+id/deleteAccountStudent_yes_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteAccountStudent_title_tv2" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteAccountStudent_subtitle_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
