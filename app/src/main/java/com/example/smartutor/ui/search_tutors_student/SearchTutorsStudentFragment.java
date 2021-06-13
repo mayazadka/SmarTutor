@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class SearchTutorsStudentFragment extends Fragment {
     private RadioButton searchByName;
     private RadioButton searchBySubject;
     private EditText searchTutor;
-    List<Integer> tutorsListData;
+    List<String> tutorsListData;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -59,9 +60,9 @@ public class SearchTutorsStudentFragment extends Fragment {
         MyAdapter adapter = new MyAdapter();
         tutorsList.setAdapter(adapter);
 
-        tutorsListData = new LinkedList<Integer>();
-        for(int i = 0; i < 10; i++){
-            tutorsListData.add(i);
+        tutorsListData = new LinkedList<String>();
+        for(int i = 0; i < 20; i++){
+            tutorsListData.add("student " + (i+1));
         }
         return root;
     }
@@ -70,15 +71,28 @@ public class SearchTutorsStudentFragment extends Fragment {
     static class SearchTutorsViewHolder extends RecyclerView.ViewHolder{
         TextView nameTv;
         LinearLayout subjectsList;
+        View item;
 
         public SearchTutorsViewHolder(@NonNull View itemView) {
             super(itemView);
+            item = itemView;
             nameTv = itemView.findViewById(R.id.listTutorsStudentsRow_tutorName_tv);
             subjectsList = itemView.findViewById(R.id.listTutorsStudentsRow_subjects_linearLayout);
         }
 
-        public void bind(Integer name){
-            nameTv.setText(name.toString());
+        public void bind(String name, int index){
+            subjectsList.removeAllViews();
+            if(index%2 == 0)
+            {
+                ImageView image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_computer);
+                subjectsList.addView(image);
+            }
+            ImageView image = new ImageView(itemView.getContext());
+            image.setBackgroundResource(R.drawable.ic_math);
+            subjectsList.addView(image);
+
+            nameTv.setText(name);
         }
     }
     class MyAdapter extends RecyclerView.Adapter<SearchTutorsViewHolder>{
@@ -94,8 +108,8 @@ public class SearchTutorsStudentFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull SearchTutorsViewHolder holder, int position) {
-            int tutor = tutorsListData.get(position);
-            holder.bind(tutor);
+            String tutor = tutorsListData.get(position);
+            holder.bind(tutor, position);
         }
 
         @Override
