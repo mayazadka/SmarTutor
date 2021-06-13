@@ -12,25 +12,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class StudentMenuActivity extends AppCompatActivity {
+public class TutorMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_menu);
-        Toolbar toolbar = findViewById(R.id.appBar_student_toolbar);
+        setContentView(R.layout.activity_tutor_menu);
+        Toolbar toolbar = findViewById(R.id.appBar_tutor_toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navViewStudent);
+        NavigationView navigationView = findViewById(R.id.navViewTutor);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home_student, R.id.nav_edit_details_student, R.id.nav_search_tutors_student, R.id.nav_delete_account_student)
+                R.id.nav_home_tutor, R.id.nav_edit_details_tutor, R.id.nav_delete_account_tutor)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.student_navhost);
+        NavController navController = Navigation.findNavController(this, R.id.tutor_navhost);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
@@ -38,13 +38,13 @@ public class StudentMenuActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.student_menu, menu);
+        getMenuInflater().inflate(R.menu.tutor_menu, menu);
         return true;
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.student_navhost);
+        NavController navController = Navigation.findNavController(this, R.id.tutor_navhost);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }

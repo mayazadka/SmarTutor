@@ -11,7 +11,15 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home_student">Home</string>
+    <string name="menu_home_tutor">Home</string>
     <string name="menu_edit_details_student">Edit Details</string>
+    <string name="menu_edit_details_tutor">Edit Details</string>
     <string name="menu_search_tutors_student">Search Tutors</string>
     <string name="menu_delete_account_student">Delete Account</string>
+    <string name="menu_delete_account_tutor">Delete Account</string>
+    <string name="title_activity_tutor_menu">TutorMenuActivity</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
 </resources>

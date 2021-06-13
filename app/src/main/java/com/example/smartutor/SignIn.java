@@ -62,7 +62,9 @@ public class SignIn extends Fragment {
                 return false;
             });
         signIn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+            Intent intent = null;
+            if(isStudent.isChecked()){intent = new Intent(getActivity(), StudentMenuActivity.class);}
+            else if(isTutor.isChecked()){intent = new Intent(getActivity(), TutorMenuActivity.class);}
             startActivity(intent);
         });
 

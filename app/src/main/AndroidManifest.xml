@@ -10,10 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmarTutor" >
         <activity
+            android:name=".TutorMenuActivity"
+            android:label="@string/title_activity_tutor_menu"
+            android:theme="@style/Theme.SmarTutor.NoActionBar" >
+        </activity>
+        <activity
             android:name=".StudentMenuActivity"
             android:label="@string/title_activity_student_menu"
             android:theme="@style/Theme.SmarTutor.NoActionBar" >
-
         </activity>
         <activity android:name=".LogIn" >
             <intent-filter>

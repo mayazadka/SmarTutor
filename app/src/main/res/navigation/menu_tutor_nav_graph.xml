@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_tutor_nav_graph"
+    app:startDestination="@+id/nav_home_tutor">
+
+    <fragment
+        android:id="@+id/nav_home_tutor"
+        android:name="com.example.smartutor.ui.home_tutor.HomeTutorFragment"
+        android:label="@string/menu_home_tutor"
+        tools:layout="@layout/fragment_home_tutor" />
+    <fragment
+        android:id="@+id/nav_edit_details_tutor"
+        android:name="com.example.smartutor.ui.edit_details_tutor.EditDetailsTutorFragment"
+        android:label="@string/menu_edit_details_tutor"
+        tools:layout="@layout/fragment_edit_details_tutor" />
+    <fragment
+        android:id="@+id/nav_delete_account_tutor"
+        android:name="com.example.smartutor.ui.delete_account_tutor.DeleteAccountTutorFragment"
+        android:label="@string/menu_delete_account_tutor"
+        tools:layout="@layout/fragment_delete_account_tutor" />
+</navigation>
