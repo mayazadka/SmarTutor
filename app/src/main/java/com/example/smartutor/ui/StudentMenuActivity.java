@@ -1,8 +1,9 @@
-package com.example.smartutor;
+package com.example.smartutor.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
 
+import com.example.smartutor.R;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;

@@ -1,13 +1,13 @@
-package com.example.smartutor;
+package com.example.smartutor.ui.sign_in;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +18,15 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class SignIn extends Fragment {
+import com.example.smartutor.R;
+import com.example.smartutor.ui.StudentMenuActivity;
+import com.example.smartutor.ui.TutorMenuActivity;
+import com.example.smartutor.ui.delete_account_student.DeleteAccountStudentViewModel;
+import com.google.android.material.snackbar.Snackbar;
+
+public class SignInFragment extends Fragment {
+    //view model
+    private SignInViewModel signInViewModel;
 
     //views
     private TextView signUp;
@@ -27,13 +35,17 @@ public class SignIn extends Fragment {
     private ImageButton showHide;
     private EditText password;
     private Button signIn;
+    private EditText email;
 
-    public SignIn() {
+    public SignInFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //view model
+        signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
@@ -44,6 +56,7 @@ public class SignIn extends Fragment {
         showHide = view.findViewById(R.id.signIn_showHide_imgbtn);
         password = view.findViewById(R.id.signIn_password_et);
         signIn = view.findViewById(R.id.signIn_signIn_btn);
+        email = view.findViewById(R.id.signIn_email_et);
 
         // events setup
         signUp.setOnClickListener(v -> {
@@ -63,9 +76,22 @@ public class SignIn extends Fragment {
             });
         signIn.setOnClickListener(v -> {
             Intent intent = null;
-            if(isStudent.isChecked()){intent = new Intent(getActivity(), StudentMenuActivity.class);}
-            else if(isTutor.isChecked()){intent = new Intent(getActivity(), TutorMenuActivity.class);}
-            startActivity(intent);
+            if(isStudent.isChecked()){
+                if(signInViewModel.isCorrectStudentDetails(email.getText().toString(), password.getText().toString())){
+                    intent = new Intent(getActivity(), StudentMenuActivity.class);
+                }
+            }
+            else if(isTutor.isChecked()){
+                if(signInViewModel.isCorrectTutorDetails(email.getText().toString(), password.getText().toString())) {
+                    intent = new Intent(getActivity(), TutorMenuActivity.class);
+                }
+            }
+            if(intent != null){
+                startActivity(intent);
+            }
+            else{
+                Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
         });
 
 

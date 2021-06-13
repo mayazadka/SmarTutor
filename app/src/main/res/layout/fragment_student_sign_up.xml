@@ -233,7 +233,7 @@
                 android:textSize="@dimen/text_size" />
 
             <Button
-                android:id="@+id/signUpStudent_save_btn"
+                android:id="@+id/signUpStudent_signUp_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"

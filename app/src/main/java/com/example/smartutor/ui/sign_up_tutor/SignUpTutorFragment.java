@@ -1,53 +1,70 @@
-package com.example.smartutor;
+package com.example.smartutor.ui.sign_up_tutor;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.smartutor.MultiSpinner;
+import com.example.smartutor.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
-public class StudentSignUp extends Fragment {
+public class SignUpTutorFragment extends Fragment {
 
     //views
     private TextView signIn;
     private Spinner gender;
-    private Spinner grade;
+    private EditText password;
+    private EditText confirm;
+    private MultiSpinner profesions;
     private Button chooseDate;
     private EditText date;
 
-    public StudentSignUp() {
+
+    public SignUpTutorFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_sign_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_tutor_sign_up, container, false);
 
         // views setup
-        signIn = view.findViewById(R.id.signUpStudent_signIn_tv);
-        gender = view.findViewById(R.id.signUpStudent_gender_spn);
-        grade = view.findViewById(R.id.signUpStudent_grade_spn);
-        chooseDate = view.findViewById(R.id.signUpStudent_birthdayDate_btn);
-        date = view.findViewById(R.id.signUpStudent_birthdayDate_et);
+        signIn = view.findViewById(R.id.signUpTutor_signIn_tv);
+        gender = view.findViewById(R.id.signUpTutor_gender_spn);
+        password = view.findViewById(R.id.signUpTutor_password_et);
+        confirm = view.findViewById(R.id.signUpTutor_confirmPassword_et);
+        profesions = view.findViewById(R.id.signUpTutor_professions_spn);
+        chooseDate = view.findViewById(R.id.signUpTutor_birthdayDate_btn);
+        date = view.findViewById(R.id.signUpTutor_birthdayDate_et);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
-        ArrayAdapter<CharSequence> gradeAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.grade,R.layout.spinner_item);
-        grade.setAdapter(gradeAdapter);
+
+        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { });
 
 
         // events setup
@@ -63,6 +80,7 @@ public class StudentSignUp extends Fragment {
                     .setOnCancelListener(dialog -> date.setText(picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear()));
             builder.show();
         });
+
 
         return view;
     }

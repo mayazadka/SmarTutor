@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 public class EditDetailsStudentViewModel extends ViewModel {
 
-
     public EditDetailsStudentViewModel() {
 
     }
