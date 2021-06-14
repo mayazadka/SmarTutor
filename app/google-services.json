@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "355601521592",
+    "project_id": "smartutor-91680",
+    "storage_bucket": "smartutor-91680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355601521592:android:12e471aca41b926868cd4d",
+        "android_client_info": {
+          "package_name": "com.example.smartutor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355601521592-nkr97jdkt2o3618spffastva58epklgr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGNiuB-8_HcnHeZfOJxsHKgoL1wEmElGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355601521592-nkr97jdkt2o3618spffastva58epklgr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
