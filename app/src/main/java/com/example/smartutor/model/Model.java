@@ -23,7 +23,7 @@ public class Model {
 
         List<Profession> professions = new ArrayList<>();
         professions.add(Profession.MATH);
-        professions.add((Profession.COMPUTER_SCIENCE));
+        professions.add((Profession.COMPUTERSCIENCE));
         this.tutors.add(new Tutor("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), professions, "I'm cool", "OMEome0707"));
         professions = new ArrayList<>();
         professions.add(Profession.LANGUAGE);

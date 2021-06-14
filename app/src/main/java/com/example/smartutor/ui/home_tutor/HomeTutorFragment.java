@@ -15,10 +15,15 @@ import com.example.smartutor.R;
 public class HomeTutorFragment extends Fragment {
 
     private HomeTutorViewModel homeTutorViewModel;
+    //private TextView headerTitle;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeTutorViewModel = new ViewModelProvider(this).get(HomeTutorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home_tutor, container, false);
+
+        //headerTitle = getActivity().findViewById(R.id.tutorHeader_title_tv);
+        //headerTitle.setText(homeTutorViewModel.getName());
+
         return root;
     }
 }

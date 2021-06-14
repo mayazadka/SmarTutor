@@ -199,7 +199,7 @@
                 android:textSize="@dimen/text_size" />
 
             <EditText
-                android:id="@+id/signYpTutor_aboutMe_etml"
+                android:id="@+id/signUpTutor_aboutMe_etml"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"

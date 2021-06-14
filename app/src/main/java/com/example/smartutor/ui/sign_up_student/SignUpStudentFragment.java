@@ -88,6 +88,7 @@ public class SignUpStudentFragment extends Fragment {
         signUp.setOnClickListener(v -> {
             if(signUpStudentViewModel.signUp(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gender.getSelectedItem().toString(), date.getText().toString(), grade.getSelectedItem().toString(), password.getText().toString(), confirm.getText().toString())){
                 Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+                intent.putExtra("EMAIL", email.getText().toString());
                 startActivity(intent);
             }
             else{

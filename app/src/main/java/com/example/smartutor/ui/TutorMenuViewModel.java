@@ -1,7 +1,5 @@
-package com.example.smartutor.ui.home_tutor;
+package com.example.smartutor.ui;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.smartutor.model.Model;
@@ -9,11 +7,11 @@ import com.example.smartutor.model.Student;
 
 import java.util.List;
 
-public class HomeTutorViewModel extends ViewModel {
+public class TutorMenuViewModel extends ViewModel {
     private String email;
     private Model model;
 
-    public HomeTutorViewModel() {
+    public TutorMenuViewModel() {
         model = Model.getInstance();
     }
 
@@ -29,6 +27,10 @@ public class HomeTutorViewModel extends ViewModel {
             }
         }
         return null;
+    }
+
+    public String getEmail(){
+        return email;
     }
 
 

@@ -2,9 +2,13 @@ package com.example.smartutor.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.ui.home_tutor.HomeTutorViewModel;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,10 +20,18 @@ import androidx.appcompat.widget.Toolbar;
 public class TutorMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private TutorMenuViewModel tutorMenuViewModel;
+    private TextView headerTitle;
+    private TextView headerSubTiitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //view models
+        tutorMenuViewModel = new ViewModelProvider(this).get(TutorMenuViewModel.class);
+        tutorMenuViewModel.setEmail(getIntent().getStringExtra("EMAIL"));
+
         setContentView(R.layout.activity_tutor_menu);
         Toolbar toolbar = findViewById(R.id.appBar_tutor_toolbar);
         setSupportActionBar(toolbar);
@@ -34,6 +46,12 @@ public class TutorMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.tutor_navhost);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        headerTitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_title_tv);
+        headerSubTiitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_subtitle_tv);
+
+        headerTitle.setText(tutorMenuViewModel.getName());
+        headerSubTiitle.setText(tutorMenuViewModel.getEmail());
     }
 
     @Override

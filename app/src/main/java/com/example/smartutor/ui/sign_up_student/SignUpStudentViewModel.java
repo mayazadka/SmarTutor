@@ -20,7 +20,6 @@ public class SignUpStudentViewModel  extends ViewModel {
 
     public boolean signUp(String email, String lastName, String firstName, String genderString, String birthdayDateString, String gradeString, String password, String confirm){
         if(!password.equals(confirm)){return false;}
-        Log.d("omer", genderString);
         Gender gender = Gender.valueOf(genderString.toUpperCase());
         Date birthdayDate;
         try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(birthdayDateString);}catch(Exception e){return false;}

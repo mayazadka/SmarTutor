@@ -87,6 +87,7 @@ public class SignInFragment extends Fragment {
                 }
             }
             if(intent != null){
+                intent.putExtra("EMAIL", email.getText().toString());
                 startActivity(intent);
             }
             else{
