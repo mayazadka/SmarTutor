@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TutorDetailsFragment">
+
+    <TextView
+        android:id="@+id/tutorDetails_email_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Email:"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tutorDetails_email_to_change_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="omerasher@gmail.com"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/tutorDetails_email_tv"
+        app:layout_constraintStart_toEndOf="@+id/tutorDetails_email_tv"
+        app:layout_constraintTop_toTopOf="@+id/tutorDetails_email_tv" />
+
+    <TextView
+        android:id="@+id/tutorDetails_age_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Age:"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorDetails_email_tv" />
+
+    <TextView
+        android:id="@+id/tutorDetails_age_to_change_tv"
+        android:layout_width="35dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="19"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintStart_toStartOf="@+id/tutorDetails_email_to_change_tv"
+        app:layout_constraintTop_toBottomOf="@+id/tutorDetails_email_to_change_tv" />
+
+    <LinearLayout
+        android:id="@+id/tutorDetails_subjects_linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorDetails_age_tv">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tutorDetails_about_me_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="About me:"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/sub_title_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorDetails_subjects_linearLayout" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="I finish hight-school last year and I will finish my first degree this year. In high-school I mostly learned phisics, math and computer-science. My first degree is in computer-science. I teach children ages 7-18. I teach math, computer-science and English."
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorDetails_about_me_tv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

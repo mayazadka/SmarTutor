@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,8 +63,9 @@ public class SearchTutorsStudentFragment extends Fragment {
         tutorsList.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onClick(View view, int position) {
                 Log.d("TAG", "Tutor " + position + " clicked");
+                Navigation.findNavController(view).navigate(R.id.action_nav_search_tutors_student_to_nav_tutor_details_student);
             }
         });
 
@@ -93,7 +95,7 @@ public class SearchTutorsStudentFragment extends Fragment {
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-                            listener.onClick(position);
+                            listener.onClick(v, position);
                         }
                     }
                 }
@@ -116,7 +118,7 @@ public class SearchTutorsStudentFragment extends Fragment {
         }
     }
     public interface OnItemClickListener {
-        void onClick(int position);
+        void onClick(View view, int position);
     }
     class MyAdapter extends RecyclerView.Adapter<SearchTutorsViewHolder>{
         OnItemClickListener listener;
