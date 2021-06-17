@@ -15,7 +15,6 @@ public class Student {
     private Date birthdayDate;
     private int grade;
     private String password;
-    private List<Lesson> lessons;
 
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade, String password) {
         this.email = email;
@@ -25,7 +24,6 @@ public class Student {
         this.birthdayDate = birthdayDate;
         this.grade = grade;
         this.password = password;
-        this.lessons = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -84,9 +82,6 @@ public class Student {
         this.password = password;
     }
 
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
 
     @Override
     public boolean equals(Object o) {

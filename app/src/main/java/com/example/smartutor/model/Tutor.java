@@ -14,7 +14,6 @@ public class Tutor {
     private List<Profession> professions;
     private String aboutMe;
     private String password;
-    private List<Lesson> lessons;
 
     public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe, String password) {
         this.email = email;
@@ -25,7 +24,6 @@ public class Tutor {
         this.professions = professions;
         this.aboutMe = aboutMe;
         this.password = password;
-        this.lessons = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -90,10 +88,6 @@ public class Tutor {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
     }
 
     @Override

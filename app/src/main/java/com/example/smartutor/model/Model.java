@@ -18,18 +18,23 @@ public class Model {
         this.lessons = new ArrayList<>();
 
         // test
-        this.students.add(new Student("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), 12, "OMEome0707"));
+        Student s1 = new Student("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), 12, "OMEome0707");
+        this.students.add(s1);
         this.students.add(new Student("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), 1, "maya"));
 
         List<Profession> professions = new ArrayList<>();
         professions.add(Profession.MATH);
         professions.add((Profession.COMPUTERSCIENCE));
-        this.tutors.add(new Tutor("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), professions, "I'm cool", "OMEome0707"));
+        Tutor t1 = new Tutor("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), professions, "I'm cool", "OMEome0707");
+        this.tutors.add(t1);
         professions = new ArrayList<>();
         professions.add(Profession.LANGUAGE);
         professions.add((Profession.HISTORY));
         this.tutors.add(new Tutor("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), professions, "Omer is cooler", "maya"));
 
+        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 19), 12));
+        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 12), 12));
+        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 14), 23));
     }
 
     public List<Student> getStudents() {

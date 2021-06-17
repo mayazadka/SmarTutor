@@ -8,18 +8,13 @@ import com.example.smartutor.model.Student;
 import java.util.List;
 
 public class TutorMenuViewModel extends ViewModel {
-    private String email;
     private Model model;
 
     public TutorMenuViewModel() {
         model = Model.getInstance();
     }
 
-    public void setEmail(String email){
-        this.email = email;
-    }
-
-    public String getName(){
+    public String getName(String email){
         List<Student> students = model.getStudents();
         for(int i=0;i<students.size();i++){
             if(students.get(i).getEmail().equals(email)){
@@ -28,10 +23,4 @@ public class TutorMenuViewModel extends ViewModel {
         }
         return null;
     }
-
-    public String getEmail(){
-        return email;
-    }
-
-
 }
