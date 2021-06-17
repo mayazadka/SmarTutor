@@ -20,16 +20,12 @@ import androidx.appcompat.widget.Toolbar;
 public class TutorMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private TutorMenuViewModel tutorMenuViewModel;
     private TextView headerTitle;
     private TextView headerSubTiitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //view models
-        tutorMenuViewModel = new ViewModelProvider(this).get(TutorMenuViewModel.class);
 
         setContentView(R.layout.activity_tutor_menu);
         Toolbar toolbar = findViewById(R.id.appBar_tutor_toolbar);
@@ -48,9 +44,6 @@ public class TutorMenuActivity extends AppCompatActivity {
 
         headerTitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_title_tv);
         headerSubTiitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_subtitle_tv);
-
-        headerTitle.setText(tutorMenuViewModel.getName(getIntent().getStringExtra("EMAIL")));
-        headerSubTiitle.setText(getIntent().getStringExtra("EMAIL"));
     }
 
     @Override

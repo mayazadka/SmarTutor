@@ -335,6 +335,7 @@
         app:layout_constraintTop_toTopOf="@+id/homeTutor_subject_tv"
         app:tint = "?android:textColorTertiary"/>
 
+
     <LinearLayout
         android:id="@+id/homeTutor_daysTitle_ll"
         android:layout_width="match_parent"
