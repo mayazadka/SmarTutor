@@ -29,12 +29,17 @@
         tools:layout="@layout/fragment_delete_account_tutor" />
     <fragment
         android:id="@+id/lessonDetailsTutorFragment"
-        android:name="com.example.smartutor.LessonDetailsTutorFragment"
+        android:name="com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorFragment"
         android:label="fragment_lesson_details_tutor"
         tools:layout="@layout/fragment_lesson_details_tutor" />
     <fragment
         android:id="@+id/availableTutorFragment"
-        android:name="com.example.smartutor.AvailableTutorFragment"
+        android:name="com.example.smartutor.ui.available_tutor.AvailableTutorFragment"
         android:label="fragment_available_tutor"
         tools:layout="@layout/fragment_available_tutor" />
+    <fragment
+        android:id="@+id/nav_my_feed_tutor"
+        android:name="com.example.smartutor.MyFeedFragment"
+        android:label="@string/menu_my_feed_tutor"
+        tools:layout="@layout/fragment_my_feed" />
 </navigation>

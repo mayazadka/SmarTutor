@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TutorDetailsFragment">
+    tools:context=".ui.tutor_details.TutorDetailsFragment">
 
     <TextView
         android:id="@+id/tutorDetails_msg_tv"

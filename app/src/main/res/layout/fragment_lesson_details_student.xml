@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LessonDetailsStudentFragment">
+    tools:context=".ui.lesson_details_student.LessonDetailsStudentFragment">
 
     <TextView
         android:id="@+id/lessonDetailsStudent_hour_tv"

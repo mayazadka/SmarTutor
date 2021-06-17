@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_menu_edit"
             android:title="@string/menu_edit_details_tutor" />
         <item
+            android:id="@+id/nav_my_feed_tutor"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_my_feed_tutor" />
+        <item
             android:id="@+id/nav_delete_account_tutor"
             android:icon="@drawable/ic_menu_delete"
             android:title="@string/menu_delete_account_tutor" />

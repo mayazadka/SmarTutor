@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_delete_account_student" />
     <fragment
         android:id="@+id/nav_tutor_details_student"
-        android:name="com.example.smartutor.TutorDetailsFragment"
+        android:name="com.example.smartutor.ui.tutor_details.TutorDetailsFragment"
         android:label="@string/menu_tutor_details_student"
         tools:layout="@layout/fragment_tutor_details2" >
         <action
@@ -47,12 +47,12 @@
     </fragment>
     <fragment
         android:id="@+id/lessonDetailsStudentFragment"
-        android:name="com.example.smartutor.LessonDetailsStudentFragment"
+        android:name="com.example.smartutor.ui.lesson_details_student.LessonDetailsStudentFragment"
         android:label="fragment_lesson_details_student"
         tools:layout="@layout/fragment_lesson_details_student" />
     <fragment
         android:id="@+id/scheduleLessonStudentFragment"
-        android:name="com.example.smartutor.ScheduleLessonStudentFragment"
+        android:name="com.example.smartutor.ui.schedule_lesson_student.ScheduleLessonStudentFragment"
         android:label="fragment_schedule_lesson_student"
         tools:layout="@layout/fragment_schedule_lesson_student" />
 </navigation>

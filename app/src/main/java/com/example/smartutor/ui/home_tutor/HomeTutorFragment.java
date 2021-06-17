@@ -32,12 +32,6 @@ public class HomeTutorFragment extends Fragment {
         remain = root.findViewById(R.id.homeTutor_remainNumber_tv);
         total = root.findViewById(R.id.homeTutor_totalNumber_tv);
 
-        hello.setText("Hello, "+homeTutorViewModel.getName(email));
-        int[] statistics = homeTutorViewModel.getLessonStatistic(email);
-        thisWeek.setText(new Integer(statistics[0]).toString());
-        remain.setText(new Integer(statistics[1]).toString());
-        total.setText(new Integer(statistics[2]).toString());
-
         return root;
     }
 }

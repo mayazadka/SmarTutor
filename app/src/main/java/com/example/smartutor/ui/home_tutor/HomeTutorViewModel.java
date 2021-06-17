@@ -24,49 +24,6 @@ public class HomeTutorViewModel extends ViewModel {
         model = Model.getInstance();
     }
 
-    public String getName(String email){
-        List<Student> students = model.getStudents();
-        for(int i=0;i<students.size();i++){
-            if(students.get(i).getEmail().equals(email)){
-                return students.get(i).getFirstName()+" "+students.get(i).getLastName();
-            }
-        }
-        return null;
-    }
-    public int[] getLessonStatistic(String email){
-        int thisWeek = 0;
-        int remain = 0;
-        int total = 0;
-
-        List<Lesson> lessons = model.getLessons();
-        for(int i =0;i<lessons.size(); i++){
-            Lesson lesson = lessons.get(i);
-            if(lesson.getTutor().getEmail().equals(email)){
-                total++;
-                Date lessonDate = lesson.getDate();
-                int lessonWeak = new GregorianCalendar(lessonDate.getYear(), lessonDate.getMonth(), lessonDate.getDate()).get(Calendar.WEEK_OF_YEAR);
-                int lessonYear = lessonDate.getYear();
-                int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR)-1;
-                int currentYear = new GregorianCalendar(lessonDate.getYear(), lessonDate.getMonth(), lessonDate.getDay()).get(Calendar.WEEK_OF_YEAR);
-                Log.d("omer", new Integer(lessonWeak).toString()+" "+new Integer(currentWeek).toString());
-                if(lessonWeak == currentWeek && lessonYear == currentYear){
-                    thisWeek++;
-                    int lessonDay = lessonDate.getDay();
-                    int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    if(lessonDay>currentDay){
-                        remain++;
-                    }
-                    else if(currentDay==lessonDay){
-                        int lessonHour = lesson.getHour();
-                        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                    }
-                }
-
-            }
-        }
-        int[] arr = {thisWeek, remain, total};
-        return arr;
-    }
 
     public Tutor getTutor(String email){
         return model.getTutor(email);

@@ -35,7 +35,7 @@ public class TutorMenuActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home_tutor, R.id.nav_edit_details_tutor, R.id.nav_delete_account_tutor)
+                R.id.nav_home_tutor, R.id.nav_edit_details_tutor, R.id.nav_my_feed_tutor, R.id.nav_delete_account_tutor)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.tutor_navhost);
