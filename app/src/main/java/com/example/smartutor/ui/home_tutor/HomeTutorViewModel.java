@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
+import com.example.smartutor.model.Tutor;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class HomeTutorViewModel extends ViewModel {
     private Model model;
+    private List<Student> tutorsList;
 
     public HomeTutorViewModel() {
         model = Model.getInstance();
@@ -31,7 +33,6 @@ public class HomeTutorViewModel extends ViewModel {
         }
         return null;
     }
-
     public int[] getLessonStatistic(String email){
         int thisWeek = 0;
         int remain = 0;
@@ -67,6 +68,10 @@ public class HomeTutorViewModel extends ViewModel {
         return arr;
     }
 
-
-
+    public Tutor getTutor(String email){
+        return model.getTutor(email);
+    }
+    public List<Lesson> getTutorLessons(String email){
+        return model.getTutorLessons(email);
+    }
 }

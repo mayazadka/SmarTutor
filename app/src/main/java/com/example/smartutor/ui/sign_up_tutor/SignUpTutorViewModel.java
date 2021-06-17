@@ -40,4 +40,7 @@ public class SignUpTutorViewModel  extends ViewModel {
         else{model.addTutor(tutor);}
         return true;
     }
+    public int addNewTutor(Tutor tutor){
+        return model.addNewTutor(tutor);
+    }
 }

@@ -15,35 +15,27 @@ public class Lesson {
         this.date = date;
         this.hour = hour;
     }
-
     public Student getStudent() {
         return student;
     }
-
     public void setStudent(Student student) {
         this.student = student;
     }
-
     public Tutor getTutor() {
         return tutor;
     }
-
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }
-
     public Date getDate() {
         return date;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }
-
     public int getHour() {
         return hour;
     }
-
     public void setHour(int hour) {
         this.hour = hour;
     }
@@ -58,7 +50,6 @@ public class Lesson {
                 tutor.equals(lesson.tutor) &&
                 date.equals(lesson.date);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(student, tutor, date, hour);

@@ -33,4 +33,7 @@ public class SignUpStudentViewModel  extends ViewModel {
         else{model.addStudent(student);}
         return true;
     }
+    public int addNewStudent(Student student){
+        return model.addNewStudent(student);
+    }
 }
