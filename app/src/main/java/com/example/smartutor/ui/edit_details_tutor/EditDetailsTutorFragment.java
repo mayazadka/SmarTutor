@@ -67,7 +67,8 @@ public class EditDetailsTutorFragment extends Fragment {
             builder.show();
         });
 
-
         return root;
     }
 }
+
+//getActivity().getIntent().getStringExtra("EMAIL")

@@ -18,11 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Student;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.sign_in.SignInViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SignUpStudentFragment extends Fragment {
@@ -86,7 +89,9 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            if(signUpStudentViewModel.signUp(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gender.getSelectedItem().toString(), date.getText().toString(), grade.getSelectedItem().toString(), password.getText().toString(), confirm.getText().toString())){
+            Student student = checkDetails();
+            if(checkDetails() != null){
+                signUpStudentViewModel.addNewStudent(student);
                 Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
                 intent.putExtra("EMAIL", email.getText().toString());
                 startActivity(intent);
@@ -96,5 +101,17 @@ public class SignUpStudentFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private Student checkDetails(){
+        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
+        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
+        Date birthdayDate;
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
+        int gradeNum = new Integer(grade.getSelectedItem().toString().charAt(0));
+        try{gradeNum = gradeNum*10+new Integer(grade.getSelectedItem().toString().charAt(1));}catch (Exception e){}
+        Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate, gradeNum, password.getText().toString());
+        // check specific details
+        return student;
     }
 }

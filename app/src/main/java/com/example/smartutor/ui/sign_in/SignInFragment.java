@@ -77,12 +77,12 @@ public class SignInFragment extends Fragment {
         signIn.setOnClickListener(v -> {
             Intent intent = null;
             if(isStudent.isChecked()){
-                if(signInViewModel.isCorrectStudentDetails(email.getText().toString(), password.getText().toString())){
+                if(signInViewModel.checkDetailsStudent(email.getText().toString(), password.getText().toString())){
                     intent = new Intent(getActivity(), StudentMenuActivity.class);
                 }
             }
             else if(isTutor.isChecked()){
-                if(signInViewModel.isCorrectTutorDetails(email.getText().toString(), password.getText().toString())) {
+                if(signInViewModel.checkDetailsTutor(email.getText().toString(), password.getText().toString())) {
                     intent = new Intent(getActivity(), TutorMenuActivity.class);
                 }
             }
@@ -94,8 +94,6 @@ public class SignInFragment extends Fragment {
                 Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-
         return view;
     }
 }

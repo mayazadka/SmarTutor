@@ -168,21 +168,21 @@ public class Model {
         lessons.add(lesson);
         return 0;
     }
-    public int checkDetailsTutor(String email, String password){
+    public boolean checkDetailsTutor(String email, String password){
         Tutor tutor = getTutor(email);
         if(tutor != null){
             if(tutor.getPassword().compareTo(password) == 0)
-                return 0;
+                return true;
         }
-        return 1;
+        return false;
     }
-    public int checkDetailsStudent(String email, String password) {
+    public boolean checkDetailsStudent(String email, String password) {
         Student student = getStudent(email);
         if(student != null) {
             if(student.getPassword().compareTo(password) == 0)
-                return 0;
+                return true;
         }
-        return 1;
+        return false;
     }
     public static Model getInstance(){
         if(model == null){

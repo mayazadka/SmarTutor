@@ -10,7 +10,7 @@ public class SignInViewModel extends ViewModel {
     public SignInViewModel() {
         model = Model.getInstance();
     }
-
+/*
     public boolean isCorrectStudentDetails(String email, String password){
         for(int i=0;i<model.getStudents().size();i++){
             if(model.getStudents().get(i).getEmail().equals(email)){
@@ -27,12 +27,12 @@ public class SignInViewModel extends ViewModel {
             }
         }
         return false;
-    }
+    }*/
 
-    public int checkDetailsStudent(String email, String password){
+    public boolean checkDetailsStudent(String email, String password){
         return model.checkDetailsStudent(email, password);
     }
-    public int checkDetailsTutor(String email, String password){
+    public boolean checkDetailsTutor(String email, String password){
         return model.checkDetailsTutor(email, password);
     }
 }
