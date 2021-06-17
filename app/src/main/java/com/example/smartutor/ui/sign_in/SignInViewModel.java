@@ -28,4 +28,11 @@ public class SignInViewModel extends ViewModel {
         }
         return false;
     }
+
+    public int checkDetailsStudent(String email, String password){
+        return model.checkDetailsStudent(email, password);
+    }
+    public int checkDetailsTutor(String email, String password){
+        return model.checkDetailsTutor(email, password);
+    }
 }
