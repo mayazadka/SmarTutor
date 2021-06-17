@@ -9,7 +9,11 @@
         android:id="@+id/nav_home_student"
         android:name="com.example.smartutor.ui.home_student.HomeStudentFragment"
         android:label="@string/menu_home_student"
-        tools:layout="@layout/fragment_home_student" />
+        tools:layout="@layout/fragment_home_student" >
+        <action
+            android:id="@+id/action_nav_home_student_to_lessonDetailsStudentFragment"
+            app:destination="@id/lessonDetailsStudentFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_edit_details_student"
@@ -38,12 +42,17 @@
         android:label="@string/menu_tutor_details_student"
         tools:layout="@layout/fragment_tutor_details2" >
         <action
-            android:id="@+id/action_nav_tutor_details_student_to_lessonDetailsStudentFragment"
-            app:destination="@id/lessonDetailsStudentFragment" />
+            android:id="@+id/action_nav_tutor_details_student_to_scheduleLessonStudentFragment"
+            app:destination="@id/scheduleLessonStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/lessonDetailsStudentFragment"
         android:name="com.example.smartutor.LessonDetailsStudentFragment"
         android:label="fragment_lesson_details_student"
         tools:layout="@layout/fragment_lesson_details_student" />
+    <fragment
+        android:id="@+id/scheduleLessonStudentFragment"
+        android:name="com.example.smartutor.ScheduleLessonStudentFragment"
+        android:label="fragment_schedule_lesson_student"
+        tools:layout="@layout/fragment_schedule_lesson_student" />
 </navigation>

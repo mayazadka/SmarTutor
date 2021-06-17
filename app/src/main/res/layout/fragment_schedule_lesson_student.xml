@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LessonDetailsStudentFragment">
+    tools:context=".ScheduleLessonStudentFragment">
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_hour_tv"
+        android:id="@+id/scheduleLessonStudent_hour_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="15:00"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv"
-        app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_tutor_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_hourTitle_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduleLessonStudent_hourTitle_tv"
+        app:layout_constraintStart_toStartOf="@+id/scheduleLessonStudent_tutor_tv"
+        app:layout_constraintTop_toTopOf="@+id/scheduleLessonStudent_hourTitle_tv"
         app:layout_constraintVertical_bias="0.555" />
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_TutorTitle_tv"
+        android:id="@+id/scheduleLessonStudent_TutorTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -30,10 +30,10 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleLessonStudent_hourTitle_tv" />
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_hourTitle_tv"
+        android:id="@+id/scheduleLessonStudent_hourTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -43,22 +43,22 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleLessonStudent_dateTitle_tv" />
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_date_tv"
+        android:id="@+id/scheduleLessonStudent_date_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="12.5.2021"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv"
-        app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_hour_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_dateTitle_tv" />
+        app:layout_constraintBottom_toBottomOf="@+id/scheduleLessonStudent_dateTitle_tv"
+        app:layout_constraintStart_toStartOf="@+id/scheduleLessonStudent_hour_tv"
+        app:layout_constraintTop_toTopOf="@+id/scheduleLessonStudent_dateTitle_tv" />
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_tutor_tv"
+        android:id="@+id/scheduleLessonStudent_tutor_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -66,13 +66,13 @@
         android:text="Omer Asher"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_TutorTitle_tv"
-        app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_TutorTitle_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_TutorTitle_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduleLessonStudent_TutorTitle_tv"
+        app:layout_constraintStart_toEndOf="@+id/scheduleLessonStudent_TutorTitle_tv"
+        app:layout_constraintTop_toTopOf="@+id/scheduleLessonStudent_TutorTitle_tv"
         app:layout_constraintVertical_bias="0.555" />
 
     <TextView
-        android:id="@+id/lessonDetailsStudent_dateTitle_tv"
+        android:id="@+id/scheduleLessonStudent_dateTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -85,27 +85,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/lessonDetailsStudent_subject_img"
+        android:id="@+id/scheduleLessonStudent_subject_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/ic_math"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_tutor_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduleLessonStudent_tutor_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_tutor_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_date_tv" />
+        app:layout_constraintStart_toEndOf="@+id/scheduleLessonStudent_tutor_tv"
+        app:layout_constraintTop_toTopOf="@+id/scheduleLessonStudent_date_tv" />
 
     <Button
-        android:id="@+id/lessonDetailsStudent_cancel_btn"
+        android:id="@+id/scheduleLessonStudent_schedule_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/quicksand_bold"
-        android:text="Cancel Lesson"
+        android:text="schedule Lesson"
         android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_subject_img" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleLessonStudent_subject_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
