@@ -1,6 +1,7 @@
 package com.example.smartutor.ui.home_student;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,36 +44,44 @@ public class HomeStudentFragment extends Fragment {
 
         String emailStudent = getActivity().getIntent().getStringExtra("EMAIL");
         Student student = homeStudentViewModel.getStudent(emailStudent);
-
         helloTv.setText("hello, " + student.getFirstName() + " " + student.getLastName());
         lessonsThisWeek.setText(String.valueOf(homeStudentViewModel.getThisWeekLessonsStudent(emailStudent)));
         lessonsRemain.setText(String.valueOf(homeStudentViewModel.getRemainLessonsStudent(emailStudent)));
         lessonsTotal.setText(String.valueOf(homeStudentViewModel.getStudentLessons(emailStudent)));
         Lesson nextLesson = homeStudentViewModel.getNextLessonStudent(emailStudent);
-        nextLessonSubject.setText(nextLesson.getSubject().name());
-        nextLessonTutor.setText(nextLesson.getTutor().getFirstName() + " " + nextLesson.getTutor().getLastName());
-        nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
+        if(nextLesson != null){
+            nextLessonSubject.setText(nextLesson.getSubject().name());
+            nextLessonTutor.setText(nextLesson.getTutor().getFirstName() + " " + nextLesson.getTutor().getLastName());
+            nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
 
-        switch (nextLesson.getSubject()){
-            case MATH:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_math);
-                break;
-            case HISTORY:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_history);
-                break;
-            case SCIENCE:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_science);
-                break;
-            case LANGUAGE:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_english);
-                break;
-            case LITERATURE:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_literature);
-                break;
-            case COMPUTERSCIENCE:
-                nextLessonSubjectImg.setImageResource(R.drawable.ic_computer_science);
-                break;
+            switch (nextLesson.getSubject()){
+                case MATH:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_math);
+                    break;
+                case HISTORY:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_history);
+                    break;
+                case SCIENCE:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_science);
+                    break;
+                case LANGUAGE:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_english);
+                    break;
+                case LITERATURE:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_literature);
+                    break;
+                case COMPUTERSCIENCE:
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_computer_science);
+                    break;
+            }
         }
+        else {
+            nextLessonSubject.setText("");
+            nextLessonTutor.setText("");
+            nextLessonDate.setText("");
+            nextLessonSubjectImg.setImageResource(R.drawable.ic_math);
+        }
+
         return root;
     }
 }

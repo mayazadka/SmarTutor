@@ -2,6 +2,9 @@ package com.example.smartutor.model;
 
 import android.util.Log;
 
+import com.example.smartutor.ui.LogIn;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,22 +42,26 @@ public class Model {
         this.lessons = new ArrayList<>();
 
         // test
-        Student s1 = new Student("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), 12, "OMEome0707");
+        Date birthdayDate = null;
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse("04/01/2002");}catch(Exception e){}
+        Student s1 = new Student("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, birthdayDate, 12, "OMEome0707");
         this.students.add(s1);
-        Student s2 = new Student("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), 1, "maya");
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse("18/02/2002");}catch(Exception e){}
+        Student s2 = new Student("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, birthdayDate, 11, "maya");
         this.students.add(s2);
 
         List<Profession> professions = new ArrayList<>();
         professions.add(Profession.MATH);
         professions.add((Profession.COMPUTERSCIENCE));
-        Tutor t1 = new Tutor("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), professions, "I'm cool", "OMEome0707");
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse("04/01/2002");}catch(Exception e){}
+        Tutor t1 = new Tutor("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, birthdayDate, professions, "I'm cool", "OMEome0707");
         this.tutors.add(t1);
         professions = new ArrayList<>();
         professions.add(Profession.LANGUAGE);
         professions.add((Profession.HISTORY));
-        Tutor t2 = new Tutor("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), professions, "Omer is cooler", "maya");
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse("18/02/2002");}catch(Exception e){}
+        Tutor t2 = new Tutor("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, birthdayDate, professions, "Omer is cooler", "maya");
         this.tutors.add(t2);
-
         this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 19, 12, 0), Profession.MATH));
         this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 12, 12, 0), Profession.COMPUTERSCIENCE));
         this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 14, 23, 0), Profession.MATH));
@@ -129,6 +136,7 @@ public class Model {
                 students.get(i).setLastName(student.getLastName());
                 students.get(i).setFirstName(student.getFirstName());
                 students.get(i).setGender(student.getGender());
+                students.get(i).setGrade(student.getGrade());
                 students.get(i).setBirthdayDate(student.getBirthdayDate());
                 students.get(i).setPassword(student.getPassword());
                 return 0;
