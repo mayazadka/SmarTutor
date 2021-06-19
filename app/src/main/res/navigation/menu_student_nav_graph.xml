@@ -40,7 +40,7 @@
         android:id="@+id/nav_tutor_details_student"
         android:name="com.example.smartutor.ui.tutor_details.TutorDetailsFragment"
         android:label="@string/menu_tutor_details_student"
-        tools:layout="@layout/fragment_tutor_details2" >
+        tools:layout="@layout/fragment_tutor_details" >
         <action
             android:id="@+id/action_nav_tutor_details_student_to_scheduleLessonStudentFragment"
             app:destination="@id/scheduleLessonStudentFragment" />

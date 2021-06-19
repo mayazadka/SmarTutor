@@ -8,20 +8,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +84,7 @@ public class MyFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            this.post.setImageResource(R.drawable.ic_male);
+            this.post.setImageResource(R.drawable.ic_gender_male);
         }
     }
     public interface OnItemClickListener {

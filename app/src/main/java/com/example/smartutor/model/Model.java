@@ -161,8 +161,10 @@ public class Model {
     }
     public List<Tutor> getTutorsByName(String name){
         List<Tutor> tutorsByName = new LinkedList<Tutor>();
+        String fullname;
         for(int i = 0; i < tutors.size(); i++){
-            if(tutors.get(i).getFirstName().contains(name)){
+            fullname = tutors.get(i).getFirstName().toLowerCase() + " " + tutors.get(i).getLastName().toLowerCase();
+            if(fullname.contains(name.toLowerCase())){
                 tutorsByName.add(tutors.get(i));
             }
         }

@@ -1,7 +1,8 @@
 package com.example.smartutor.ui.search_tutors_student;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,10 +22,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.model.Profession;
+import com.example.smartutor.model.Tutor;
 
-import org.w3c.dom.Text;
-
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,10 +35,11 @@ public class SearchTutorsStudentFragment extends Fragment {
 
     private SearchTutorsStudentViewModel searchTutorsStudentViewModel;
     private RecyclerView tutorsList;
+    private MultiSpinner profesions;
     private RadioButton searchByName;
     private RadioButton searchBySubject;
     private EditText searchTutor;
-    List<String> tutorsListData;
+    List<Tutor> tutorsListData;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -52,8 +55,7 @@ public class SearchTutorsStudentFragment extends Fragment {
         });
 
         tutorsList = root.findViewById(R.id.searchTutorsStudent_listTutors_recyclerView);
-        searchByName = root.findViewById(R.id.searchTutorsStudent_byName_radioBtn);
-        searchBySubject = root.findViewById(R.id.searchTutorsStudent_bySubject_radioBtn);
+        profesions = root.findViewById(R.id.searchTutorsStudent_subjects_multiSpinner);
         searchTutor = root.findViewById(R.id.searchTutorsStudent_tutor_et);
         tutorsList.setHasFixedSize(true);
 
@@ -69,10 +71,26 @@ public class SearchTutorsStudentFragment extends Fragment {
             }
         });
 
-        tutorsListData = new LinkedList<String>();
-        for(int i = 0; i < 20; i++){
-            tutorsListData.add("student " + (i+1));
-        }
+        tutorsListData = searchTutorsStudentViewModel.getTutors();
+        searchTutor.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tutorsListData = searchTutorsStudentViewModel.getTutorsByName(searchTutor.getText().toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                tutorsListData = searchTutorsStudentViewModel.getTutorsByName(searchTutor.getText().toString());
+                tutorsList.getAdapter().notifyDataSetChanged();
+            }
+        });
+        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { });
         return root;
     }
 
@@ -102,19 +120,40 @@ public class SearchTutorsStudentFragment extends Fragment {
             });
         }
 
-        public void bind(String name, int index){
+        public void bind(Tutor tutor, int index){
             subjectsList.removeAllViews();
-            if(index%2 == 0)
-            {
-                ImageView image = new ImageView(itemView.getContext());
-                image.setBackgroundResource(R.drawable.ic_subject_computer);
+            ImageView image;
+            if (tutor.getProfessions().contains(Profession.COMPUTERSCIENCE)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_computer_science);
                 subjectsList.addView(image);
             }
-            ImageView image = new ImageView(itemView.getContext());
-            image.setBackgroundResource(R.drawable.ic_math);
-            subjectsList.addView(image);
-
-            nameTv.setText(name);
+            if (tutor.getProfessions().contains(Profession.MATH)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_math);
+                subjectsList.addView(image);
+            }
+            if (tutor.getProfessions().contains(Profession.HISTORY)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_history);
+                subjectsList.addView(image);
+            }
+            if (tutor.getProfessions().contains(Profession.LANGUAGE)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_english);
+                subjectsList.addView(image);
+            }
+            if (tutor.getProfessions().contains(Profession.LITERATURE)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_literature);
+                subjectsList.addView(image);
+            }
+            if (tutor.getProfessions().contains(Profession.SCIENCE)) {
+                image = new ImageView(itemView.getContext());
+                image.setBackgroundResource(R.drawable.ic_subject_science);
+                subjectsList.addView(image);
+            }
+            nameTv.setText(tutor.getFirstName() + " " + tutor.getLastName());
         }
     }
     public interface OnItemClickListener {
@@ -138,7 +177,7 @@ public class SearchTutorsStudentFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull SearchTutorsViewHolder holder, int position) {
-            String tutor = tutorsListData.get(position);
+            Tutor tutor = tutorsListData.get(position);
             holder.bind(tutor, position);
         }
 

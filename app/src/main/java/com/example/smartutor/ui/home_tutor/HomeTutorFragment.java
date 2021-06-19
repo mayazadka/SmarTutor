@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
-import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
 import java.time.format.DateTimeFormatter;
@@ -62,22 +61,22 @@ public class HomeTutorFragment extends Fragment {
 
             switch (nextLesson.getSubject()) {
                 case MATH:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_math);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
                     break;
                 case HISTORY:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_history);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
                     break;
                 case SCIENCE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_science);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
                     break;
                 case LANGUAGE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_english);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
                     break;
                 case LITERATURE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_literature);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
                     break;
                 case COMPUTERSCIENCE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_computer_science);
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
                     break;
             }
         }
@@ -85,7 +84,7 @@ public class HomeTutorFragment extends Fragment {
             nextLessonSubject.setText("");
             nextLessonStudent.setText("");
             nextLessonDate.setText("");
-            nextLessonSubjectImg.setImageResource(R.drawable.ic_math);
+            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
         }
 
         return root;

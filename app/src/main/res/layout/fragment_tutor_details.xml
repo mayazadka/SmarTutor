@@ -134,7 +134,7 @@
         android:id="@+id/tutorDetails_gender_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/ic_male"
+        android:src="@drawable/ic_gender_male"
         app:tint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/tutorDetails_age_tv"
         app:layout_constraintEnd_toEndOf="parent"
