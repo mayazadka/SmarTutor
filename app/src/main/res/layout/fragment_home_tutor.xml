@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/homeTutor_tutorTitle_tv" />
 
     <TextView
-        android:id="@+id/homeTutor_tutor_tv"
+        android:id="@+id/homeTutor_student_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -86,7 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand_bold"
-        android:text="Stusent:"
+        android:text="Student:"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"

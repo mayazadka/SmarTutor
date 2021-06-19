@@ -1,10 +1,29 @@
 package com.example.smartutor.model;
 
+import android.util.Log;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PrimitiveIterator;
+
+class LessonsComperator implements Comparator<Lesson>{
+    @Override
+    public int compare(Lesson o1, Lesson o2) {
+        if(o1.getDate().isBefore(o2.getDate())){
+            return 1;
+        }
+        return 0;
+    }
+}
+
 // 0 = OK
 // 1 = ERROR
 public class Model {
@@ -22,7 +41,8 @@ public class Model {
         // test
         Student s1 = new Student("omer5144@gmail.com", "Asher", "Omer", Gender.MALE, new Date(2002, 1, 4), 12, "OMEome0707");
         this.students.add(s1);
-        this.students.add(new Student("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), 1, "maya"));
+        Student s2 = new Student("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), 1, "maya");
+        this.students.add(s2);
 
         List<Profession> professions = new ArrayList<>();
         professions.add(Profession.MATH);
@@ -32,11 +52,22 @@ public class Model {
         professions = new ArrayList<>();
         professions.add(Profession.LANGUAGE);
         professions.add((Profession.HISTORY));
-        this.tutors.add(new Tutor("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), professions, "Omer is cooler", "maya"));
+        Tutor t2 = new Tutor("mayazadka@gmail.com", "Zadka", "Maya", Gender.FEMALE, new Date(2002, 2, 18), professions, "Omer is cooler", "maya");
+        this.tutors.add(t2);
 
-        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 19), 12));
-        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 12), 12));
-        this.addLesson(new Lesson(s1, t1, new Date(2021, 6, 14), 23));
+        this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 19, 12, 0), Profession.MATH));
+        this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 12, 12, 0), Profession.COMPUTERSCIENCE));
+        this.addLesson(new Lesson(s1, t1, LocalDateTime.of(2021, 6, 14, 23, 0), Profession.MATH));
+
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 19, 12, 0), Profession.HISTORY));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 12, 12, 0), Profession.HISTORY));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 14, 23, 0), Profession.HISTORY));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 19, 18, 30), Profession.HISTORY));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 18, 18, 0), Profession.HISTORY));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 14, 23, 0), Profession.LANGUAGE));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 22, 15, 0), Profession.LANGUAGE));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 25, 15, 0), Profession.LANGUAGE));
+        this.addLesson(new Lesson(s2, t2, LocalDateTime.of(2021, 6, 24, 15, 0), Profession.LANGUAGE));
     }
 
     public List<Student> getStudents() {
@@ -183,6 +214,87 @@ public class Model {
                 return true;
         }
         return false;
+    }
+    public Lesson getLessonByTutorAndStudent(String emailStudent, String emailTutor) {
+        List<Lesson> tutorLessons = getTutorLessons(emailTutor);
+        for(int i = 0; i < tutorLessons.size(); i++){
+            if(tutorLessons.get(i).getStudent().getEmail().compareTo(emailStudent) == 0){
+                return tutorLessons.get(i);
+            }
+        }
+        return null;
+    }
+    public List<Lesson> getRemainLessonsStudent(String email) {
+        List<Lesson> studentLessons = getStudentLessons(email);
+        List<Lesson> remainLessons = new LinkedList<Lesson>();
+        Collections.sort(studentLessons, new LessonsComperator());
+        for(int i = 0; i < studentLessons.size(); i++){
+            if(studentLessons.get(i) != null) {
+                if(studentLessons.get(i).getDate().isAfter(LocalDateTime.now()) || studentLessons.get(i).getDate().plusHours(1).isAfter(LocalDateTime.now()))
+                    remainLessons.add(studentLessons.get(i));
+                else if (studentLessons.get(i).getDate().isAfter(LocalDateTime.now()))
+                        remainLessons.add(studentLessons.get(i));
+            }
+        }
+        return remainLessons;
+    }
+    public Lesson getNextLessonStudent(String email) {
+        List<Lesson> remain = getRemainLessonsStudent(email);
+        if(remain.size() > 0)
+            return remain.get(0);
+        else
+            return null;
+    }
+    public List<Lesson> getThisWeekLessonsStudent(String email){
+        List<Lesson> studentLessons = getStudentLessons(email);
+        List<Lesson> thisWeekLessons = new LinkedList<Lesson>();
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime thisSunday = today.plusDays(8 - dayOfWeek);
+        LocalDateTime lastSaturday = today.minusDays(dayOfWeek);
+        for(int i = 0; i < studentLessons.size(); i++) {
+            if(studentLessons.get(i).getDate().isAfter(lastSaturday) && studentLessons.get(i).getDate().isBefore(thisSunday))
+                thisWeekLessons.add(studentLessons.get(i));
+        }
+        return thisWeekLessons;
+    }
+    public List<Lesson> getRemainLessonsTutor(String email) {
+        List<Lesson> TutorLessons = getTutorLessons(email);
+        List<Lesson> remainLessons = new LinkedList<Lesson>();
+        Collections.sort(TutorLessons, new LessonsComperator());
+        for(int i = 0; i < TutorLessons.size(); i++){
+            if(TutorLessons.get(i) != null) {
+                if(TutorLessons.get(i).getDate().isAfter(LocalDateTime.now()) || TutorLessons.get(i).getDate().plusHours(1).isAfter(LocalDateTime.now()))
+                    remainLessons.add(TutorLessons.get(i));
+                else if (TutorLessons.get(i).getDate().isAfter(LocalDateTime.now()))
+                    remainLessons.add(TutorLessons.get(i));
+            }
+        }
+        return remainLessons;
+    }
+    public Lesson getNextLessonTutor(String email) {
+        List<Lesson> remain = getRemainLessonsTutor(email);
+        if(remain.size() > 0)
+            return remain.get(0);
+        else
+            return null;
+    }
+    public List<Lesson> getThisWeekLessonsTutor(String email){
+        List<Lesson> tutorLessons = getTutorLessons(email);
+        List<Lesson> thisWeekLessons = new LinkedList<Lesson>();
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime thisSunday = today.plusDays(8 - dayOfWeek);
+        LocalDateTime lastSaturday = today.minusDays(dayOfWeek);
+        for(int i = 0; i < tutorLessons.size(); i++) {
+            if(tutorLessons.get(i).getDate().isAfter(lastSaturday) && tutorLessons.get(i).getDate().isBefore(thisSunday))
+                thisWeekLessons.add(tutorLessons.get(i));
+        }
+        return thisWeekLessons;
     }
     public static Model getInstance(){
         if(model == null){

@@ -23,12 +23,19 @@ public class HomeTutorViewModel extends ViewModel {
     public HomeTutorViewModel() {
         model = Model.getInstance();
     }
-
-
     public Tutor getTutor(String email){
         return model.getTutor(email);
     }
-    public List<Lesson> getTutorLessons(String email){
-        return model.getTutorLessons(email);
+    public int getTutorLessons(String email){
+        return model.getTutorLessons(email).size();
+    }
+    public int getRemainLessonsTutor(String email) {
+        return Model.getInstance().getRemainLessonsTutor(email).size();
+    }
+    public Lesson getNextLessonTutor(String email){
+        return Model.getInstance().getNextLessonTutor(email);
+    }
+    public int getThisWeekLessonsTutor(String email){
+        return Model.getInstance().getThisWeekLessonsTutor(email).size();
     }
 }

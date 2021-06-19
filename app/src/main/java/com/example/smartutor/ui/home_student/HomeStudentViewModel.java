@@ -1,9 +1,6 @@
 package com.example.smartutor.ui.home_student;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
@@ -19,8 +16,17 @@ public class HomeStudentViewModel extends ViewModel {
     public Student getStudent(String email){
         return Model.getInstance().getStudent(email);
     }
-    public List<Lesson> getStudentLessons(String email){
-        return Model.getInstance().getStudentLessons(email);
+    public int getStudentLessons(String email){
+        return Model.getInstance().getStudentLessons(email).size();
+    }
+    public int getRemainLessonsStudent(String email) {
+        return Model.getInstance().getRemainLessonsStudent(email).size();
+    }
+    public Lesson getNextLessonStudent(String email){
+        return Model.getInstance().getNextLessonStudent(email);
+    }
+    public int getThisWeekLessonsStudent(String email){
+        return Model.getInstance().getThisWeekLessonsStudent(email).size();
     }
     //public List<Student> getData() { return studentsList; }
 }

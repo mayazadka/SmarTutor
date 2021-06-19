@@ -25,10 +25,13 @@ import java.util.Date;
 public class EditDetailsStudentFragment extends Fragment {
 
     private EditDetailsStudentViewModel editDetailsStudentViewModel;
+    private EditText lastName;
+    private EditText firstName;
     private Spinner gender;
     private Spinner grade;
     private Button chooseDate;
     private EditText date;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model

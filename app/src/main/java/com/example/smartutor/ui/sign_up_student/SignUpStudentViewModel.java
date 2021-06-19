@@ -18,10 +18,10 @@ public class SignUpStudentViewModel  extends ViewModel {
         model = Model.getInstance();
     }
 
-    public boolean signUp(String email, String lastName, String firstName, String genderString, String birthdayDateString, String gradeString, String password, String confirm){
+   /* public boolean signUp(String email, String lastName, String firstName, String genderString, String birthdayDateString, String gradeString, String password, String confirm){
 
         return true;
-    }
+    }*/
     public int addNewStudent(Student student){
         return model.addNewStudent(student);
     }
