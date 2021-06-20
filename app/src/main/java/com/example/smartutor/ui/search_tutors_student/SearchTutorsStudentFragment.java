@@ -26,6 +26,8 @@ import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.tutor_details.TutorDetailsFragment;
+import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentDirections;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -66,8 +68,10 @@ public class SearchTutorsStudentFragment extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Log.d("TAG", "Tutor " + position + " clicked");
-                Navigation.findNavController(view).navigate(R.id.action_nav_search_tutors_student_to_nav_tutor_details_student);
+                String email = tutorsListData.get(position).getEmail();
+                SearchTutorsStudentFragmentDirections.ActionNavSearchTutorsStudentToNavTutorDetailsStudent action = SearchTutorsStudentFragmentDirections.actionNavSearchTutorsStudentToNavTutorDetailsStudent();
+                action.setEmail(email);
+                Navigation.findNavController(view).navigate(action);
             }
         });
 

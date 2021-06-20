@@ -28,7 +28,11 @@
         tools:layout="@layout/fragment_search_tutors_student" >
         <action
             android:id="@+id/action_nav_search_tutors_student_to_nav_tutor_details_student"
-            app:destination="@id/nav_tutor_details_student" />
+            app:destination="@id/nav_tutor_details_student" >
+            <argument
+                android:name="email"
+                android:defaultValue="a" />
+        </action>
     </fragment>
 
     <fragment
@@ -43,7 +47,14 @@
         tools:layout="@layout/fragment_tutor_details" >
         <action
             android:id="@+id/action_nav_tutor_details_student_to_scheduleLessonStudentFragment"
-            app:destination="@id/scheduleLessonStudentFragment" />
+            app:destination="@id/scheduleLessonStudentFragment" >
+            <argument
+                android:name="email"
+                android:defaultValue='""' />
+        </action>
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/lessonDetailsStudentFragment"
@@ -54,5 +65,9 @@
         android:id="@+id/scheduleLessonStudentFragment"
         android:name="com.example.smartutor.ui.schedule_lesson_student.ScheduleLessonStudentFragment"
         android:label="fragment_schedule_lesson_student"
-        tools:layout="@layout/fragment_schedule_lesson_student" />
+        tools:layout="@layout/fragment_schedule_lesson_student" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
 </navigation>

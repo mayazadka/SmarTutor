@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -263,7 +264,7 @@ public class Model {
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime thisSunday = today.plusDays(8 - dayOfWeek);
-        LocalDateTime lastSaturday = today.minusDays(dayOfWeek);
+        LocalDateTime lastSaturday = today.minusDays(dayOfWeek - 1);
         for(int i = 0; i < studentLessons.size(); i++) {
             if(studentLessons.get(i).getDate().isAfter(lastSaturday) && studentLessons.get(i).getDate().isBefore(thisSunday))
                 thisWeekLessons.add(studentLessons.get(i));

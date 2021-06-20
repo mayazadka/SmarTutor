@@ -103,7 +103,6 @@ public class EditDetailsTutorFragment extends Fragment {
         }
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.setLenient(false);
         String strDate = dateFormat.format(tutor.getBirthdayDate());
         date.setText(strDate);
         // TODO: add the names of the profession in the display
