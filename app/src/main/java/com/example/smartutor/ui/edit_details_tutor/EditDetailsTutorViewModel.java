@@ -1,7 +1,9 @@
 package com.example.smartutor.ui.edit_details_tutor;
 
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,18 +18,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsTutorViewModel extends ViewModel {
-    private Model model;
-    private List<Student> tutorsList;
+    private Model model = Model.getInstance();
 
-    public EditDetailsTutorViewModel() {
-        model = Model.getInstance();
-    }
-
-    public Tutor getTutor(String email){
-        return model.getTutor(email);
-    }
-    public int updateTutor(Tutor tutor){
-        return model.updateTutor(tutor);
-    }
+    public EditDetailsTutorViewModel() { }
+    public Tutor getTutor(String email){return model.getTutor(email).getTutor();}
+    public void updateTutor(Tutor tutor){model.updateTutor(tutor);}
 }

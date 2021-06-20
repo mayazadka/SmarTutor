@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Post {
     private int id;
-    private Tutor tutor;
+    private String tutorEmail;
     private String text;
     private String picture;
 
-    public Post(int id, Tutor tutor, String text, String picture) {
+    public Post(int id, String tutorEmail, String text, String picture) {
         this.id = id;
-        this.tutor = tutor;
+        this.tutorEmail = tutorEmail;
         this.text = text;
         this.picture = picture;
     }
@@ -18,8 +18,8 @@ public class Post {
     public int getId() {
         return id;
     }
-    public Tutor getTutor() {
-        return tutor;
+    public String getTutorEmail() {
+        return tutorEmail;
     }
     public String getText() {
         return text;
@@ -30,8 +30,8 @@ public class Post {
     public void setId(int id) {
         this.id = id;
     }
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
+    public void setTutorEmail(String tutorEmail) {
+        this.tutorEmail = tutorEmail;
     }
     public void setText(String text) {
         this.text = text;

@@ -1,8 +1,10 @@
 package com.example.smartutor.ui.my_feed;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.model.Tutor;
 
@@ -37,11 +40,11 @@ public class MyFeedFragment extends Fragment {
         add = view.findViewById(R.id.myFeed_addPost_btn);
 
         posts = new LinkedList<>();
-        posts.add(new Post(1, new Tutor(null, "Asher", "Omer", Gender.MALE, null, null, null, null), "hi", "1"));
-        posts.add(new Post(1, new Tutor(null, "Zadka", "Maya", Gender.MALE, null, null, null, null), "bye", "1"));
-        posts.add(new Post(1, new Tutor(null, "Ely", "Daniel", Gender.MALE, null, null, null, null), "what?", "1"));
-        posts.add(new Post(1, new Tutor(null, "Ostrovski", "Lenoy", Gender.MALE, null, null, null, null), "really!!", "1"));
-        posts.add(new Post(1, new Tutor(null, "Shalem", "Gal", Gender.MALE, null, null, null, null), "OMG", "1"));
+        posts.add(new Post(1,"" , "hi", "1"));
+        posts.add(new Post(1, "", "bye", "1"));
+        posts.add(new Post(1, "", "what?", "1"));
+        posts.add(new Post(1, "", "really!!", "1"));
+        posts.add(new Post(1, "", "OMG", "1"));
 
         postList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
@@ -106,10 +109,12 @@ public class MyFeedFragment extends Fragment {
             return holder;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
             Post post = posts.get(position);
-            holder.bind(post.getTutor().getFirstName()+" "+post.getTutor().getLastName(), null, new Integer(position).toString());
+            Tutor tutor = Model.getInstance().getTutor("omer5144@gmail.com").getTutor();
+            holder.bind(tutor.getFirstName()+" "+tutor.getLastName(), null, new Integer(position).toString());
         }
 
         @Override

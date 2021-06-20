@@ -3,8 +3,10 @@ package com.example.smartutor.ui.sign_up_tutor;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -26,17 +28,22 @@ import android.widget.TextView;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Student;
+import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.TutorMenuActivity;
 import com.example.smartutor.ui.sign_up_student.SignUpStudentViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class SignUpTutorFragment extends Fragment {
     //view model
     private SignUpTutorViewModel signUpTutorViewModel;
@@ -100,7 +107,9 @@ public class SignUpTutorFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            if(signUpTutorViewModel.signUp(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gender.getSelectedItem().toString(), date.getText().toString(), professions.getSelectedItem().toString(),aboutMe.getText().toString(), password.getText().toString(), confirm.getText().toString())){
+            Tutor tutor = checkDetails();
+            if(checkDetails() != null){
+                signUpTutorViewModel.addTutor(tutor);
                 Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
                 intent.putExtra("EMAIL", email.getText().toString());
                 startActivity(intent);
@@ -111,5 +120,15 @@ public class SignUpTutorFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private Tutor checkDetails(){
+        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
+        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
+        Date birthdayDate;
+        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
+        Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate,null , aboutMe.getText().toString(), password.getText().toString());
+        // check specific details
+        return tutor;
     }
 }

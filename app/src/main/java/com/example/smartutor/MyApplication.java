@@ -1,4 +1,4 @@
-package com.example.smartutor.model;
+package com.example.smartutor;
 
 import android.app.Application;
 import android.content.Context;

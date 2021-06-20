@@ -1,5 +1,6 @@
 package com.example.smartutor.ui.edit_details_tutor;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,6 +36,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsTutorFragment extends Fragment {
 
     private EditDetailsTutorViewModel editDetailsTutorViewModel;
@@ -102,49 +105,21 @@ public class EditDetailsTutorFragment extends Fragment {
                 break;
         }
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String strDate = dateFormat.format(tutor.getBirthdayDate());
-        date.setText(strDate);
+        date.setText(new SimpleDateFormat("dd/MM/yyyy").format(tutor.getBirthdayDate()));
         // TODO: add the names of the profession in the display
         profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { tutor.getProfessions();});
         aboutMe.setText(tutor.getAboutMe());
         password.setText(tutor.getPassword());
         confirm.setText(tutor.getPassword());
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Tutor updatedTutor = checkDetails();
-                if(updatedTutor != null){
-                    editDetailsTutorViewModel.updateTutor(updatedTutor);
-                    Tutor tutor = editDetailsTutorViewModel.getTutor(emailTutor);
-                    lastName.setText(tutor.getLastName());
-                    firstName.setText(tutor.getFirstName());
-
-                    switch (tutor.getGender()) {
-                        case MALE:
-                            gender.setSelection(0);
-                            break;
-                        case FEMALE:
-                            gender.setSelection(1);
-                            break;
-                        case OTHER:
-                            gender.setSelection(2);
-                            break;
-                    }
-                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    String strDate = dateFormat.format(tutor.getBirthdayDate());
-                    date.setText(strDate);
-                    // TODO: add the names of the profession in the display
-                    profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { tutor.getProfessions();});
-                    aboutMe.setText(tutor.getAboutMe());
-                    password.setText(tutor.getPassword());
-                    confirm.setText(tutor.getPassword());
-                    Snackbar.make(save, "saved", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-                else{
-                    Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+        save.setOnClickListener(v -> {
+            Tutor updatedTutor = checkDetails();
+            if(updatedTutor != null){
+                editDetailsTutorViewModel.updateTutor(updatedTutor);
+                //TODO: navigate to home
+            }
+            else{
+                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 

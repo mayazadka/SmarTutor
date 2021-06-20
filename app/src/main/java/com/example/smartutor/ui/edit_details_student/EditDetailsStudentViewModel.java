@@ -1,5 +1,8 @@
 package com.example.smartutor.ui.edit_details_student;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,18 +13,12 @@ import com.example.smartutor.model.Student;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsStudentViewModel extends ViewModel {
 
-    private List<Student> studentsList;
-    //private String email;
+    private Model model = Model.getInstance();
 
-    public EditDetailsStudentViewModel() { studentsList = Model.getInstance().getStudents(); }
-    public Student getStudent(String email){
-        return Model.getInstance().getStudent(email);
-    }
-    public int updateStudent(Student student){
-        return Model.getInstance().updateStudent(student);
-    }
-
-    //public List<Student> getData() { return studentsList; }
+    public EditDetailsStudentViewModel() { }
+    public Student getStudent(String email){return model.getStudent(email).getStudent();}
+    public void updateStudent(Student student){model.updateStudent(student);}
 }

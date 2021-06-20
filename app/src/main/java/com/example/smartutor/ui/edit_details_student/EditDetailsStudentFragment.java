@@ -1,6 +1,7 @@
 package com.example.smartutor.ui.edit_details_student;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -13,8 +14,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Gender;
@@ -27,6 +30,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsStudentFragment extends Fragment {
 
     private EditDetailsStudentViewModel editDetailsStudentViewModel;
@@ -81,7 +85,6 @@ public class EditDetailsStudentFragment extends Fragment {
 
         lastName.setText(student.getLastName());
         firstName.setText(student.getFirstName());
-
         switch (student.getGender()) {
             case MALE:
                 gender.setSelection(0);
@@ -96,8 +99,7 @@ public class EditDetailsStudentFragment extends Fragment {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.setLenient(false);
-        String strDate = dateFormat.format(student.getBirthdayDate());
-        date.setText(strDate);
+        date.setText(dateFormat.format(student.getBirthdayDate()));
 
         grade.setSelection(student.getGrade() - 1);
         password.setText(student.getPassword());
@@ -109,28 +111,7 @@ public class EditDetailsStudentFragment extends Fragment {
                 Student updatedStudent = checkDetails();
                 if(updatedStudent != null){
                     editDetailsStudentViewModel.updateStudent(updatedStudent);
-                    Student student = editDetailsStudentViewModel.getStudent(emailStudent);
-                    lastName.setText(student.getLastName());
-                    firstName.setText(student.getFirstName());
-
-                    switch (student.getGender()) {
-                        case MALE:
-                            gender.setSelection(0);
-                            break;
-                        case FEMALE:
-                            gender.setSelection(1);
-                            break;
-                        case OTHER:
-                            gender.setSelection(2);
-                            break;
-                    }
-                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    String strDate = dateFormat.format(student.getBirthdayDate());
-                    date.setText(strDate);
-                    grade.setSelection(student.getGrade() - 1);
-                    password.setText(student.getPassword());
-                    confirm.setText(student.getPassword());
-                    Snackbar.make(save, "saved", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    //TODO: navigate to home
                 }
                 else{
                     Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();

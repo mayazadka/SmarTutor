@@ -1,8 +1,10 @@
 package com.example.smartutor.ui.sign_up_student;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -28,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class SignUpStudentFragment extends Fragment {
     //view model
     private SignUpStudentViewModel signUpStudentViewModel;
@@ -91,7 +94,7 @@ public class SignUpStudentFragment extends Fragment {
         signUp.setOnClickListener(v -> {
             Student student = checkDetails();
             if(checkDetails() != null){
-                signUpStudentViewModel.addNewStudent(student);
+                signUpStudentViewModel.addStudent(student);
                 Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
                 intent.putExtra("EMAIL", email.getText().toString());
                 startActivity(intent);

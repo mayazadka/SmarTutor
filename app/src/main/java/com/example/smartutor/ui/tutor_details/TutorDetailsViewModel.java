@@ -1,5 +1,8 @@
 package com.example.smartutor.ui.tutor_details;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,19 +12,12 @@ import com.example.smartutor.model.Tutor;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class TutorDetailsViewModel extends ViewModel {
-    private List<Tutor> tutorsList;
+    private Model model = Model.getInstance();
 
-    public TutorDetailsViewModel() {
-        tutorsList = Model.getInstance().getTutors();
-    }
-
-    public List<Tutor> getTutors(){
-        return Model.getInstance().getTutors();
-    }
+    public TutorDetailsViewModel() {}
     public Tutor getTutor(String email){
-        return Model.getInstance().getTutor(email);
+        return model.getTutor(email).getTutor();
     }
-
-    public List<Tutor> getData() { return tutorsList; }
 }

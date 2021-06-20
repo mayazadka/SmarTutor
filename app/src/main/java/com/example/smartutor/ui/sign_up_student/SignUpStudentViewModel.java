@@ -1,7 +1,9 @@
 package com.example.smartutor.ui.sign_up_student;
 
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModel;
 
 import com.example.smartutor.model.Gender;
@@ -11,18 +13,12 @@ import com.example.smartutor.model.Student;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class SignUpStudentViewModel  extends ViewModel {
-    private Model model;
+    private Model model = Model.getInstance();
 
-    public SignUpStudentViewModel() {
-        model = Model.getInstance();
-    }
-
-   /* public boolean signUp(String email, String lastName, String firstName, String genderString, String birthdayDateString, String gradeString, String password, String confirm){
-
-        return true;
-    }*/
-    public int addNewStudent(Student student){
-        return model.addNewStudent(student);
+    public SignUpStudentViewModel() {}
+    public void addStudent(Student student){
+        model.addStudent(student);
     }
 }

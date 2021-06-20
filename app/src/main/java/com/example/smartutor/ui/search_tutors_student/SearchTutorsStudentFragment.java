@@ -1,5 +1,6 @@
 package com.example.smartutor.ui.search_tutors_student;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +35,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class SearchTutorsStudentFragment extends Fragment {
 
     private SearchTutorsStudentViewModel searchTutorsStudentViewModel;
@@ -43,18 +46,9 @@ public class SearchTutorsStudentFragment extends Fragment {
     private EditText searchTutor;
     List<Tutor> tutorsListData;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
-        searchTutorsStudentViewModel =
-                new ViewModelProvider(this).get(SearchTutorsStudentViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        searchTutorsStudentViewModel = new ViewModelProvider(this).get(SearchTutorsStudentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search_tutors_student, container, false);
-        //final TextView textView = root.findViewById(R.id.searchTutorsStudent_title_tv);
-        searchTutorsStudentViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
-        });
 
         tutorsList = root.findViewById(R.id.searchTutorsStudent_listTutors_recyclerView);
         profesions = root.findViewById(R.id.searchTutorsStudent_subjects_multiSpinner);
@@ -65,14 +59,11 @@ public class SearchTutorsStudentFragment extends Fragment {
         tutorsList.setLayoutManager(manager);
         MyAdapter adapter = new MyAdapter();
         tutorsList.setAdapter(adapter);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                String email = tutorsListData.get(position).getEmail();
-                SearchTutorsStudentFragmentDirections.ActionNavSearchTutorsStudentToNavTutorDetailsStudent action = SearchTutorsStudentFragmentDirections.actionNavSearchTutorsStudentToNavTutorDetailsStudent();
-                action.setEmail(email);
-                Navigation.findNavController(view).navigate(action);
-            }
+        adapter.setOnItemClickListener((view, position) -> {
+            String email = tutorsListData.get(position).getEmail();
+            SearchTutorsStudentFragmentDirections.ActionNavSearchTutorsStudentToNavTutorDetailsStudent action = SearchTutorsStudentFragmentDirections.actionNavSearchTutorsStudentToNavTutorDetailsStudent();
+            action.setEmail(email);
+            Navigation.findNavController(view).navigate(action);
         });
 
         tutorsListData = searchTutorsStudentViewModel.getTutors();

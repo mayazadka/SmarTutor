@@ -1,7 +1,9 @@
 package com.example.smartutor.ui.tutor_details;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class TutorDetailsFragment extends Fragment {
 
     private TutorDetailsViewModel tutorDetailsViewModel;

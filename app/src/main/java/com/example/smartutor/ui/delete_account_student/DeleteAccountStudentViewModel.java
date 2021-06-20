@@ -1,5 +1,8 @@
 package com.example.smartutor.ui.delete_account_student;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,14 +13,12 @@ import com.example.smartutor.model.Student;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class DeleteAccountStudentViewModel extends ViewModel {
 
-    private List<Student> studentsList;
-    //private String email;
+    private Model model = Model.getInstance();;
 
-    public DeleteAccountStudentViewModel() { studentsList = Model.getInstance().getStudents(); }
-    public int deleteStudent(String email){
-        return Model.getInstance().deleteStudent(email);
-    }
-    //public List<Student> getData() { return studentsList; }
+    public DeleteAccountStudentViewModel() {}
+
+    public void deleteStudent(String email){model.deleteStudent(model.getStudent(email).getStudent());}
 }

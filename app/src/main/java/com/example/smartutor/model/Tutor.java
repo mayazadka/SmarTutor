@@ -1,11 +1,19 @@
 package com.example.smartutor.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Tutor {
+    @PrimaryKey
+    @NonNull
     private String email;
     private String lastName;
     private String firstName;
@@ -15,6 +23,7 @@ public class Tutor {
     private String aboutMe;
     private String password;
 
+    public Tutor(){}
     public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe, String password) {
         this.email = email;
         this.lastName = lastName;

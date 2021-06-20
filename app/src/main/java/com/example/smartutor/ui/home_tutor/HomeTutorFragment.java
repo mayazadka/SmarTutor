@@ -1,5 +1,6 @@
 package com.example.smartutor.ui.home_tutor;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,14 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
 import java.time.format.DateTimeFormatter;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeTutorFragment extends Fragment {
 
     private HomeTutorViewModel homeTutorViewModel;
@@ -55,8 +59,9 @@ public class HomeTutorFragment extends Fragment {
         total.setText(String.valueOf(homeTutorViewModel.getTutorLessons(emailStudent)));
         Lesson nextLesson = homeTutorViewModel.getNextLessonTutor(emailStudent);
         if(nextLesson != null) {
+            Student student = homeTutorViewModel.getStudent(nextLesson.getStudentEmail());
             nextLessonSubject.setText(nextLesson.getSubject().name());
-            nextLessonStudent.setText(nextLesson.getStudent().getFirstName() + " " + nextLesson.getStudent().getLastName());
+            nextLessonStudent.setText(student.getFirstName() + " " + student.getLastName());
             nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
 
             switch (nextLesson.getSubject()) {
