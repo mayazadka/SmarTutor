@@ -13,17 +13,36 @@ import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SearchTutorsStudentViewModel extends ViewModel {
 
     private Model model = Model.getInstance();
+    private LiveData<List<Tutor>> tutors;
 
-    public SearchTutorsStudentViewModel() {}
-    public List<Tutor> getTutors(){
-        return model.getTutors();
+    public SearchTutorsStudentViewModel() {
+        tutors = model.getTutors();
     }
-    public List<Tutor> getTutorsByName(String name){return model.getTutorsByName(name);}
-    public List<Tutor> getTutorsByProfessions(List<Profession> professions){return Model.getInstance().getTutorsByProfessions(professions);}
+
+    public LiveData<List<Tutor>> getTutors()    {return tutors;}
+//    public List<Tutor> getTutorsByName(String name){
+//        List<Tutor> filter = new LinkedList<>();
+//        for(Tutor t : tutors){
+//            if((t.getFirstName()+" "+t.getLastName()).contains(name) || (t.getLastName()+" "+t.getFirstName()).contains(name)){
+//                filter.add(t);
+//            }
+//        }
+//        return filter;
+//    }
+//    public List<Tutor> getTutorsByProfessions(List<Profession> professions){
+//        List<Tutor> filter = new LinkedList<>();
+//        for(Tutor t : tutors){
+//            if(t.getProfessions().containsAll(professions)){
+//                filter.add(t);
+//            }
+//        }
+//        return filter;
+//    }
 }

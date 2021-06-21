@@ -17,8 +17,13 @@ import java.util.List;
 public class EditDetailsStudentViewModel extends ViewModel {
 
     private Model model = Model.getInstance();
+    private LiveData<Student> student;
 
     public EditDetailsStudentViewModel() { }
-    public Student getStudent(String email){return model.getStudent(email).getStudent();}
-    public void updateStudent(Student student){model.updateStudent(student);}
+    public void initial(String email){
+        student = model.getStudent(email);
+    }
+
+    public LiveData<Student> getStudent()       {return student;}
+    public void updateStudent(Student student)  {student.setEmail(this.student.getValue().getEmail()); model.updateStudent(student);}
 }

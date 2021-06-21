@@ -107,12 +107,22 @@ public class SignUpTutorFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            Tutor tutor = checkDetails();
-            if(checkDetails() != null){
-                signUpTutorViewModel.addTutor(tutor);
-                Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
-                intent.putExtra("EMAIL", email.getText().toString());
-                startActivity(intent);
+            //TODO: validation
+            if(true){
+                try {
+                    Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), null, null, aboutMe.getText().toString(), password.getText().toString());
+                    signUpTutorViewModel.addTutor(tutor);
+                    if (signUpTutorViewModel.isExistTutor(email.getText().toString(), password.getText().toString())) {
+                        Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
+                        intent.putExtra("EMAIL", email.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+                }
+                catch (Exception e){
+                    Snackbar.make(signUp, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
             else{
                 Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();

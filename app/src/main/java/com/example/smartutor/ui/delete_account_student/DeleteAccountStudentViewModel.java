@@ -20,5 +20,5 @@ public class DeleteAccountStudentViewModel extends ViewModel {
 
     public DeleteAccountStudentViewModel() {}
 
-    public void deleteStudent(String email){model.deleteStudent(model.getStudent(email).getStudent());}
+    public void deleteStudent(String email){model.deleteStudent(model.getStudent(email).getValue());}
 }

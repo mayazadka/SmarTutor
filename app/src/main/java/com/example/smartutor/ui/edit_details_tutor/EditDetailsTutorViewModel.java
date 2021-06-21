@@ -20,9 +20,15 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsTutorViewModel extends ViewModel {
+
     private Model model = Model.getInstance();
+    private LiveData<Tutor> tutor;
 
     public EditDetailsTutorViewModel() { }
-    public Tutor getTutor(String email){return model.getTutor(email).getTutor();}
-    public void updateTutor(Tutor tutor){model.updateTutor(tutor);}
+    public void initial(String email){
+        tutor = model.getTutor(email);
+    }
+
+    public LiveData<Tutor> getTutor()           {return tutor;}
+    public void updateTutor(Tutor tutor)        {tutor.setEmail(this.tutor.getValue().getEmail()); model.updateTutor(tutor);}
 }

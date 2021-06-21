@@ -113,8 +113,8 @@ public class MyFeedFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
             Post post = posts.get(position);
-            Tutor tutor = Model.getInstance().getTutor("omer5144@gmail.com").getTutor();
-            holder.bind(tutor.getFirstName()+" "+tutor.getLastName(), null, new Integer(position).toString());
+            //Tutor tutor = Model.getInstance().getTutor("omer5144@gmail.com").getTutor();
+            holder.bind("a", null, new Integer(position).toString());
         }
 
         @Override

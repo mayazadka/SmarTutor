@@ -43,11 +43,11 @@ public class EditDetailsStudentFragment extends Fragment {
     private EditText password;
     private EditText confirm;
     private Button save;
-    private String emailStudent;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
         editDetailsStudentViewModel = new ViewModelProvider(this).get(EditDetailsStudentViewModel.class);
+        editDetailsStudentViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_edit_details_student, container, false);
@@ -80,56 +80,46 @@ public class EditDetailsStudentFragment extends Fragment {
             builder.show();
         });
 
-        emailStudent = getActivity().getIntent().getStringExtra("EMAIL");
-        Student student = editDetailsStudentViewModel.getStudent(emailStudent);
-
-        lastName.setText(student.getLastName());
-        firstName.setText(student.getFirstName());
-        switch (student.getGender()) {
-            case MALE:
-                gender.setSelection(0);
-                break;
-            case FEMALE:
-                gender.setSelection(1);
-                break;
-            case OTHER:
-                gender.setSelection(2);
-                break;
-        }
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.setLenient(false);
-        date.setText(dateFormat.format(student.getBirthdayDate()));
-
-        grade.setSelection(student.getGrade() - 1);
-        password.setText(student.getPassword());
-        confirm.setText(student.getPassword());
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Student updatedStudent = checkDetails();
-                if(updatedStudent != null){
-                    editDetailsStudentViewModel.updateStudent(updatedStudent);
-                    //TODO: navigate to home
-                }
-                else{
-                    Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-            }
-        });
+//        lastName.setText(editDetailsStudentViewModel.getStudent().getLastName());
+//        firstName.setText(editDetailsStudentViewModel.getStudent().getFirstName());
+//        switch (editDetailsStudentViewModel.getStudent().getGender()) {
+//            case MALE:
+//                gender.setSelection(0);
+//                break;
+//            case FEMALE:
+//                gender.setSelection(1);
+//                break;
+//            case OTHER:
+//                gender.setSelection(2);
+//                break;
+//        }
+//
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        dateFormat.setLenient(false);
+//        date.setText(dateFormat.format(editDetailsStudentViewModel.getStudent().getBirthdayDate()));
+//
+//        grade.setSelection(editDetailsStudentViewModel.getStudent().getGrade() - 1);
+//        password.setText(editDetailsStudentViewModel.getStudent().getPassword());
+//        confirm.setText(editDetailsStudentViewModel.getStudent().getPassword());
+//
+//        save.setOnClickListener(v -> {
+//            //TODO: validation
+//            if(true){
+//                Student s = new Student();
+//                s.setFirstName(firstName.getText().toString());
+//                s.setLastName(lastName.getText().toString());
+//                s.setGender(Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()));
+//                //TODO: s.setBirthdayDate();
+//                //TODO: s.setGrade();
+//                s.setPassword(password.getText().toString());
+//                editDetailsStudentViewModel.updateStudent(s);
+//                //TODO: navigate to home
+//            }
+//            else{
+//                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//            }
+//        });
 
         return root;
-    }
-
-    private Student checkDetails(){
-        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
-        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
-        Date birthdayDate;
-        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
-        int gradeNum = grade.getSelectedItemPosition() + 1;
-        Student student = new Student(emailStudent, lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate, gradeNum, password.getText().toString());
-        // check specific details
-        return student;
     }
 }

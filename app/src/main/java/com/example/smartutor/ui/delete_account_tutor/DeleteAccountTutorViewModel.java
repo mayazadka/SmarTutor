@@ -20,7 +20,5 @@ public class DeleteAccountTutorViewModel extends ViewModel {
 
     public DeleteAccountTutorViewModel() {}
 
-    public void deleteTutor(String email){
-        model.deleteTutor(model.getTutor(email).getTutor());
-    }
+    public void deleteTutor(String email){model.deleteTutor(model.getTutor(email).getValue());}
 }

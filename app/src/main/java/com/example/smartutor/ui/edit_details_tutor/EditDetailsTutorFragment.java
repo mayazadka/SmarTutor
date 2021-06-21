@@ -51,11 +51,11 @@ public class EditDetailsTutorFragment extends Fragment {
     private EditText password;
     private EditText confirm;
     private Button save;
-    private String emailTutor;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
         editDetailsTutorViewModel = new ViewModelProvider(this).get(EditDetailsTutorViewModel.class);
+        editDetailsTutorViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_edit_details_tutor, container, false);
@@ -87,58 +87,48 @@ public class EditDetailsTutorFragment extends Fragment {
             builder.show();
         });
 
-        emailTutor = getActivity().getIntent().getStringExtra("EMAIL");
-        Tutor tutor = editDetailsTutorViewModel.getTutor(emailTutor);
-
-        lastName.setText(tutor.getLastName());
-        firstName.setText(tutor.getFirstName());
-
-        switch (tutor.getGender()) {
-            case MALE:
-                gender.setSelection(0);
-                break;
-            case FEMALE:
-                gender.setSelection(1);
-                break;
-            case OTHER:
-                gender.setSelection(2);
-                break;
-        }
-
-        date.setText(new SimpleDateFormat("dd/MM/yyyy").format(tutor.getBirthdayDate()));
-        // TODO: add the names of the profession in the display
-        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { tutor.getProfessions();});
-        aboutMe.setText(tutor.getAboutMe());
-        password.setText(tutor.getPassword());
-        confirm.setText(tutor.getPassword());
-
-        save.setOnClickListener(v -> {
-            Tutor updatedTutor = checkDetails();
-            if(updatedTutor != null){
-                editDetailsTutorViewModel.updateTutor(updatedTutor);
-                //TODO: navigate to home
-            }
-            else{
-                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
+//        lastName.setText(editDetailsTutorViewModel.getTutor().getLastName());
+//        firstName.setText(editDetailsTutorViewModel.getTutor().getFirstName());
+//
+//        switch (editDetailsTutorViewModel.getTutor().getGender()) {
+//            case MALE:
+//                gender.setSelection(0);
+//                break;
+//            case FEMALE:
+//                gender.setSelection(1);
+//                break;
+//            case OTHER:
+//                gender.setSelection(2);
+//                break;
+//        }
+//
+//        date.setText(new SimpleDateFormat("dd/MM/yyyy").format(editDetailsTutorViewModel.getTutor().getBirthdayDate()));
+//        // TODO: add the names of the profession in the display
+//        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", selected -> editDetailsTutorViewModel.getTutor().getProfessions());
+//        aboutMe.setText(editDetailsTutorViewModel.getTutor().getAboutMe());
+//        password.setText(editDetailsTutorViewModel.getTutor().getPassword());
+//        confirm.setText(editDetailsTutorViewModel.getTutor().getPassword());
+//
+//        save.setOnClickListener(v -> {
+//
+//            //TODO: validation
+//            if(true){
+//                Tutor t = new Tutor();
+//                t.setAboutMe(aboutMe.getText().toString());
+//                //TODO: t.setBirthdayDate();
+//                t.setFirstName(firstName.getText().toString());
+//                //TODO: t.setGender();
+//                t.setLastName(lastName.getText().toString());
+//                t.setPassword(password.getText().toString());
+//                //TODO: t.setProfessions();
+//                editDetailsTutorViewModel.updateTutor(t);
+//                //TODO: navigate to home
+//            }
+//            else{
+//                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//            }
+//        });
 
         return root;
-    }
-
-    private Tutor checkDetails(){
-        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
-        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
-        Date birthdayDate;
-        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
-        List<Profession> professionList = new LinkedList<Profession>();
-
-        for(int i = 0; i< profesions.getSelectedItem().size(); i++) {
-            professionList.add(Profession.valueOf(profesions.getSelectedItem().get(i).toUpperCase().replace(" ", "")));
-        }
-
-        Tutor tutor = new Tutor(emailTutor, lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate, professionList, aboutMe.getText().toString(), password.getText().toString());
-        // check specific details
-        return tutor;
     }
 }

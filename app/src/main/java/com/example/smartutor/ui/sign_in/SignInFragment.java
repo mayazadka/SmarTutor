@@ -21,6 +21,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Student;
+import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.TutorMenuActivity;
 import com.example.smartutor.ui.delete_account_student.DeleteAccountStudentViewModel;
@@ -78,23 +80,23 @@ public class SignInFragment extends Fragment {
                 return false;
             });
         signIn.setOnClickListener(v -> {
-            Intent intent = null;
-            if(isStudent.isChecked()){
-                if(signInViewModel.checkDetailsStudent(email.getText().toString(), password.getText().toString())){
+            try {
+                Intent intent = null;
+                if (isStudent.isChecked() && signInViewModel.isExistStudent(email.getText().toString(), password.getText().toString())) {
                     intent = new Intent(getActivity(), StudentMenuActivity.class);
-                }
-            }
-            else if(isTutor.isChecked()){
-                if(signInViewModel.checkDetailsTutor(email.getText().toString(), password.getText().toString())) {
+                } else if (isTutor.isChecked() && signInViewModel.isExistTutor(email.getText().toString(), password.getText().toString())) {
                     intent = new Intent(getActivity(), TutorMenuActivity.class);
                 }
+
+                if (intent != null) {
+                    intent.putExtra("EMAIL", email.getText().toString());
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
-            if(intent != null){
-                intent.putExtra("EMAIL", email.getText().toString());
-                startActivity(intent);
-            }
-            else{
-                Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            catch (Exception e){
+                Snackbar.make(signIn, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
         return view;

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
@@ -17,6 +19,8 @@ import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeStudentFragment extends Fragment {
@@ -33,7 +37,10 @@ public class HomeStudentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeStudentViewModel = new ViewModelProvider(this).get(HomeStudentViewModel.class);
+        homeStudentViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+
         View root = inflater.inflate(R.layout.fragment_home_student, container, false);
+
         helloTv = root.findViewById(R.id.homeStudent_hello_tv);
         lessonsThisWeek = root.findViewById(R.id.homeStudent_thisWeakNumber_tv);
         lessonsRemain = root.findViewById(R.id.homeStudent_remainNumber_tv);
@@ -43,46 +50,63 @@ public class HomeStudentFragment extends Fragment {
         nextLessonDate = root.findViewById(R.id.homeStudent_date_tv);
         nextLessonSubjectImg = root.findViewById(R.id.homeStudent_subject_img);
 
-        String emailStudent = getActivity().getIntent().getStringExtra("EMAIL");
-        Student student = homeStudentViewModel.getStudent(emailStudent);
-        helloTv.setText("hello, " + student.getFirstName() + " " + student.getLastName());
-        lessonsThisWeek.setText(String.valueOf(homeStudentViewModel.getThisWeekLessonsStudent(emailStudent)));
-        lessonsRemain.setText(String.valueOf(homeStudentViewModel.getRemainLessonsStudent(emailStudent)));
-        lessonsTotal.setText(String.valueOf(homeStudentViewModel.getStudentLessons(emailStudent)));
-        Lesson nextLesson = homeStudentViewModel.getNextLessonStudent(emailStudent);
-        if(nextLesson != null){
-            Tutor tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
-            nextLessonSubject.setText(nextLesson.getSubject().name());
-            nextLessonTutor.setText(tutor.getFirstName() + " " + tutor.getLastName());
-            nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
+        homeStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> helloTv.setText("hello, " + student.getFirstName()+" " +student.getLastName()));
 
-            switch (nextLesson.getSubject()){
-                case MATH:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-                    break;
-                case HISTORY:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-                    break;
-                case SCIENCE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-                    break;
-                case LANGUAGE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-                    break;
-                case LITERATURE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-                    break;
-                case COMPUTERSCIENCE:
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-                    break;
+        homeStudentViewModel.getLessons().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
+            private LiveData<Tutor> tutor = null;
+
+            @Override
+            public void onChanged(List<Lesson> lessons) {
+                if(lessons.size() == 0){return;}
+                if(tutor!=null){tutor.removeObservers(getViewLifecycleOwner());}
+
+                Collections.sort(lessons, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
+                nextLessonSubject.setText(lessons.get(0).getSubject().toString());
+                nextLessonDate.setText(lessons.get(0).getDate().toString());
+                tutor = homeStudentViewModel.getTutor(lessons.get(0).getTutorEmail());
+                tutor.observe(getViewLifecycleOwner(), t -> nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName()));
+                //TODO: image of next lesson
             }
-        }
-        else {
-            nextLessonSubject.setText("");
-            nextLessonTutor.setText("");
-            nextLessonDate.setText("");
-            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-        }
+
+        });
+
+//        lessonsThisWeek.setText(String.valueOf(homeStudentViewModel.getThisWeekLessonsStudent(emailStudent)));
+//        lessonsRemain.setText(String.valueOf(homeStudentViewModel.getRemainLessonsStudent(emailStudent)));
+//        lessonsTotal.setText(String.valueOf(homeStudentViewModel.getStudentLessons(emailStudent)));
+//        Lesson nextLesson = homeStudentViewModel.getNextLessonStudent(emailStudent);
+//        if(nextLesson != null){
+//            Tutor tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
+//            nextLessonSubject.setText(nextLesson.getSubject().name());
+//            nextLessonTutor.setText(tutor.getFirstName() + " " + tutor.getLastName());
+//            nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
+//
+//            switch (nextLesson.getSubject()){
+//                case MATH:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+//                    break;
+//                case HISTORY:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
+//                    break;
+//                case SCIENCE:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
+//                    break;
+//                case LANGUAGE:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
+//                    break;
+//                case LITERATURE:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
+//                    break;
+//                case COMPUTERSCIENCE:
+//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
+//                    break;
+//            }
+//        }
+//        else {
+//            nextLessonSubject.setText("");
+//            nextLessonTutor.setText("");
+//            nextLessonDate.setText("");
+//            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+//        }
 
         return root;
     }

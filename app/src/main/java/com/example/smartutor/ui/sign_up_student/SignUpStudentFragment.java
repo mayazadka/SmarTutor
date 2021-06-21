@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
+import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.sign_in.SignInViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -92,29 +93,27 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            Student student = checkDetails();
-            if(checkDetails() != null){
-                signUpStudentViewModel.addStudent(student);
-                Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-                intent.putExtra("EMAIL", email.getText().toString());
-                startActivity(intent);
+            //TODO: validation
+            if(true){
+                try {
+                    Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), null, 0, password.getText().toString());
+                    signUpStudentViewModel.addStudent(student);
+                    if (signUpStudentViewModel.isExistStudent(email.getText().toString(), password.getText().toString())) {
+                        Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+                        intent.putExtra("EMAIL", email.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+                }
+                catch (Exception e){
+                    Snackbar.make(signUp, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
             else{
                 Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
         return view;
-    }
-
-    private Student checkDetails(){
-        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
-        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
-        Date birthdayDate;
-        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
-        int gradeNum = new Integer(grade.getSelectedItem().toString().charAt(0));
-        try{gradeNum = gradeNum*10+new Integer(grade.getSelectedItem().toString().charAt(1));}catch (Exception e){}
-        Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate, gradeNum, password.getText().toString());
-        // check specific details
-        return student;
     }
 }
