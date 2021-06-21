@@ -1,8 +1,11 @@
 package com.example.smartutor.model;
 
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
 public class Post {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String tutorEmail;
     private String text;

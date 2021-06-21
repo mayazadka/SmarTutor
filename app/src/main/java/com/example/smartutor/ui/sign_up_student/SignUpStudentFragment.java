@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
@@ -93,26 +94,27 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            //TODO: validation
-            if(true){
-                try {
-                    Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), null, 0, password.getText().toString());
+            try {
+                Utilities.validateEmail(email.getText().toString());
+                Utilities.validateLastName(lastName.getText().toString());
+                Utilities.validateFirstName(firstName.getText().toString());
+                Utilities.validateDate(date.getText().toString());
+                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
+                if(signUpStudentViewModel.isExistStudent(email.getText().toString())){
+                    Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                else{
+                    Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()), password.getText().toString());
                     signUpStudentViewModel.addStudent(student);
-                    if (signUpStudentViewModel.isExistStudent(email.getText().toString(), password.getText().toString())) {
-                        Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-                        intent.putExtra("EMAIL", email.getText().toString());
-                        startActivity(intent);
-                    } else {
-                        Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    }
-                }
-                catch (Exception e){
-                    Snackbar.make(signUp, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+                    intent.putExtra("EMAIL", email.getText().toString());
+                    startActivity(intent);
                 }
             }
-            else{
-                Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            catch (Exception e) {
+                Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
+
         });
         return view;
     }

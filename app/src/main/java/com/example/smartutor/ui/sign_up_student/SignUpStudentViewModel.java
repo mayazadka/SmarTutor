@@ -26,15 +26,15 @@ public class SignUpStudentViewModel  extends ViewModel {
     public SignUpStudentViewModel() {
         students = model.getStudents();
 
-        students.observeForever(students->{});
+        students.observeForever(ss->{});
     }
 
     public void addStudent(Student student)     {model.addStudent(student);}
 
-    public boolean isExistStudent(String email, String password) throws Exception {
-        if(students.getValue() == null){throw new Exception();} //TODO exception
+    public boolean isExistStudent(String email) throws Exception {
+        if(students.getValue() == null){throw new Exception("try again");}
         for (Student student : students.getValue()) {
-            if (student.getEmail().equals(email) && student.getPassword().equals(password)) {
+            if (student.getEmail().equals(email)) {
                 return true;
             }
         }

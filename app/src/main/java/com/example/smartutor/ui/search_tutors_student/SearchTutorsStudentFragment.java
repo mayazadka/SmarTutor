@@ -118,7 +118,7 @@ public class SearchTutorsStudentFragment extends Fragment {
         public void bind(Tutor tutor, int index){
             subjectsList.removeAllViews();
             ImageView image;
-            if (tutor.getProfessions().contains(Profession.COMPUTERSCIENCE)) {
+            if (tutor.getProfessions().contains(Profession.COMPUTER_SCIENCE)) {
                 image = new ImageView(itemView.getContext());
                 image.setBackgroundResource(R.drawable.ic_subject_computer_science);
                 subjectsList.addView(image);

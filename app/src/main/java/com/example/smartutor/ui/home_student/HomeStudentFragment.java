@@ -18,8 +18,11 @@ import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -57,14 +60,16 @@ public class HomeStudentFragment extends Fragment {
 
             @Override
             public void onChanged(List<Lesson> lessons) {
-                if(lessons.size() == 0){return;}
+                List<Lesson> copy = new LinkedList<>(lessons);
+                copy.removeIf(l -> l.getDate().isBefore(LocalDateTime.now()));
+                Collections.sort(lessons, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
+                if(copy.size() == 0){return;}
                 if(tutor!=null){tutor.removeObservers(getViewLifecycleOwner());}
 
-                Collections.sort(lessons, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
-                nextLessonSubject.setText(lessons.get(0).getSubject().toString());
-                nextLessonDate.setText(lessons.get(0).getDate().toString());
-                tutor = homeStudentViewModel.getTutor(lessons.get(0).getTutorEmail());
-                tutor.observe(getViewLifecycleOwner(), t -> nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName()));
+                nextLessonSubject.setText(copy.get(0).getSubject().toString().replace("_", " ").toLowerCase());
+                nextLessonDate.setText(copy.get(0).getDate().format(DateTimeFormatter.ISO_DATE)+" - "+copy.get(0).getDate().getHour()+":00");
+                tutor = homeStudentViewModel.getTutor(copy.get(0).getTutorEmail());
+                tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
                 //TODO: image of next lesson
             }
 

@@ -4,7 +4,7 @@ public enum Profession {
     MATH,
     LANGUAGE,
     SCIENCE,
-    COMPUTERSCIENCE,
+    COMPUTER_SCIENCE,
     LITERATURE,
     HISTORY
 }

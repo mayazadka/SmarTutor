@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
@@ -107,38 +108,30 @@ public class SignUpTutorFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            //TODO: validation
-            if(true){
-                try {
-                    Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), null, null, aboutMe.getText().toString(), password.getText().toString());
-                    signUpTutorViewModel.addTutor(tutor);
-                    if (signUpTutorViewModel.isExistTutor(email.getText().toString(), password.getText().toString())) {
-                        Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
-                        intent.putExtra("EMAIL", email.getText().toString());
-                        startActivity(intent);
-                    } else {
-                        Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    }
+            try{
+                Utilities.validateEmail(email.getText().toString());
+                Utilities.validateLastName(lastName.getText().toString());
+                Utilities.validateFirstName(firstName.getText().toString());
+                Utilities.validateDate(date.getText().toString());
+                Utilities.validateProfessions(professions.getSelectedItem());
+                Utilities.validateAboutMe(aboutMe.getText().toString());
+                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
+                if(signUpTutorViewModel.isExistTutor(email.getText().toString())){
+                    Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
-                catch (Exception e){
-                    Snackbar.make(signUp, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                else{
+                    Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString(), password.getText().toString());
+                    signUpTutorViewModel.addTutor(tutor);
+                    Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
+                    intent.putExtra("EMAIL", email.getText().toString());
+                    startActivity(intent);
                 }
             }
-            else{
-                Snackbar.make(signUp, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            catch (Exception e){
+                Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
         return view;
-    }
-
-    private Tutor checkDetails(){
-        if(!password.getText().toString().equals(confirm.getText().toString())){return null;}
-        Gender gen = Gender.valueOf(gender.getSelectedItem().toString().toUpperCase());
-        Date birthdayDate;
-        try {birthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(date.getText().toString());}catch(Exception e){return null;}
-        Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), gen, birthdayDate,null , aboutMe.getText().toString(), password.getText().toString());
-        // check specific details
-        return tutor;
     }
 }

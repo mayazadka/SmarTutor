@@ -28,18 +28,19 @@ public class SignUpTutorViewModel  extends ViewModel {
     public SignUpTutorViewModel(){
         tutors = model.getTutors();
 
-        tutors.observeForever(students->{});
+        tutors.observeForever(ts-> {});
     }
 
     public void addTutor(Tutor tutor)   {model.addTutor(tutor);}
 
-    public boolean isExistTutor(String email, String password) throws Exception {
-        if(tutors.getValue() == null){throw new Exception();} //TODO exception
+    public boolean isExistTutor(String email) throws Exception {
+        if(tutors.getValue() == null){throw new Exception("try again");}
         for (Tutor tutor : tutors.getValue()) {
-            if (tutor.getEmail().equals(email) && tutor.getPassword().equals(password)) {
+            if (tutor.getEmail().equals(email)) {
                 return true;
             }
         }
         return false;
     }
+
 }

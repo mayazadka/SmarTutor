@@ -54,6 +54,11 @@ public class Model {
     public void updateTutor(Tutor tutor)                            {executorService.execute(()->AppLocalDB.db.tutorDao().updateTutor(tutor));}
     public void deleteStudent(Student student)                      {executorService.execute(()->AppLocalDB.db.studentDao().deleteStudent(student));}
     public void deleteTutor(Tutor tutor)                            {executorService.execute(()->AppLocalDB.db.tutorDao().deleteTutor(tutor));}
+    public void deleteLessonsByTutor(String email)                  {executorService.execute(()->AppLocalDB.db.lessonDao().deleteByTutor(email));}
+    public void deleteLessonsByStudent(String email)                {executorService.execute(()->AppLocalDB.db.lessonDao().deleteByStudent(email));}
+    public void deleteAllStudents()                                 {executorService.execute(()->AppLocalDB.db.studentDao().deleteAll());}
+    public void deleteAllTutors()                                   {executorService.execute(()->AppLocalDB.db.tutorDao().deleteAll());}
+    public void deleteAllLessons()                                  {executorService.execute(()->AppLocalDB.db.lessonDao().deleteAll());}
 
 //    public Lesson getNextLessonStudent(String email) {
 //        List<Lesson> remain = getRemainLessonsStudent(email);
