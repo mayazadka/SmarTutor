@@ -64,7 +64,7 @@ public class Converters {
     @TypeConverter
     public static String fromDateToString(Date date) {
         if (date == null){return null;}
-        return new SimpleDateFormat("yyyy-mm-dd").format(date);
+        return new SimpleDateFormat("dd/MM/yyyy").format(date);
     }
 
     @TypeConverter

@@ -16,10 +16,12 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.smartutor.R;
+import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.ui.StudentMenuActivity;
@@ -80,45 +82,45 @@ public class EditDetailsStudentFragment extends Fragment {
             builder.show();
         });
 
-//        lastName.setText(editDetailsStudentViewModel.getStudent().getLastName());
-//        firstName.setText(editDetailsStudentViewModel.getStudent().getFirstName());
-//        switch (editDetailsStudentViewModel.getStudent().getGender()) {
-//            case MALE:
-//                gender.setSelection(0);
-//                break;
-//            case FEMALE:
-//                gender.setSelection(1);
-//                break;
-//            case OTHER:
-//                gender.setSelection(2);
-//                break;
-//        }
-//
-//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//        dateFormat.setLenient(false);
-//        date.setText(dateFormat.format(editDetailsStudentViewModel.getStudent().getBirthdayDate()));
-//
-//        grade.setSelection(editDetailsStudentViewModel.getStudent().getGrade() - 1);
-//        password.setText(editDetailsStudentViewModel.getStudent().getPassword());
-//        confirm.setText(editDetailsStudentViewModel.getStudent().getPassword());
-//
-//        save.setOnClickListener(v -> {
-//            //TODO: validation
-//            if(true){
-//                Student s = new Student();
-//                s.setFirstName(firstName.getText().toString());
-//                s.setLastName(lastName.getText().toString());
-//                s.setGender(Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()));
-//                //TODO: s.setBirthdayDate();
-//                //TODO: s.setGrade();
-//                s.setPassword(password.getText().toString());
-//                editDetailsStudentViewModel.updateStudent(s);
-//                //TODO: navigate to home
-//            }
-//            else{
-//                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-//            }
-//        });
+        editDetailsStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> {
+            lastName.setText(student.getLastName());
+            firstName.setText(student.getFirstName());
+            switch (student.getGender()){
+                case MALE:
+                    gender.setSelection(0);
+                    break;
+                case FEMALE:
+                    gender.setSelection(1);
+                    break;
+                case OTHER:
+                    gender.setSelection(2);
+                    break;
+            }
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dateFormat.setLenient(false);
+            date.setText(dateFormat.format(student.getBirthdayDate()));
+            grade.setSelection(student.getGrade() - 1);
+            password.setText(student.getPassword());
+            confirm.setText(student.getPassword());
+        });
+
+
+        save.setOnClickListener(v -> {
+            try {
+                Utilities.validateLastName(lastName.getText().toString());
+                Utilities.validateFirstName(firstName.getText().toString());
+                Utilities.validateDate(date.getText().toString());
+                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
+
+                Student student = new Student(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()), password.getText().toString());
+                editDetailsStudentViewModel.updateStudent(student);
+                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_student);
+            }
+            catch (Exception e) {
+                Snackbar.make(save, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+
+        });
 
         return root;
     }

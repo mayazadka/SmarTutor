@@ -1,5 +1,6 @@
 package com.example.smartutor.ui.edit_details_tutor;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +23,12 @@ import androidx.navigation.Navigation;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.TutorMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -46,7 +49,7 @@ public class EditDetailsTutorFragment extends Fragment {
     private Spinner gender;
     private EditText date;
     private Button chooseDate;
-    private MultiSpinner profesions;
+    private MultiSpinner professions;
     private EditText aboutMe;
     private EditText password;
     private EditText confirm;
@@ -66,7 +69,7 @@ public class EditDetailsTutorFragment extends Fragment {
         gender = root.findViewById(R.id.editDetailsTutor_gender_spn);
         date = root.findViewById(R.id.editDetailsTutor_birthdayDate_et);
         chooseDate = root.findViewById(R.id.editDetailsTutor_birthdayDate_btn);
-        profesions = root.findViewById(R.id.editDetailsTutor_professions_spn);
+        professions = root.findViewById(R.id.editDetailsTutor_professions_spn);
         aboutMe = root.findViewById(R.id.signUpTutor_aboutMe_etml);
         password = root.findViewById(R.id.editDetailsTutor_password_et);
         confirm = root.findViewById(R.id.editDetailsTutor_confirmPassword_et);
@@ -74,6 +77,8 @@ public class EditDetailsTutorFragment extends Fragment {
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
+
+        professions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { });
 
         // events setup
         chooseDate.setOnClickListener(v -> {
@@ -87,28 +92,52 @@ public class EditDetailsTutorFragment extends Fragment {
             builder.show();
         });
 
-//        lastName.setText(editDetailsTutorViewModel.getTutor().getLastName());
-//        firstName.setText(editDetailsTutorViewModel.getTutor().getFirstName());
-//
-//        switch (editDetailsTutorViewModel.getTutor().getGender()) {
-//            case MALE:
-//                gender.setSelection(0);
-//                break;
-//            case FEMALE:
-//                gender.setSelection(1);
-//                break;
-//            case OTHER:
-//                gender.setSelection(2);
-//                break;
-//        }
-//
-//        date.setText(new SimpleDateFormat("dd/MM/yyyy").format(editDetailsTutorViewModel.getTutor().getBirthdayDate()));
-//        // TODO: add the names of the profession in the display
-//        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", selected -> editDetailsTutorViewModel.getTutor().getProfessions());
-//        aboutMe.setText(editDetailsTutorViewModel.getTutor().getAboutMe());
-//        password.setText(editDetailsTutorViewModel.getTutor().getPassword());
-//        confirm.setText(editDetailsTutorViewModel.getTutor().getPassword());
-//
+        editDetailsTutorViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
+            lastName.setText(tutor.getLastName());
+            firstName.setText(tutor.getFirstName());
+            switch (tutor.getGender()){
+                case MALE:
+                    gender.setSelection(0);
+                    break;
+                case FEMALE:
+                    gender.setSelection(1);
+                    break;
+                case OTHER:
+                    gender.setSelection(2);
+                    break;
+            }
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dateFormat.setLenient(false);
+            date.setText(dateFormat.format(tutor.getBirthdayDate()));
+            Profession[] allProfessions = Profession.values();
+            boolean selected[] = new boolean[allProfessions.length];
+            for (int i=0;i<selected.length;i++){
+                selected[i] = tutor.getProfessions().indexOf(allProfessions[i]) != -1;
+            }
+            professions.setSelected(selected);
+            aboutMe.setText(tutor.getAboutMe());
+            password.setText(tutor.getPassword());
+            confirm.setText(tutor.getPassword());
+        });
+
+        save.setOnClickListener(v -> {
+            try{
+                Utilities.validateLastName(lastName.getText().toString());
+                Utilities.validateFirstName(firstName.getText().toString());
+                Utilities.validateDate(date.getText().toString());
+                Utilities.validateProfessions(professions.getSelectedItem());
+                Utilities.validateAboutMe(aboutMe.getText().toString());
+                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
+
+                Tutor tutor = new Tutor(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString(), password.getText().toString());
+                editDetailsTutorViewModel.updateTutor(tutor);
+                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+            }
+            catch (Exception e){
+                Snackbar.make(save, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
+
 //        save.setOnClickListener(v -> {
 //
 //            //TODO: validation

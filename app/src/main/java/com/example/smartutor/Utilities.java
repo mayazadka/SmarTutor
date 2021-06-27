@@ -48,15 +48,15 @@ public class Utilities {
     public static List<Profession> convertToProfessions(List<String> professions){
         List<Profession> ps = new LinkedList<>();
         for (String profession : professions) {
-            profession.replace(" ", "_");
+            profession = profession.replace(" ", "_");
             ps.add(Profession.valueOf(profession.toUpperCase()));
         }
         return ps;
     }
     public static int convertToGrade(String grade){
         Integer g;
-        try{g = new Integer(grade.substring(0, 2));}
-        catch (Exception e){g=new Integer(grade.charAt(0));}
+        try{g = Integer.parseInt(grade.substring(0, 2));}
+        catch (Exception e){g=Integer.parseInt(grade.substring(0, 1));}
         return g;
     }
 }

@@ -35,10 +35,10 @@ public class SignInViewModel extends ViewModel {
         //model.deleteAllStudents();
         //model.deleteAllLessons();
 
-        model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 20, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 21, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 23, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 24, 1, 0, 0), Profession.COMPUTER_SCIENCE));
+        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 20, 1, 0, 0), Profession.COMPUTER_SCIENCE));
+        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 21, 1, 0, 0), Profession.COMPUTER_SCIENCE));
+        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 23, 1, 0, 0), Profession.COMPUTER_SCIENCE));
+        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 24, 1, 0, 0), Profession.COMPUTER_SCIENCE));
     }
 
     public boolean isExistStudent(String email, String password) throws Exception {

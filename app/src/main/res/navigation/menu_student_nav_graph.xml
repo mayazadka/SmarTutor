@@ -70,4 +70,9 @@
             android:name="email"
             app:argType="string" />
     </fragment>
+    <action
+        android:id="@+id/action_global_nav_home_student"
+        app:destination="@id/nav_home_student"
+        app:popUpTo="@id/nav_home_student"
+        app:popUpToInclusive="true" />
 </navigation>

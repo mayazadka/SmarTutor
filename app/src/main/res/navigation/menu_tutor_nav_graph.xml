@@ -16,6 +16,7 @@
         <action
             android:id="@+id/action_nav_home_tutor_to_availableTutorFragment"
             app:destination="@id/availableTutorFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/nav_edit_details_tutor"
@@ -59,4 +60,9 @@
         android:name="com.example.smartutor.EditPostFragment"
         android:label="fragment_edit_post"
         tools:layout="@layout/fragment_edit_post" />
+    <action
+        android:id="@+id/action_global_nav_home_tutor"
+        app:destination="@id/nav_home_tutor"
+        app:popUpTo="@id/nav_home_tutor"
+        app:popUpToInclusive="true" />
 </navigation>
