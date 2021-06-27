@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SearchTutorsStudentFragment extends Fragment {
@@ -47,6 +48,8 @@ public class SearchTutorsStudentFragment extends Fragment {
     private RadioButton searchBySubject;
     private EditText name;
     private List<Tutor> tutorsListData;
+    private List<Tutor> tutorsByName;
+    private List<Tutor> tutorsByProfessions;
     private List<Tutor> tutors;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,17 +74,36 @@ public class SearchTutorsStudentFragment extends Fragment {
 
         tutorsListData = new LinkedList<>();
         tutors = new LinkedList<>();
+        tutorsByName = new LinkedList<>();
+        tutorsByProfessions = new LinkedList<>();
+
+        Profession[] allProfessions = Profession.values();
 
         searchTutorsStudentViewModel.getTutors().observe(getViewLifecycleOwner(), ts -> {
             tutors = ts;
-            tutorsListData = new LinkedList<>();
-            for(int i=0;i<tutors.size();i++){
+            tutorsByName = new LinkedList<>();
+            tutorsByProfessions = new LinkedList<>();
+            String nameTxt = name.getText().toString();
+            for(int i=0;i<tutors.size();i++) {
                 Tutor t = tutors.get(i);
-                String nameTxt = name.getText().toString();
-                if(t.getFirstName().startsWith(nameTxt) || t.getLastName().startsWith(nameTxt)){
-                    tutorsListData.add(t);
+                if (t.getFirstName().startsWith(nameTxt) || t.getLastName().startsWith(nameTxt)) {
+                    tutorsByName.add(t);
+                }
+                boolean all = true;
+                boolean[] selected = professions.getSelected();
+                for (int j = 0; j < selected.length; j++) {
+                    if (selected[j] && !t.getProfessions().contains(allProfessions[j])) {
+                        all = false;
+                        break;
+                    }
+                }
+                if (all) {
+                    tutorsByProfessions.add(t);
                 }
             }
+            tutorsListData = tutorsByName.stream()
+                    .filter(tutorsByProfessions::contains)
+                    .collect(Collectors.toList());
             tutorsList.getAdapter().notifyDataSetChanged();
         });
 
@@ -96,19 +118,42 @@ public class SearchTutorsStudentFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tutorsListData = new LinkedList<>();
+                tutorsByName = new LinkedList<>();
+                String nameTxt = name.getText().toString();
                 for(int i=0;i<tutors.size();i++){
                     Tutor t = tutors.get(i);
-                    String nameTxt = name.getText().toString();
                     if(t.getFirstName().startsWith(nameTxt) || t.getLastName().startsWith(nameTxt)){
-                        tutorsListData.add(t);
+                        tutorsByName.add(t);
                     }
                 }
+                tutorsListData = tutorsByName.stream()
+                        .filter(tutorsByProfessions::contains)
+                        .collect(Collectors.toList());
                 tutorsList.getAdapter().notifyDataSetChanged();
             }
         });
 
-        professions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", selected -> { });
+        professions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", selected -> {
+            tutorsByProfessions = new LinkedList<>();
+            for(int i=0;i<tutors.size();i++){
+                Tutor t = tutors.get(i);
+                boolean all = true;
+                for(int j=0;j<selected.length;j++){
+                    if(selected[j] && !t.getProfessions().contains(allProfessions[j])){
+                        all = false;
+                        break;
+                    }
+                }
+                if(all){
+                    tutorsByProfessions.add(t);
+                }
+            }
+            tutorsListData = tutorsByProfessions.stream()
+                    .filter(tutorsByName::contains)
+                    .collect(Collectors.toList());
+            tutorsList.getAdapter().notifyDataSetChanged();
+        });
+
         return root;
     }
 

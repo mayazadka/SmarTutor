@@ -27,5 +27,6 @@ public class TutorDetailsViewModel extends ViewModel {
         lessons = model.getLessonsByTutor(email);
     }
 
-    public LiveData<Tutor> getTutor()       { return tutor; }
+    public LiveData<Tutor> getTutor()               { return tutor; }
+    public LiveData<List<Lesson>> getLessons()      { return lessons; }
 }

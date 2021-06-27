@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
 
@@ -43,7 +44,7 @@ public class TutorDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         tutorDetailsViewModel = new ViewModelProvider(this).get(TutorDetailsViewModel.class);
-        tutorDetailsViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+        tutorDetailsViewModel.initial(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail());
 
         View view = inflater.inflate(R.layout.fragment_tutor_details, container, false);
 
@@ -54,68 +55,48 @@ public class TutorDetailsFragment extends Fragment {
         aboutMeTv = view.findViewById(R.id.tutorDetails_aboutMe_tv);
 
 
-//        String email = TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail();
-//        Tutor tutor = tutorDetailsViewModel.getTutor();
-//        if(tutor != null) {
-//            emailTv.setText(email);
-//            int age = age(tutor.getBirthdayDate());
-//            ageTv.setText(String.valueOf(age));
-//        /*switch (tutor.getGender()){
-//            case MALE:
-//
-//                break;
-//            case FEMALE:
-//                break;
-//            case OTHER:
-//                break;
-//        }*/
-//            //genderImg.setImageResource();
-//
-//            subjectsLL.removeAllViews();
-//
-//            if (tutor.getProfessions().contains(Profession.COMPUTERSCIENCE)) {
-//                addImageToLL(view, R.drawable.ic_subject_computer_science);
-//            }
-//            if (tutor.getProfessions().contains(Profession.MATH)) {
-//                addImageToLL(view, R.drawable.ic_subject_math);
-//            }
-//            if (tutor.getProfessions().contains(Profession.HISTORY)) {
-//                addImageToLL(view, R.drawable.ic_subject_history);
-//            }
-//            if (tutor.getProfessions().contains(Profession.LANGUAGE)) {
-//                addImageToLL(view, R.drawable.ic_subject_english);
-//            }
-//            if (tutor.getProfessions().contains(Profession.LITERATURE)) {
-//                addImageToLL(view, R.drawable.ic_subject_literature);
-//            }
-//            if (tutor.getProfessions().contains(Profession.SCIENCE)) {
-//                addImageToLL(view, R.drawable.ic_subject_science);
-//            }
-//            aboutMeTv.setText(tutor.getAboutMe());
-//        }
+        tutorDetailsViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
+            if(tutor != null) {
+                emailTv.setText(tutor.getEmail());
+                ageTv.setText(String.valueOf(Utilities.age(tutor.getBirthdayDate())));
+            }
+
+            int imageID = 0;
+            switch (tutor.getGender()){
+                case MALE:
+                    imageID = R.drawable.ic_gender_male;
+                    break;
+                case FEMALE:
+                    imageID = R.drawable.ic_gender_female;
+                    break;
+                case OTHER:
+                    imageID = R.drawable.ic_gender_other;
+                    break;
+            }
+            genderImg.setImageResource(imageID);
+            if (tutor.getProfessions().contains(Profession.COMPUTER_SCIENCE)) {
+                addImageToLL(view, R.drawable.ic_subject_computer_science);
+            }
+            if (tutor.getProfessions().contains(Profession.MATH)) {
+                addImageToLL(view, R.drawable.ic_subject_math);
+            }
+            if (tutor.getProfessions().contains(Profession.HISTORY)) {
+                addImageToLL(view, R.drawable.ic_subject_history);
+            }
+            if (tutor.getProfessions().contains(Profession.LANGUAGE)) {
+                addImageToLL(view, R.drawable.ic_subject_english);
+            }
+            if (tutor.getProfessions().contains(Profession.LITERATURE)) {
+                addImageToLL(view, R.drawable.ic_subject_literature);
+            }
+            if (tutor.getProfessions().contains(Profession.SCIENCE)) {
+                addImageToLL(view, R.drawable.ic_subject_science);
+            }
+            aboutMeTv.setText(tutor.getAboutMe());
+        });
         return view;
     }
 
-    public int age(Date birthday){
-        LocalDateTime today = LocalDateTime.now();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
-        String strDate = dateFormat.format(birthday);
-        int birthdayYear = Integer.valueOf(strDate);
-
-        if(birthday.getMonth() < today.getMonth().getValue())
-            return today.getYear() - birthdayYear;
-        else if(birthday.getMonth() == today.getMonth().getValue()) {
-            if(birthday.getDate() <= today.getDayOfMonth()){
-                return today.getYear() - birthdayYear;
-            }
-            else {
-                return today.getYear() - birthdayYear - 1;
-            }
-        }
-        else {
-            return today.getYear() - birthdayYear - 1;
-        }
-    }
     private void addImageToLL(View view, int resId){
         ImageView image;
         image = new ImageView(view.getContext());

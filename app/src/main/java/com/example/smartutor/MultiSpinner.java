@@ -120,4 +120,8 @@ public class MultiSpinner extends AppCompatSpinner implements DialogInterface.On
         this.selected = selected;
         onCancel(null);
     }
+
+    public boolean[] getSelected(){
+        return this.selected;
+    }
 }
