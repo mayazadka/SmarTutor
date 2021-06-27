@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -34,25 +35,27 @@ import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentDirections;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SearchTutorsStudentFragment extends Fragment {
 
     private SearchTutorsStudentViewModel searchTutorsStudentViewModel;
     private RecyclerView tutorsList;
-    private MultiSpinner profesions;
+    private MultiSpinner professions;
     private RadioButton searchByName;
     private RadioButton searchBySubject;
-    private EditText searchTutor;
-    List<Tutor> tutorsListData;
+    private EditText name;
+    private List<Tutor> tutorsListData;
+    private List<Tutor> tutors;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchTutorsStudentViewModel = new ViewModelProvider(this).get(SearchTutorsStudentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search_tutors_student, container, false);
 
         tutorsList = root.findViewById(R.id.searchTutorsStudent_listTutors_recyclerView);
-        profesions = root.findViewById(R.id.searchTutorsStudent_subjects_multiSpinner);
-        searchTutor = root.findViewById(R.id.searchTutorsStudent_tutor_et);
+        professions = root.findViewById(R.id.searchTutorsStudent_subjects_multiSpinner);
+        name = root.findViewById(R.id.searchTutorsStudent_tutor_et);
         tutorsList.setHasFixedSize(true);
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
@@ -66,26 +69,46 @@ public class SearchTutorsStudentFragment extends Fragment {
             Navigation.findNavController(view).navigate(action);
         });
 
-//        tutorsListData = searchTutorsStudentViewModel.getTutors();
-//        searchTutor.addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                tutorsListData = searchTutorsStudentViewModel.getTutorsByName(searchTutor.getText().toString());
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) { }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start,
-//                                      int before, int count) {
-//                tutorsListData = searchTutorsStudentViewModel.getTutorsByName(searchTutor.getText().toString());
-//                tutorsList.getAdapter().notifyDataSetChanged();
-//            }
-//        });
-//        profesions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", (MultiSpinner.MultiSpinnerListener) selected -> { });
+        tutorsListData = new LinkedList<>();
+        tutors = new LinkedList<>();
+
+        searchTutorsStudentViewModel.getTutors().observe(getViewLifecycleOwner(), ts -> {
+            tutors = ts;
+            tutorsListData = new LinkedList<>();
+            for(int i=0;i<tutors.size();i++){
+                Tutor t = tutors.get(i);
+                String nameTxt = name.getText().toString();
+                if(t.getFirstName().startsWith(nameTxt) || t.getLastName().startsWith(nameTxt)){
+                    tutorsListData.add(t);
+                }
+            }
+            tutorsList.getAdapter().notifyDataSetChanged();
+        });
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tutorsListData = new LinkedList<>();
+                for(int i=0;i<tutors.size();i++){
+                    Tutor t = tutors.get(i);
+                    String nameTxt = name.getText().toString();
+                    if(t.getFirstName().startsWith(nameTxt) || t.getLastName().startsWith(nameTxt)){
+                        tutorsListData.add(t);
+                    }
+                }
+                tutorsList.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+        professions.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)), "Choose professions.", selected -> { });
         return root;
     }
 

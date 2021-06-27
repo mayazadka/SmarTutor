@@ -17,8 +17,13 @@ import java.util.List;
 public class DeleteAccountStudentViewModel extends ViewModel {
 
     private Model model = Model.getInstance();;
+    private LiveData<Student> student;
 
     public DeleteAccountStudentViewModel() {}
+    public void initial(String email){
+        student = model.getStudent(email);
+        student.observeForever(student -> {});
+    }
 
-    public void deleteStudent(String email){model.deleteStudent(model.getStudent(email).getValue());}
+    public void deleteStudent(){model.deleteStudent(student.getValue());}
 }

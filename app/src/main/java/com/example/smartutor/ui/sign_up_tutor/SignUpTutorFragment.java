@@ -124,6 +124,7 @@ public class SignUpTutorFragment extends Fragment {
                     signUpTutorViewModel.addTutor(tutor);
                     Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
                     intent.putExtra("EMAIL", email.getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.action_global_signIn);
                     startActivity(intent);
                 }
             }
