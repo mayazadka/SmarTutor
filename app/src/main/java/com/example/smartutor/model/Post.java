@@ -2,8 +2,6 @@ package com.example.smartutor.model;
 
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
 public class Post {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -11,8 +9,7 @@ public class Post {
     private String text;
     private String picture;
 
-    public Post(int id, String tutorEmail, String text, String picture) {
-        this.id = id;
+    public Post(String tutorEmail, String text, String picture) {
         this.tutorEmail = tutorEmail;
         this.text = text;
         this.picture = picture;

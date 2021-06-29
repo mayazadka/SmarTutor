@@ -16,19 +16,8 @@ public class StudentWithLessons {
 
     public StudentWithLessons(){}
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
+    public Student getStudent()                     {return student;}
+    public List<Lesson> getLessons()                {return lessons;}
+    public void setStudent(Student student)         {this.student = student;}
+    public void setLessons(List<Lesson> lessons)    {this.lessons = lessons;}
 }

@@ -21,30 +21,15 @@ public class Lesson {
         this.date = date;
         this.subject = subject;
     }
-    public String getStudentEmail() {
-        return studentEmail;
-    }
-    public void setStudentEmail(String studentEmail) {
-        this.studentEmail = studentEmail;
-    }
-    public String getTutorEmail() {
-        return tutorEmail;
-    }
-    public void setTutorEmail(String tutorEmail) {
-        this.tutorEmail = tutorEmail;
-    }
-    public LocalDateTime getDate() {
-        return date;
-    }
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-    public Profession getSubject() {
-        return subject;
-    }
-    public void setSubject(Profession subject) {
-        this.subject = subject;
-    }
+
+    public String getStudentEmail()                     {return studentEmail;}
+    public void setStudentEmail(String studentEmail)    {this.studentEmail = studentEmail;}
+    public String getTutorEmail()                       {return tutorEmail;}
+    public void setTutorEmail(String tutorEmail)        {this.tutorEmail = tutorEmail;}
+    public LocalDateTime getDate()                      {return date;}
+    public void setDate(LocalDateTime date)             {this.date = date;}
+    public Profession getSubject()                      {return subject;}
+    public void setSubject(Profession subject)          {this.subject = subject;}
 
     @Override
     public boolean equals(Object o) {

@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeStudentFragment extends Fragment {
 
     private HomeStudentViewModel homeStudentViewModel;
@@ -68,34 +67,33 @@ public class HomeStudentFragment extends Fragment {
                 lessonsTotal.setText(String.valueOf(lessons.size()));
 
                 Lesson nextLesson = Utilities.getNextLesson(lessons);
-                if(nextLesson!= null){
-                    nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
-                    nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE)+" - "+nextLesson.getDate().getHour()+":00");
-                    tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
-                    tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
-                    switch (nextLesson.getSubject()) {
-                        case MATH:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-                            break;
-                        case HISTORY:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-                            break;
-                        case SCIENCE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-                            break;
-                        case LANGUAGE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-                            break;
-                        case LITERATURE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-                            break;
-                        case COMPUTER_SCIENCE:
-                            CE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-                            break;
-                    }
-                }
+                if(nextLesson == null){return;}
 
+                nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
+                nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE)+" - "+nextLesson.getDate().getHour()+":00");
+                tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
+                tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
+                switch (nextLesson.getSubject()) {
+                    case MATH:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+                        break;
+                    case HISTORY:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
+                        break;
+                    case SCIENCE:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
+                        break;
+                    case LANGUAGE:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
+                        break;
+                    case LITERATURE:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
+                        break;
+                    case COMPUTER_SCIENCE:
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
+                        break;
+                }
+                //TODO: calendar
 
             }
 

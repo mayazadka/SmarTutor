@@ -1,33 +1,10 @@
 package com.example.smartutor.model;
 
-import android.os.Build;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
-
-import com.example.smartutor.MyApplication;
-import com.example.smartutor.ui.LogIn;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
-
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class Model {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static Model model = null;

@@ -17,5 +17,5 @@ public interface StudentDao {
     @Delete void deleteStudent(Student student);
     @Transaction @Query("SELECT * FROM Student") LiveData<List<Student>> getStudents();
     @Query("SELECT * FROM Student WHERE email = :email") LiveData<Student> getStudent(String email);
-    @Query("DELETE FROM Tutor") void deleteAll();
+    @Query("DELETE FROM Student") void deleteAll();
 }

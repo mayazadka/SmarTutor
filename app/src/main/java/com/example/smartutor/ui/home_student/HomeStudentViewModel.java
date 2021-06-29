@@ -15,7 +15,6 @@ import com.example.smartutor.model.TutorWithLessons;
 import java.util.LinkedList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeStudentViewModel extends ViewModel {
 
     private Model model = Model.getInstance();

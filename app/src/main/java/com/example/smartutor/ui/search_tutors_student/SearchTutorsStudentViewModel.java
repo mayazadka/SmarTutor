@@ -27,22 +27,4 @@ public class SearchTutorsStudentViewModel extends ViewModel {
     }
 
     public LiveData<List<Tutor>> getTutors()    {return tutors;}
-//    public List<Tutor> getTutorsByName(String name){
-//        List<Tutor> filter = new LinkedList<>();
-//        for(Tutor t : tutors){
-//            if((t.getFirstName()+" "+t.getLastName()).contains(name) || (t.getLastName()+" "+t.getFirstName()).contains(name)){
-//                filter.add(t);
-//            }
-//        }
-//        return filter;
-//    }
-//    public List<Tutor> getTutorsByProfessions(List<Profession> professions){
-//        List<Tutor> filter = new LinkedList<>();
-//        for(Tutor t : tutors){
-//            if(t.getProfessions().containsAll(professions)){
-//                filter.add(t);
-//            }
-//        }
-//        return filter;
-//    }
 }

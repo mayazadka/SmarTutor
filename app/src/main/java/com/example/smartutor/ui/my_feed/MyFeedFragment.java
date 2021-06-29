@@ -40,11 +40,11 @@ public class MyFeedFragment extends Fragment {
         add = view.findViewById(R.id.myFeed_addPost_btn);
 
         posts = new LinkedList<>();
-        posts.add(new Post(1,"" , "hi", "1"));
-        posts.add(new Post(1, "", "bye", "1"));
-        posts.add(new Post(1, "", "what?", "1"));
-        posts.add(new Post(1, "", "really!!", "1"));
-        posts.add(new Post(1, "", "OMG", "1"));
+        posts.add(new Post("" , "hi", "1"));
+        posts.add(new Post("", "bye", "1"));
+        posts.add(new Post("", "what?", "1"));
+        posts.add(new Post("", "really!!", "1"));
+        posts.add(new Post("", "OMG", "1"));
 
         postList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();

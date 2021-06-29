@@ -16,19 +16,8 @@ public class TutorWithLessons {
 
     public TutorWithLessons(){}
 
-    public Tutor getTutor() {
-        return tutor;
-    }
-
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
+    public Tutor getTutor()                         {return tutor;}
+    public void setTutor(Tutor tutor)               {this.tutor = tutor;}
+    public List<Lesson> getLessons()                {return lessons;}
+    public void setLessons(List<Lesson> lessons)    {this.lessons = lessons;}
 }
