@@ -11,18 +11,14 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface PostDao {/*
+public interface PostDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE) void insertPost(Post post);
-    @Update
-    void updateLesson(Lesson lesson);
-    @Delete
-    void deleteLesson(Lesson lesson);
-    @Query("SELECT * FROM Lesson")
-    LiveData<List<Lesson>> getLessons();
-    @Query("SELECT * FROM Lesson WHERE studentEmail = :email") LiveData<List<Lesson>> getLessonsByStudent(String email);
-    @Query("SELECT * FROM Lesson WHERE tutorEmail = :email") LiveData<List<Lesson>> getLessonsByTutor(String email);
-    @Query("DELETE FROM Lesson WHERE studentEmail = :email") void deleteByStudent(String email);
-    @Query("DELETE FROM Lesson WHERE tutorEmail = :email") void deleteByTutor(String email);
-    @Query("DELETE FROM Lesson") void deleteAll();
-*/
+    @Update void updatePost(Post post);
+    @Delete void deletePost(Post post);
+    @Query("SELECT * FROM Post") LiveData<List<Post>> getPosts();
+    @Query("SELECT * FROM Post WHERE tutorEmail = :email") LiveData<List<Post>> getPostsByTutor(String email);
+    @Query("SELECT * FROM Post WHERE id = :id") LiveData<List<Post>> getPostById(int id);
+    @Query("DELETE FROM Post WHERE tutorEmail = :email") void deleteByTutor(String email);
+    @Query("DELETE FROM Post") void deleteAll();
+
 }
