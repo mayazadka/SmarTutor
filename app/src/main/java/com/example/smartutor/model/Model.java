@@ -25,6 +25,7 @@ public class Model {
             //model.deleteAllStudents();
             //model.deleteAllTutors();
             //model.deleteAllEvents();
+            //model.deleteAllPosts();
             model.addLesson(new Lesson("a@gmail.com", "a@gmail.com", LocalDate.now().atTime(17, 0), Profession.MATH));
         }
         return model;

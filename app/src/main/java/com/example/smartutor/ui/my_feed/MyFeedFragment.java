@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.model.Tutor;
@@ -28,33 +29,50 @@ import java.util.List;
 
 
 public class MyFeedFragment extends Fragment {
-    private RecyclerView postList;
-    private List<Post> posts;
+    private MyFeedViewModel myFeedViewModel;
+    private List<Post> listPosts;
+    private String tutorEmail;
+
+    private RecyclerView postListRecyclerView;
     private Button add;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
+
+        myFeedViewModel = new ViewModelProvider(this).get(MyFeedViewModel.class);
+        myFeedViewModel.initial(tutorEmail);
+
         View view = inflater.inflate(R.layout.fragment_my_feed, container, false);
 
-        postList = view.findViewById(R.id.myFeed_list_rv);
+        postListRecyclerView = view.findViewById(R.id.myFeed_list_rv);
         add = view.findViewById(R.id.myFeed_addPost_btn);
+        postListRecyclerView.setHasFixedSize(true);
 
-        posts = new LinkedList<>();
-        posts.add(new Post("" , "hi", "1"));
-        posts.add(new Post("", "bye", "1"));
-        posts.add(new Post("", "what?", "1"));
-        posts.add(new Post("", "really!!", "1"));
-        posts.add(new Post("", "OMG", "1"));
-
-        postList.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
         adapter.setOnItemClickListener((v, p) ->{
             Navigation.findNavController(view).navigate(R.id.action_nav_my_feed_tutor_to_editPostFragment);
         });
-        postList.setAdapter(adapter);
+        postListRecyclerView.setAdapter(adapter);
         add.setOnClickListener(v->Navigation.findNavController(view).navigate(R.id.action_nav_my_feed_tutor_to_addPostFragment));
 
+        listPosts = new LinkedList<>();
 
+        myFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
+            if(posts == null){
+                listPosts = new LinkedList<Post>();
+            }
+            else { listPosts = posts; }
+            postListRecyclerView.getAdapter().notifyDataSetChanged();
+        });
+
+        /*posts = new LinkedList<>();
+        posts.add(new Post("" , "hi", "1"));
+        posts.add(new Post("", "bye", "1"));
+        posts.add(new Post("", "what?", "1"));
+        posts.add(new Post("", "really!!", "1"));
+        posts.add(new Post("", "OMG", "1"));*/
 
         return view;
     }
@@ -63,7 +81,7 @@ public class MyFeedFragment extends Fragment {
     static class MyFeedViewHolder extends RecyclerView.ViewHolder{
         MyFeedFragment.OnItemClickListener listener;
         TextView owner;
-        ImageView post;
+        ImageView postImg;
         TextView description;
         View item;
 
@@ -71,8 +89,8 @@ public class MyFeedFragment extends Fragment {
             super(itemView);
             item = itemView;
             owner = itemView.findViewById(R.id.postRow_owner_tv);
-            post = itemView.findViewById(R.id.postRow_post_img);
-            description = itemView.findViewById(R.id.postRow_descriptionn_tv);
+            postImg = itemView.findViewById(R.id.postRow_post_img);
+            description = itemView.findViewById(R.id.postRow_description_tv);
             this.listener = listener;
             itemView.setOnClickListener(v -> {
                 if(listener != null){
@@ -87,7 +105,7 @@ public class MyFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            this.post.setImageResource(R.drawable.ic_gender_male);
+            this.postImg.setImageResource(R.drawable.ic_gender_male);
         }
     }
     public interface OnItemClickListener {
@@ -112,14 +130,13 @@ public class MyFeedFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
-            Post post = posts.get(position);
-            //Tutor tutor = Model.getInstance().getTutor("omer5144@gmail.com").getTutor();
-            holder.bind("a", null, new Integer(position).toString());
+            Post post = listPosts.get(position);
+            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), null, post.getText()));
         }
 
         @Override
         public int getItemCount() {
-            return posts.size();
+            return listPosts.size();
         }
     }
 
