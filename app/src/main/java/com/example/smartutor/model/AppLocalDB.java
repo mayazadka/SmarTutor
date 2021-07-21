@@ -7,12 +7,13 @@ import androidx.room.TypeConverters;
 
 import com.example.smartutor.MyApplication;
 
-@Database(entities = {Student.class, Tutor.class, Lesson.class}, version = 1)
+@Database(entities = {Student.class, Tutor.class, Lesson.class, Post.class}, version = 2)
 @TypeConverters({ Converters.class })
 abstract class AppLocalDbRepository extends RoomDatabase{
     public abstract StudentDao studentDao();
     public abstract TutorDao tutorDao();
     public abstract LessonDao lessonDao();
+    public abstract PostDao postDao();
 }
 
 public class AppLocalDB {

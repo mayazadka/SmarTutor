@@ -1,7 +1,11 @@
 package com.example.smartutor.model;
 
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
+@Entity()
 public class Post {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -9,6 +13,7 @@ public class Post {
     private String text;
     private String picture;
 
+    public Post() {}
     public Post(String tutorEmail, String text, String picture) {
         this.tutorEmail = tutorEmail;
         this.text = text;
@@ -38,5 +43,19 @@ public class Post {
     }
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return tutorEmail.equals(post.tutorEmail) &&
+                text.equals(post.text) &&
+                picture.equals(post.picture);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(tutorEmail, text, picture);
     }
 }
