@@ -18,4 +18,6 @@ public class AvailableTutorViewModel extends ViewModel {
     public AvailableTutorViewModel() {}
 
     public void addEvent(LocalDateTime when, String email)   {model.addEvent(new Event(email, when));}
+    public void deleteEvent(LocalDateTime when, String email)   {model.deleteEvent(new Event(email, when));}
+
 }

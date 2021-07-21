@@ -15,11 +15,8 @@ import java.util.List;
 public interface EventDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE) void insertEvent(Event event);
-    @Update void updateEvent(Event event);
     @Delete void deleteEvent(Event event);
-    @Query("SELECT * FROM Event") LiveData<List<Event>> getEvents();
     @Query("SELECT * FROM Event WHERE tutorEmail = :email") LiveData<List<Event>> getEventsByTutor(String email);
-    @Query("DELETE FROM Event WHERE tutorEmail = :email") void deleteByTutor(String email);
     @Query("DELETE FROM Event") void deleteAll();
 
 }

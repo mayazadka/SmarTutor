@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +21,11 @@ public class Model {
     public static Model getInstance(){
         if(model == null){
             model = new Model();
-            model.addLesson(new Lesson("a@gmail.com", "b@gmail.com", LocalDateTime.now(), Profession.MATH));
+            model.deleteAllLessons();
+            //model.deleteAllStudents();
+            //model.deleteAllTutors();
+            //model.deleteAllEvents();
+            model.addLesson(new Lesson("a@gmail.com", "a@gmail.com", LocalDate.now().atTime(17, 0), Profession.MATH));
         }
         return model;
     }
@@ -40,17 +45,15 @@ public class Model {
     public void deleteAllTutors()                                   {executorService.execute(()->AppLocalDB.db.tutorDao().deleteAll());}
 
     public LiveData<List<Lesson>> getLessons()                      {return AppLocalDB.db.lessonDao().getLessons();}
+    public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {return AppLocalDB.db.lessonDao().getLessonByTutor(tutorEmail, date);}
     public LiveData<List<Lesson>> getLessonsByStudent(String email) {return AppLocalDB.db.lessonDao().getLessonsByStudent(email);}
     public LiveData<List<Lesson>> getLessonsByTutor(String email)   {return AppLocalDB.db.lessonDao().getLessonsByTutor(email);}
     public void addLesson(Lesson lesson)                            {executorService.execute(()->AppLocalDB.db.lessonDao().insertLesson(lesson));}
-    public void deleteLessonsByTutor(String email)                  {executorService.execute(()->AppLocalDB.db.lessonDao().deleteByTutor(email));}
-    public void deleteLessonsByStudent(String email)                {executorService.execute(()->AppLocalDB.db.lessonDao().deleteByStudent(email));}
+    public void deleteLesson(Lesson lesson)                         {executorService.execute(()->AppLocalDB.db.lessonDao().deleteLesson(lesson));}
     public void deleteAllLessons()                                  {executorService.execute(()->AppLocalDB.db.lessonDao().deleteAll());}
 
-    public LiveData<List<Event>> getEvents()                        {return AppLocalDB.db.eventDao().getEvents();}
     public LiveData<List<Event>> getEventsByTutor(String email)     {return AppLocalDB.db.eventDao().getEventsByTutor(email);}
     public void addEvent(Event event)                               {executorService.execute(()->AppLocalDB.db.eventDao().insertEvent(event));}
-    public void deleteEventsByTutor(String email)                   {executorService.execute(()->AppLocalDB.db.eventDao().deleteByTutor(email));}
     public void deleteEvent(Event event)                            {executorService.execute(()->AppLocalDB.db.eventDao().deleteEvent(event));}
     public void deleteAllEvents()                                   {executorService.execute(()->AppLocalDB.db.eventDao().deleteAll());}
 

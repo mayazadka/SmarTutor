@@ -31,12 +31,19 @@
     <fragment
         android:id="@+id/lessonDetailsTutorFragment"
         android:name="com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorFragment"
-        android:label="fragment_lesson_details_tutor"
-        tools:layout="@layout/fragment_lesson_details_tutor" />
+        android:label="Cancel Lesson"
+        tools:layout="@layout/fragment_lesson_details_tutor" >
+        <argument
+            android:name="hour"
+            app:argType="integer" />
+        <argument
+            android:name="day"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/availableTutorFragment"
         android:name="com.example.smartutor.ui.available_tutor.AvailableTutorFragment"
-        android:label="Set Unvailable"
+        android:label="Set Availability"
         tools:layout="@layout/fragment_available_tutor">
         <argument
             android:name="hour"
@@ -44,6 +51,9 @@
         <argument
             android:name="day"
             app:argType="integer" />
+        <argument
+            android:name="available"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/nav_my_feed_tutor"

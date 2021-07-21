@@ -79,7 +79,7 @@ public class HomeTutorFragment extends Fragment {
                 }
                 else{
                     img.setOnClickListener(v -> {
-                        HomeTutorFragmentDirections.ActionNavHomeTutorToAvailableTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToAvailableTutorFragment(hour, day);
+                        HomeTutorFragmentDirections.ActionNavHomeTutorToAvailableTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToAvailableTutorFragment(hour, day, false);
                         Navigation.findNavController(root).navigate(action);
                     });
                 }
@@ -134,7 +134,8 @@ public class HomeTutorFragment extends Fragment {
                     ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
                     img.setImageResource(R.drawable.ic_baseline_info_24);
                     img.setOnClickListener(v -> {
-                        Navigation.findNavController(root).navigate(R.id.action_nav_home_tutor_to_lessonDetailsTutorFragment);
+                        HomeTutorFragmentDirections.ActionNavHomeTutorToLessonDetailsTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToLessonDetailsTutorFragment(date.getHour(), (date.getDayOfWeek().getValue() % 7) + 1);
+                        Navigation.findNavController(root).navigate(action);
                     });
                 }
             }
@@ -148,7 +149,8 @@ public class HomeTutorFragment extends Fragment {
                 ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
                 img.setImageResource(R.drawable.ic_baseline_info_24);
                 img.setOnClickListener(v -> {
-                    Log.d("omer", date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:mm")));
+                    HomeTutorFragmentDirections.ActionNavHomeTutorToAvailableTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToAvailableTutorFragment(date.getHour(), (date.getDayOfWeek().getValue() % 7) + 1, true);
+                    Navigation.findNavController(root).navigate(action);
                 });
             }
         });

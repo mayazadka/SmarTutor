@@ -38,16 +38,25 @@ public class AvailableTutorFragment extends Fragment {
 
         LocalDateTime now = LocalDateTime.now();
 
-        Log.d("aaa", Integer.toString(AvailableTutorFragmentArgs.fromBundle(getArguments()).getDay()));
-        Log.d("aaa", Integer.toString((now.getDayOfWeek().getValue() % 7) +1));
         dateTime = LocalDate.now().atTime(AvailableTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(AvailableTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
         date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
 
-        set.setOnClickListener(v -> {
-            viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"));
-            Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
-        });
+        if(!AvailableTutorFragmentArgs.fromBundle(getArguments()).getAvailable()){
+            set.setText("Set Unavailable");
+            set.setOnClickListener(v -> {
+                viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"));
+                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+            });
+        }
+        else{
+            set.setText("Set Available");
+            set.setOnClickListener(v -> {
+                viewModel.deleteEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"));
+                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+            });
+        }
+
         return root;
     }
 }
