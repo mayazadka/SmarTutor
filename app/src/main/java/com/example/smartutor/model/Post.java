@@ -20,30 +20,14 @@ public class Post {
         this.picture = picture;
     }
 
-    public int getId() {
-        return id;
-    }
-    public String getTutorEmail() {
-        return tutorEmail;
-    }
-    public String getText() {
-        return text;
-    }
-    public String getPicture() {
-        return picture;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public void setTutorEmail(String tutorEmail) {
-        this.tutorEmail = tutorEmail;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
+    public int getId()                              { return id; }
+    public String getTutorEmail()                   { return tutorEmail; }
+    public String getText()                         { return text; }
+    public String getPicture()                      { return picture; }
+    public void setId(int id)                       { this.id = id; }
+    public void setTutorEmail(String tutorEmail)    { this.tutorEmail = tutorEmail; }
+    public void setText(String text)                { this.text = text; }
+    public void setPicture(String picture)          { this.picture = picture;}
 
     @Override
     public boolean equals(Object o) {

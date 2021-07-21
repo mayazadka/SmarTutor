@@ -1,6 +1,11 @@
 package com.example.smartutor.model;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,5 +53,14 @@ public class Model {
     public void deleteEventsByTutor(String email)                   {executorService.execute(()->AppLocalDB.db.eventDao().deleteByTutor(email));}
     public void deleteEvent(Event event)                            {executorService.execute(()->AppLocalDB.db.eventDao().deleteEvent(event));}
     public void deleteAllEvents()                                   {executorService.execute(()->AppLocalDB.db.eventDao().deleteAll());}
+
+    public LiveData<List<Post>> getPosts()                          {return AppLocalDB.db.postDao().getPosts();}
+    public void addPost(Post post)                                  {executorService.execute(()->AppLocalDB.db.postDao().insertPost(post));}
+    public LiveData<List<Post>> getPostsByTutor(String email)       {return AppLocalDB.db.postDao().getPostsByTutor(email);}
+    public LiveData<Post> getPostById(int id)                       {return AppLocalDB.db.postDao().getPostById(id);}
+    public void updatePost(Post post)                               {executorService.execute(()->AppLocalDB.db.postDao().updatePost(post));}
+    public void deletePost(Post post)                               {executorService.execute(()->AppLocalDB.db.postDao().deletePost(post));}
+    public void deletePostByTutor(String email)                     {executorService.execute(()->AppLocalDB.db.postDao().deleteByTutor(email));}
+    public void deleteAllPosts()                                    {executorService.execute(()->AppLocalDB.db.postDao().deleteAll());}
 
 }

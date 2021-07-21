@@ -59,12 +59,12 @@
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="com.example.smartutor.AddPostFragment"
+        android:name="com.example.smartutor.ui.add_post.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" />
     <fragment
         android:id="@+id/editPostFragment"
-        android:name="com.example.smartutor.EditPostFragment"
+        android:name="com.example.smartutor.ui.edit_post.EditPostFragment"
         android:label="fragment_edit_post"
         tools:layout="@layout/fragment_edit_post" />
     <action
