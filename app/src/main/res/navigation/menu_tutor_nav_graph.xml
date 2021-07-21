@@ -36,8 +36,15 @@
     <fragment
         android:id="@+id/availableTutorFragment"
         android:name="com.example.smartutor.ui.available_tutor.AvailableTutorFragment"
-        android:label="fragment_available_tutor"
-        tools:layout="@layout/fragment_available_tutor" />
+        android:label="Set Unvailable"
+        tools:layout="@layout/fragment_available_tutor">
+        <argument
+            android:name="hour"
+            app:argType="integer" />
+        <argument
+            android:name="day"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/nav_my_feed_tutor"
         android:name="com.example.smartutor.ui.my_feed.MyFeedFragment"

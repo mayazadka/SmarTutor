@@ -2,10 +2,12 @@ package com.example.smartutor.ui.home_tutor;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -13,11 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragmentDirections;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +43,7 @@ public class HomeTutorFragment extends Fragment {
     private TextView nextLessonStudent;
     private TextView nextLessonDate;
     private ImageView nextLessonSubjectImg;
-
+    private LinearLayout calendarLinearLayout;
     private String email;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +60,31 @@ public class HomeTutorFragment extends Fragment {
         nextLessonStudent = root.findViewById(R.id.homeTutor_student_tv);
         nextLessonDate = root.findViewById(R.id.homeTutor_date_tv);
         nextLessonSubjectImg = root.findViewById(R.id.homeTutor_subject_img);
+        calendarLinearLayout = root.findViewById(R.id.homeTutor_calendar_ll);
 
+        for(int i=8;i<=20;i++){
+            for(int j = 1;j<=7;j++){
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                int hour = i;
+                int day = j;
+
+
+                if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 > day){
+                    img.setImageResource(R.drawable.ic_baseline_block_24);
+                }
+                else if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 == day && LocalDateTime.now().getHour() > hour){
+                    img.setImageResource(R.drawable.ic_baseline_block_24);
+                }
+                else{
+                    img.setOnClickListener(v -> {
+                        HomeTutorFragmentDirections.ActionNavHomeTutorToAvailableTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToAvailableTutorFragment(hour, day);
+                        Navigation.findNavController(root).navigate(action);
+                    });
+                }
+
+            }
+        }
         homeTutorViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> helloTv.setText("hello, " + tutor.getFirstName()+" " +tutor.getLastName()));
 
         homeTutorViewModel.getLessons().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
@@ -97,45 +126,24 @@ public class HomeTutorFragment extends Fragment {
                         nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
                         break;
                 }
+
+                for(Lesson lesson : Utilities.getRemainLessons(lessons)){
+                    try{
+                        LocalDateTime date = lesson.getDate();
+                        LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+                        ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+                        img.setImageResource(R.drawable.ic_baseline_info_24);
+                        img.setOnClickListener(v -> {
+                            Navigation.findNavController(root).navigate(R.id.action_nav_home_tutor_to_lessonDetailsTutorFragment);
+                        });
+                    }
+                    catch (Exception e){}
+                }
+
                 //TODO: calendar
             }
 
         });
-//
-//        Lesson nextLesson = homeTutorViewModel.getNextLessonTutor(emailStudent);
-//        if(nextLesson != null) {
-//            Student student = homeTutorViewModel.getStudent(nextLesson.getStudentEmail());
-//            nextLessonSubject.setText(nextLesson.getSubject().name());
-//            nextLessonStudent.setText(student.getFirstName() + " " + student.getLastName());
-//            nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
-//
-//            switch (nextLesson.getSubject()) {
-//                case MATH:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-//                    break;
-//                case HISTORY:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-//                    break;
-//                case SCIENCE:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-//                    break;
-//                case LANGUAGE:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-//                    break;
-//                case LITERATURE:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-//                    break;
-//                case COMPUTERSCIENCE:
-//                    nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-//                    break;
-//            }
-//        }
-//        else {
-//            nextLessonSubject.setText("");
-//            nextLessonStudent.setText("");
-//            nextLessonDate.setText("");
-//            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-//        }
 
         return root;
     }
