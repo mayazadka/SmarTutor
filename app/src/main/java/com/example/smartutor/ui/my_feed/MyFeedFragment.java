@@ -20,9 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.model.Tutor;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,13 +64,6 @@ public class MyFeedFragment extends Fragment {
             else { listPosts = posts; }
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
-
-        /*posts = new LinkedList<>();
-        posts.add(new Post("" , "hi", "1"));
-        posts.add(new Post("", "bye", "1"));
-        posts.add(new Post("", "what?", "1"));
-        posts.add(new Post("", "really!!", "1"));
-        posts.add(new Post("", "OMG", "1"));*/
 
         return view;
     }

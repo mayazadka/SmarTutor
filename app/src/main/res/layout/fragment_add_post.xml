@@ -56,14 +56,24 @@
     <ImageView
         android:id="@+id/addPost_image_img"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_height="306dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/addPost_description_etml"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/addPost_description_etml"
         app:layout_constraintTop_toBottomOf="@+id/addPost_description_etml"
+        app:srcCompat="@drawable/logo"
         tools:src="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/addPost_editImage_btn"
+        android:layout_width="59dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_camera"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/addPost_image_img"
+        app:layout_constraintEnd_toEndOf="@+id/addPost_image_img" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

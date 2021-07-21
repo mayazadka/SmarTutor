@@ -71,7 +71,11 @@
         android:id="@+id/addPostFragment"
         android:name="com.example.smartutor.ui.add_post.AddPostFragment"
         android:label="fragment_add_post"
-        tools:layout="@layout/fragment_add_post" />
+        tools:layout="@layout/fragment_add_post" >
+        <action
+            android:id="@+id/action_addPostFragment_to_nav_my_feed_tutor"
+            app:destination="@id/nav_my_feed_tutor" />
+    </fragment>
     <fragment
         android:id="@+id/editPostFragment"
         android:name="com.example.smartutor.ui.edit_post.EditPostFragment"

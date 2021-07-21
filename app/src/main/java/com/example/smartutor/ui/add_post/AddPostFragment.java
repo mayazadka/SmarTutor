@@ -1,17 +1,22 @@
 package com.example.smartutor.ui.add_post;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.smartutor.R;
@@ -26,6 +31,11 @@ public class AddPostFragment extends Fragment {
     private EditText description;
     private Button addBtn;
     private ImageView image;
+    private ImageButton editImage;
+
+    // images
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    Bitmap imageBitmap;
 
     public AddPostFragment(){
         // Required empty public constructor
@@ -47,12 +57,37 @@ public class AddPostFragment extends Fragment {
         addBtn.setOnClickListener(v -> {
             Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "123");
             addPostViewModel.addPost(post);
-            /*Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-            intent.putExtra("EMAIL", email.getText().toString());
-            Navigation.findNavController(view).navigate(R.id.action_global_signIn);
-            startActivity(intent);*/
+            Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
         });
 
+        // camera
+        editImage = view.findViewById(R.id.addPost_editImage_btn);
+        editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
         return view;
+    }
+
+    void takePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_IMAGE_CAPTURE){
+            if(resultCode == Activity.RESULT_OK){
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                image.setImageBitmap(imageBitmap);
+            }
+        }
     }
 }
