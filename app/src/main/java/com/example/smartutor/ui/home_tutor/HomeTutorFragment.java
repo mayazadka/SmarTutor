@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
+import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
@@ -128,21 +129,28 @@ public class HomeTutorFragment extends Fragment {
                 }
 
                 for(Lesson lesson : Utilities.getRemainLessons(lessons)){
-                    try{
-                        LocalDateTime date = lesson.getDate();
-                        LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
-                        ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
-                        img.setImageResource(R.drawable.ic_baseline_info_24);
-                        img.setOnClickListener(v -> {
-                            Navigation.findNavController(root).navigate(R.id.action_nav_home_tutor_to_lessonDetailsTutorFragment);
-                        });
-                    }
-                    catch (Exception e){}
+                    LocalDateTime date = lesson.getDate();
+                    LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+                    ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+                    img.setImageResource(R.drawable.ic_baseline_info_24);
+                    img.setOnClickListener(v -> {
+                        Navigation.findNavController(root).navigate(R.id.action_nav_home_tutor_to_lessonDetailsTutorFragment);
+                    });
                 }
-
-                //TODO: calendar
             }
 
+        });
+
+        homeTutorViewModel.getEvents().observe(getViewLifecycleOwner(), events ->{
+            for(Event event : Utilities.getRemainEvents(events)){
+                LocalDateTime date = event.getDate();
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+                ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+                img.setImageResource(R.drawable.ic_baseline_info_24);
+                img.setOnClickListener(v -> {
+                    Log.d("omer", date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:mm")));
+                });
+            }
         });
 
         return root;

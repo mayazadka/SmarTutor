@@ -2,6 +2,7 @@ package com.example.smartutor;
 
 import android.util.Log;
 
+import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Profession;
 
@@ -97,6 +98,16 @@ public class Utilities {
             }
         }
         return remainLessons;
+    }
+    public static List<Event> getRemainEvents(List<Event> events) {
+        List<Event> remainEvents = new LinkedList<>();
+        Collections.sort(events, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
+        for(int i = 0; i < events.size(); i++){
+            if(events.get(i).getDate().plusHours(1).isAfter(LocalDateTime.now())) {
+                remainEvents.add(events.get(i));
+            }
+        }
+        return remainEvents;
     }
     public static Lesson getNextLesson(List<Lesson> lessons) {
         List<Lesson> remain = getRemainLessons(lessons);
