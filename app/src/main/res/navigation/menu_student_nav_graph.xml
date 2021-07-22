@@ -82,15 +82,13 @@
         <argument
             android:name="day"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_scheduleLessonStudentFragment_to_nav_tutor_details_student"
+            app:destination="@id/nav_tutor_details_student" />
     </fragment>
     <action
         android:id="@+id/action_global_nav_home_student"
         app:destination="@id/nav_home_student"
         app:popUpTo="@id/nav_home_student"
-        app:popUpToInclusive="true" />
-    <action
-        android:id="@+id/action_global_nav_tutor_details_student"
-        app:destination="@id/nav_tutor_details_student"
-        app:popUpTo="@id/nav_tutor_details_student"
         app:popUpToInclusive="true" />
 </navigation>

@@ -106,10 +106,10 @@
         android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleLessonStudent_subject_spn" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/scheduleLessonStudent_subject_spn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
