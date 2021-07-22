@@ -3,64 +3,78 @@ package com.example.smartutor.ui.schedule_lesson_student;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Profession;
+import com.example.smartutor.ui.available_tutor.AvailableTutorFragmentArgs;
+import com.example.smartutor.ui.available_tutor.AvailableTutorViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ScheduleLessonStudentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ScheduleLessonStudentFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    TextView date;
+    TextView hour;
+    TextView tutorName;
+    Button schedule;
+    ImageView img;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    LocalDateTime dateTime;
+    Profession subject;
 
     public ScheduleLessonStudentFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ScheduleLessonStudentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ScheduleLessonStudentFragment newInstance(String param1, String param2) {
-        ScheduleLessonStudentFragment fragment = new ScheduleLessonStudentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ScheduleLessonStudentViewModel viewModel = new ViewModelProvider(this).get(ScheduleLessonStudentViewModel.class);
+        viewModel.initial(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
+        View root = inflater.inflate(R.layout.fragment_schedule_lesson_student, container, false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule_lesson_student, container, false);
+        date = root.findViewById(R.id.scheduleLessonStudent_date_tv);
+        hour = root.findViewById(R.id.scheduleLessonStudent_hour_tv);
+        schedule = root.findViewById(R.id.scheduleLessonStudent_schedule_btn);
+        tutorName = root.findViewById(R.id.scheduleLessonStudent_tutor_tv);
+        img = root.findViewById(R.id.scheduleLessonStudent_subject_img);
+
+        subject = null;
+
+        LocalDateTime now = LocalDateTime.now();
+
+        dateTime = LocalDate.now().atTime(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
+        date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+        img.setImageResource(R.drawable.ic_baseline_block_24);
+
+        viewModel.getTutor().observe(getViewLifecycleOwner(), t ->{
+            if(t!=null){
+                tutorName.setText(t.getFirstName() +" "+t.getLastName());
+            }
+        });
+
+        schedule.setOnClickListener(v -> {
+            if(subject == null){
+                Snackbar.make(v, "choosw subject", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+            else{
+                viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject);
+                Navigation.findNavController(root).navigate(R.id.action_global_nav_tutor_details_student);
+            }
+        });
+
+        return root;
     }
 }

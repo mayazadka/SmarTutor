@@ -27,6 +27,8 @@ public class AvailableTutorFragment extends Fragment {
     Button set;
     LocalDateTime dateTime;
 
+    public AvailableTutorFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AvailableTutorViewModel viewModel = new ViewModelProvider(this).get(AvailableTutorViewModel.class);

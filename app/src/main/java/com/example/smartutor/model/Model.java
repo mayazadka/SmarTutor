@@ -47,6 +47,7 @@ public class Model {
 
     public LiveData<List<Lesson>> getLessons()                      {return AppLocalDB.db.lessonDao().getLessons();}
     public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {return AppLocalDB.db.lessonDao().getLessonByTutor(tutorEmail, date);}
+    public LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date) {return AppLocalDB.db.lessonDao().getLessonByStudent(studentEmail, date);}
     public LiveData<List<Lesson>> getLessonsByStudent(String email) {return AppLocalDB.db.lessonDao().getLessonsByStudent(email);}
     public LiveData<List<Lesson>> getLessonsByTutor(String email)   {return AppLocalDB.db.lessonDao().getLessonsByTutor(email);}
     public void addLesson(Lesson lesson)                            {executorService.execute(()->AppLocalDB.db.lessonDao().insertLesson(lesson));}

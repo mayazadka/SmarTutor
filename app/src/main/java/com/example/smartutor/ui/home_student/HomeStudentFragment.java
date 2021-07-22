@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -13,11 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.home_tutor.HomeTutorFragmentDirections;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,6 +41,7 @@ public class HomeStudentFragment extends Fragment {
     private TextView nextLessonTutor;
     private TextView nextLessonDate;
     private ImageView nextLessonSubjectImg;
+    private LinearLayout calendarLinearLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeStudentViewModel = new ViewModelProvider(this).get(HomeStudentViewModel.class);
@@ -52,6 +57,15 @@ public class HomeStudentFragment extends Fragment {
         nextLessonTutor = root.findViewById(R.id.homeStudent_tutor_tv);
         nextLessonDate = root.findViewById(R.id.homeStudent_date_tv);
         nextLessonSubjectImg = root.findViewById(R.id.homeStudent_subject_img);
+        calendarLinearLayout = root.findViewById(R.id.homeStudent_calendar_ll);
+
+        for(int i=8;i<=20;i++){
+            for(int j = 1;j<=7;j++){
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                img.setImageResource(R.drawable.ic_baseline_block_24);
+            }
+        }
 
         homeStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> helloTv.setText("hello, " + student.getFirstName()+" " +student.getLastName()));
 
@@ -93,7 +107,17 @@ public class HomeStudentFragment extends Fragment {
                         nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
                         break;
                 }
-                //TODO: calendar
+
+                for(Lesson lesson : Utilities.getRemainLessons(lessons)){
+                    LocalDateTime date = lesson.getDate();
+                    LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+                    ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+                    img.setImageResource(R.drawable.ic_baseline_info_24);
+                    img.setOnClickListener(v -> {
+                        HomeStudentFragmentDirections.ActionNavHomeStudentToLessonDetailsStudentFragment action = HomeStudentFragmentDirections.actionNavHomeStudentToLessonDetailsStudentFragment(date.getHour(), (date.getDayOfWeek().getValue() % 7) + 1);
+                        Navigation.findNavController(root).navigate(action);
+                    });
+                }
 
             }
 

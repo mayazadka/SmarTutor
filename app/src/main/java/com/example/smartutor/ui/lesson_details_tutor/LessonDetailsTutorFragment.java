@@ -35,6 +35,8 @@ public class LessonDetailsTutorFragment extends Fragment {
 
     LocalDateTime dateTime;
 
+    public LessonDetailsTutorFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LocalDateTime now = LocalDateTime.now();

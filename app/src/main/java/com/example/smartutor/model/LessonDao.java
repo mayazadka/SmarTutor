@@ -19,6 +19,7 @@ public interface LessonDao {
     @Delete void deleteLesson(Lesson lesson);
     @Query("SELECT * FROM Lesson") LiveData<List<Lesson>> getLessons();
     @Query("SELECT * FROM Lesson WHERE tutorEmail = :tutorEmail and date = :date Limit 1") LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date);
+    @Query("SELECT * FROM Lesson WHERE studentEmail = :studentEmail and date = :date Limit 1") LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date);
     @Query("SELECT * FROM Lesson WHERE studentEmail = :email") LiveData<List<Lesson>> getLessonsByStudent(String email);
     @Query("SELECT * FROM Lesson WHERE tutorEmail = :email") LiveData<List<Lesson>> getLessonsByTutor(String email);
     @Query("DELETE FROM Lesson") void deleteAll();

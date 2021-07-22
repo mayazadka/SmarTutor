@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/lessonDetailsTutorFragment"
         android:name="com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorFragment"
-        android:label="Cancel Lesson"
-        tools:layout="@layout/fragment_lesson_details_tutor" >
+        android:label="Lesson Details"
+        tools:layout="@layout/fragment_lesson_details_tutor">
         <argument
             android:name="hour"
             app:argType="integer" />
@@ -70,8 +70,8 @@
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.smartutor.ui.add_post.AddPostFragment"
-        android:label="fragment_add_post"
-        tools:layout="@layout/fragment_add_post" >
+        android:label="Add Post"
+        tools:layout="@layout/fragment_add_post">
         <action
             android:id="@+id/action_addPostFragment_to_nav_my_feed_tutor"
             app:destination="@id/nav_my_feed_tutor" />
@@ -79,7 +79,7 @@
     <fragment
         android:id="@+id/editPostFragment"
         android:name="com.example.smartutor.ui.edit_post.EditPostFragment"
-        android:label="fragment_edit_post"
+        android:label="Edit Post"
         tools:layout="@layout/fragment_edit_post" />
     <action
         android:id="@+id/action_global_nav_home_tutor"
