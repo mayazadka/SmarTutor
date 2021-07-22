@@ -73,9 +73,10 @@ public class AddPostFragment extends Fragment {
 
     void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+        /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
+        }*/
     }
 
     @Override
