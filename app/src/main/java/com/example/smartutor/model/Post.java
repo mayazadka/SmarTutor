@@ -3,12 +3,13 @@ package com.example.smartutor.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-@Entity()
+@Entity(primaryKeys = {"id"})
 public class Post {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
     private String tutorEmail;
     private String text;
     private String picture;
@@ -19,12 +20,18 @@ public class Post {
         this.text = text;
         this.picture = picture;
     }
+    public Post(Map<String, Object> json){
+        tutorEmail =              (String)json.get("tutorEmail");
+        text =                    (String)json.get("text");
+        picture =                 (String)json.get("picture");
+        id =                      (long)json.get("id");
+    }
 
-    public int getId()                              { return id; }
+    public Long getId()                             { return id; }
     public String getTutorEmail()                   { return tutorEmail; }
     public String getText()                         { return text; }
     public String getPicture()                      { return picture; }
-    public void setId(int id)                       { this.id = id; }
+    public void setId(Long id)                      { this.id = id; }
     public void setTutorEmail(String tutorEmail)    { this.tutorEmail = tutorEmail; }
     public void setText(String text)                { this.text = text; }
     public void setPicture(String picture)          { this.picture = picture;}
@@ -41,5 +48,14 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(tutorEmail, text, picture);
+    }
+
+    public Map<String, Object> toJson(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("tutorEmail", tutorEmail);
+        data.put("text", text);
+        data.put("picture", picture);
+        data.put("id", id);
+        return data;
     }
 }

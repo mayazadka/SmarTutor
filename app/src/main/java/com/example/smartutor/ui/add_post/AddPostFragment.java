@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 
 public class AddPostFragment extends Fragment {
@@ -35,6 +37,7 @@ public class AddPostFragment extends Fragment {
     // images
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap imageBitmap;
+    View view;
 
     public AddPostFragment(){
         // Required empty public constructor
@@ -46,7 +49,7 @@ public class AddPostFragment extends Fragment {
         addPostViewModel = new ViewModelProvider(this).get(AddPostViewModel.class);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        view = inflater.inflate(R.layout.fragment_add_post, container, false);
 
         // views setup
         description = view.findViewById(R.id.addPost_description_etml);
@@ -54,9 +57,7 @@ public class AddPostFragment extends Fragment {
         image = view.findViewById(R.id.addPost_image_img);
 
         addBtn.setOnClickListener(v -> {
-            Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "123");
-            addPostViewModel.addPost(post);
-            Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
+            savePost();
         });
 
         // camera
@@ -77,7 +78,6 @@ public class AddPostFragment extends Fragment {
         /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
         }*/
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,5 +89,36 @@ public class AddPostFragment extends Fragment {
                 image.setImageBitmap(imageBitmap);
             }
         }
+    }
+    private void savePicture(Long postId){
+        LiveData<Post> post = addPostViewModel.getPost(postId);
+
+        if(imageBitmap != null){
+            addPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), new AddPostViewModel.UploadImageListener() {
+                @Override
+                public void onComplete(String url) {
+                    addPostViewModel.updatePost(postId, new Post(post.getValue().getTutorEmail(), post.getValue().getText(), url), ()->{
+                        Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
+                    });
+                }
+            });
+        } else{
+            Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
+        }
+
+    }
+    private void savePost(){
+        // progress bar visible
+        addBtn.setEnabled(false);
+        editImage.setEnabled(false);
+        Post post = new Post();
+
+        post.setTutorEmail(getActivity().getIntent().getStringExtra("EMAIL"));
+        post.setText(description.getText().toString());
+        post.setPicture("");
+
+        addPostViewModel.addPost(post, ()->{
+            savePicture(post.getId());
+        });
     }
 }

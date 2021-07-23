@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -22,7 +24,9 @@ import android.widget.ImageView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Post;
+import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,21 +34,22 @@ import java.util.List;
 public class EditPostFragment extends Fragment {
     // view model
     private EditPostViewModel editPostViewModel;
-
-    private Post currentPost;
     private String tutorEmail;
-    private List<Post> listPosts;
+    Long postId;
 
     // views
     private EditText description;
     private ImageView image;
     private Button saveBtn;
     private Button cancelBtn;
+    private Button deleteBtn;
+
     private ImageButton editImage;
 
     // images
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap imageBitmap;
+    View view;
 
     public EditPostFragment(){
         // Required empty public constructor
@@ -55,46 +60,40 @@ public class EditPostFragment extends Fragment {
         // view model
         editPostViewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
         tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
-        editPostViewModel.initial(tutorEmail);
-
-        int position = EditPostFragmentArgs.fromBundle(getArguments()).getPosition();
-        Log.d("TAG", "position in editPost: " + position);
+        postId = EditPostFragmentArgs.fromBundle(getArguments()).getIdPost();
+        Log.d("TAG", "post id: " + postId + " email: " + tutorEmail);
+        editPostViewModel.initial(tutorEmail, postId);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
         // views setup
         description = view.findViewById(R.id.editPost_description_etml);
         image = view.findViewById(R.id.editPost_image_img);
         saveBtn = view.findViewById(R.id.editPost_save_btn);
         cancelBtn = view.findViewById(R.id.editPost_cancel_btn);
+        deleteBtn = view.findViewById(R.id.editPost_delete_btn);
 
-        listPosts = new LinkedList<>();
-
-        editPostViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){
-                listPosts = new LinkedList<Post>();
+        editPostViewModel.getPost().observe(getViewLifecycleOwner(), new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                if(post != null){
+                    description.setText(post.getText());
+                    image.setImageResource(R.drawable.ic_gender_male);
+                    if(post.getPicture() != null && post.getPicture() != ""){
+                        Picasso.get().load(post.getPicture()).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(image);
+                    }
+                }
             }
-            else { listPosts = posts; }
         });
 
-        // TODO: fix details of current post
-        //currentPost = listPosts.get(position);
-        //description.setText(currentPost.getText());
-
-        //TODO: update picture
-        //image.setImageResource(currentPost.getPicture());
-
-        // TODO: add action and fix this
-        saveBtn.setOnClickListener(v -> {
-            Post updatedPost = new Post(tutorEmail, description.getText().toString(), "123");
-            Log.d("TAG", "description: " + description.getText().toString());
-            editPostViewModel.updatePost(updatedPost);
-            Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
-        });
+        saveBtn.setOnClickListener(v -> { savePicture(); });
 
         cancelBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
+        });
+        deleteBtn.setOnClickListener(v -> {
+            editPostViewModel.deletePost(() -> {Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);});
         });
 
         // camera
@@ -127,5 +126,39 @@ public class EditPostFragment extends Fragment {
                 image.setImageBitmap(imageBitmap);
             }
         }
+    }
+
+    private void savePicture(){
+        // progress bar visible
+        saveBtn.setEnabled(false);
+        editImage.setEnabled(false);
+        cancelBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
+
+        Long postId = editPostViewModel.getPost().getValue().getId();
+
+        if(imageBitmap != null){
+            editPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), new AddPostViewModel.UploadImageListener() {
+                @Override
+                public void onComplete(String url) {
+                    savePost(url);
+                }
+            });
+        } else{ savePost(null); }
+    }
+    private void savePost(String url) {
+        Post post = new Post();
+        post.setTutorEmail(editPostViewModel.getPost().getValue().getTutorEmail());
+        post.setText(description.getText().toString());
+        post.setId(editPostViewModel.getPost().getValue().getId());
+        if (url == null) {
+            post.setPicture(editPostViewModel.getPost().getValue().getPicture());
+        }else{
+            post.setPicture(url);
+        }
+
+        editPostViewModel.updatePost(post.getId(), post, ()->{
+            Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
+        });
     }
 }

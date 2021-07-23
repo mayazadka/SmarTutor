@@ -1,7 +1,8 @@
 package com.example.smartutor.model;
 
-import android.util.Log;
+import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Delete;
@@ -11,6 +12,12 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.smartutor.MyApplication;
+import com.example.smartutor.ui.add_post.AddPostViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,11 +39,13 @@ public class Model {
     public MutableLiveData<LoadingState> tutorLoadingState = new MutableLiveData<>(LoadingState.loaded);
     public MutableLiveData<LoadingState> lessonLoadingState = new MutableLiveData<>(LoadingState.loaded);
     public MutableLiveData<LoadingState> eventLoadingState = new MutableLiveData<>(LoadingState.loaded);
+    public MutableLiveData<LoadingState> postLoadingState = new MutableLiveData<>(LoadingState.loaded);
 
     private MutableLiveData<List<Student>> students = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Tutor>> tutors = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Lesson>> lessons = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Event>> events = new MutableLiveData<>(new LinkedList<>());
+    private MutableLiveData<List<Post>> posts = new MutableLiveData<>(new LinkedList<>());
 
     private Model(){
         new ModelFireBase();
@@ -191,15 +200,46 @@ public class Model {
         getEvents();
     }
 
-    public LiveData<List<Post>> getPosts()                          {return AppLocalDB.db.postDao().getPosts();}
-    public void addPost(Post post)                                  {executorService.execute(()->AppLocalDB.db.postDao().insertPost(post));}
-    public LiveData<List<Post>> getPostsByTutor(String email)       {return AppLocalDB.db.postDao().getPostsByTutor(email);}
-    public LiveData<Post> getPostById(int id)                       {return AppLocalDB.db.postDao().getPostById(id);}
-    public void updatePost(Post post)                               {
-        Log.d("TAG", "description in model: " + post.getText());
-        executorService.execute(()->AppLocalDB.db.postDao().updatePost(post));}
-    public void deletePost(Post post)                               {executorService.execute(()->AppLocalDB.db.postDao().deletePost(post));}
-    public void deletePostByTutor(String email)                     {executorService.execute(()->AppLocalDB.db.postDao().deleteByTutor(email));}
-    public void deleteAllPosts()                                    {executorService.execute(()->AppLocalDB.db.postDao().deleteAll());}
+    public LiveData<List<Post>> getPosts() {
+        //studentsLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.getPosts((p)->{
+            posts.setValue(p);
+            //studentsLoadingState.setValue(LoadingState.loaded);
+        });
+        return posts;
+    }
+    public Long addPost(Post post, OnCompleteListener listener){
+        postLoadingState.setValue(LoadingState.loading);
+        Long id = ModelFireBase.addPost(post, listener);
+        getPosts();
+        return id;
+    }
+    public LiveData<Post> getPost(Long id) {
+        MutableLiveData<Post> post = new MutableLiveData<>();
+        ModelFireBase.getPosts(posts -> {
+            for(Post p : posts){
+                if(p.getId().equals(id)){
+                    post.setValue(p);
+                    return;
+                }
+            }
+            post.setValue(null);
+        });
+        getPosts();
+        return post;
+    }
+    public void updatePost(Long postId, Post post, OnCompleteListener listener){
+        postLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.updatePost(postId, post, listener);
+        getPost(post.getId());
+    }
+    public void deletePost(Post post, OnCompleteListener listener){
+        postLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.deletePost(post, listener);
+        getPosts();
+    }
 
+    public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
+        ModelFireBase.uploadImage(imageBmp, name, listener);
+    }
 }

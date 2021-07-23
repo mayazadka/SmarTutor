@@ -89,8 +89,8 @@
             android:id="@+id/action_editPostFragment_to_nav_my_feed_tutor"
             app:destination="@id/nav_my_feed_tutor" />
         <argument
-            android:name="position"
-            app:argType="integer" />
+            android:name="idPost"
+            app:argType="long" />
     </fragment>
     <action
         android:id="@+id/action_global_nav_home_tutor"

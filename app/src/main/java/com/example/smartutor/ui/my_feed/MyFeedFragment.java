@@ -23,11 +23,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.ui.edit_post.EditPostFragmentDirections;
+import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MyFeedFragment extends Fragment {
@@ -55,9 +59,8 @@ public class MyFeedFragment extends Fragment {
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
 
         adapter.setOnItemClickListener((v, p) ->{
-            MyFeedFragmentDirections.ActionNavMyFeedTutorToEditPostFragment action = MyFeedFragmentDirections.actionNavMyFeedTutorToEditPostFragment();
-            Log.d("TAG", "position in myFeed: " + p);
-            action.setPosition(p);
+            Log.d("TAG", "id: " + listPosts.get(p).getId() + " " + listPosts.get(p).getText());
+            MyFeedFragmentDirections.ActionNavMyFeedTutorToEditPostFragment action = MyFeedFragmentDirections.actionNavMyFeedTutorToEditPostFragment(listPosts.get(p).getId());
             Navigation.findNavController(view).navigate(action);
         });
         postListRecyclerView.setAdapter(adapter);
@@ -69,7 +72,9 @@ public class MyFeedFragment extends Fragment {
             if(posts == null){
                 listPosts = new LinkedList<Post>();
             }
-            else { listPosts = posts; }
+            else {
+                listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
+            }
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
 
@@ -105,6 +110,9 @@ public class MyFeedFragment extends Fragment {
             this.owner.setText(owner);
             this.description.setText(description);
             this.postImg.setImageResource(R.drawable.ic_gender_male);
+            if(image != null && image != ""){
+                Picasso.get().load(image).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(this.postImg);
+            }
         }
     }
     public interface OnItemClickListener {
@@ -130,7 +138,7 @@ public class MyFeedFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);
-            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), null, post.getText()));
+            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText()));
         }
 
         @Override

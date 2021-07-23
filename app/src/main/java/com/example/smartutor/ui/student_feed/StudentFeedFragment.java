@@ -24,6 +24,7 @@ import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.my_feed.MyFeedFragment;
 import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
 import com.example.smartutor.ui.my_feed.MyFeedViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +54,6 @@ public class StudentFeedFragment extends Fragment {
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StudentFeedFragment.MyAdapter adapter = new StudentFeedFragment.MyAdapter();
 
-        // TODO: open tutor details
         adapter.setOnItemClickListener((v, p) ->{
             String tutorEmail = listPosts.get(p).getTutorEmail();
             StudentFeedFragmentDirections.ActionNavFeedStudentToNavTutorDetailsStudent action = StudentFeedFragmentDirections.actionNavFeedStudentToNavTutorDetailsStudent(tutorEmail);
@@ -101,8 +101,10 @@ public class StudentFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            // TODO: fix image
             this.postImg.setImageResource(R.drawable.ic_gender_male);
+            if(image != null && image != ""){
+                Picasso.get().load(image).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(this.postImg);
+            }
         }
     }
     public interface OnItemClickListener {
@@ -128,9 +130,8 @@ public class StudentFeedFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull StudentFeedFragment.StudentFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);
-            // TODO: correct the names
             Tutor tutor = studentFeedViewModel.getTutor(post.getTutorEmail());
-            holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), null, post.getText());
+            holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText());
         }
 
         @Override

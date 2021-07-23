@@ -1,9 +1,21 @@
 package com.example.smartutor.model;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
+import androidx.annotation.NonNull;
+
+import com.example.smartutor.ui.add_post.AddPostViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,6 +23,7 @@ import java.util.function.Consumer;
 public class ModelFireBase {
     private static Long lessonID = Long.valueOf(0);
     private static Long eventID = Long.valueOf(0);
+    private static Long postID = Long.valueOf(0);
 
     public ModelFireBase(){
         FirebaseFirestore.getInstance().collection("lessons")
@@ -32,6 +45,17 @@ public class ModelFireBase {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             eventID = (Long)document.get("id")+1;
+                        }
+                    } else {}
+                });
+        FirebaseFirestore.getInstance().collection("posts")
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            postID = (Long)document.get("id")+1;
                         }
                     } else {}
                 });
@@ -69,7 +93,6 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
-
     public static void getTutors(Consumer<List<Tutor>> consumer){
         FirebaseFirestore.getInstance().collection("tutors")
                 .get()
@@ -102,7 +125,6 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
-
     public static void getLessons(Consumer<List<Lesson>> consumer){
         FirebaseFirestore.getInstance().collection("lessons")
                 .get()
@@ -131,7 +153,6 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
-
     public static void getEvents(Consumer<List<Event>> consumer){
         FirebaseFirestore.getInstance().collection("events")
                 .get()
@@ -159,5 +180,67 @@ public class ModelFireBase {
                 .delete()
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
+    }
+    public static void getPosts(Consumer<List<Post>> consumer){
+        FirebaseFirestore.getInstance().collection("posts")
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<Post> posts = new LinkedList<>();
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            posts.add(new Post(document.getData()));
+                        }
+                    } else {}
+                    consumer.accept(posts);
+                });
+    }
+    public static Long addPost(Post post, Model.OnCompleteListener listener){
+        post.setId(postID);
+        postID++;
+        FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
+                .set(post.toJson())
+                .addOnSuccessListener(v->listener.onComplete())
+                .addOnFailureListener(v->listener.onComplete());
+        return post.getId();
+    }
+    public static void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
+        post.setId(postId);
+        FirebaseFirestore.getInstance().collection("posts").document(postId.toString())
+                .set(post.toJson())
+                .addOnSuccessListener(v->listener.onComplete())
+                .addOnFailureListener(v->listener.onComplete());
+    }
+    public static void deletePost(Post post, Model.OnCompleteListener listener){
+        FirebaseFirestore.getInstance()
+                .collection("posts").document(post.getId().toString())
+                .delete()
+                .addOnSuccessListener(aVoid -> listener.onComplete())
+                .addOnFailureListener(aVoid -> listener.onComplete());
+    }
+
+    public static void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference imagesRef = storage.getReference().child("pictures").child(name);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = imagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete(null);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Uri downloadUrl = uri;
+                        listener.onComplete(downloadUrl.toString());
+                    }
+                });
+            }
+        });
     }
 }

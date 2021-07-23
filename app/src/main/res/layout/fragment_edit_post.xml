@@ -8,7 +8,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -18,17 +23,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="Cancel"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/editPost_delete_btn"
                 app:layout_constraintEnd_toStartOf="@+id/editPost_save_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editPost_image_img" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/editPost_description_tv"
@@ -75,8 +78,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/editPost_cancel_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/editPost_cancel_btn"
-                app:layout_constraintTop_toTopOf="@+id/editPost_cancel_btn" />
+                app:layout_constraintStart_toEndOf="@+id/editPost_cancel_btn" />
 
             <ImageView
                 android:id="@+id/editPost_image_img"
@@ -85,9 +87,13 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/editPost_cancel_btn"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editPost_description_etml"
+                app:srcCompat="@drawable/logo"
                 tools:src="@tools:sample/avatars" />
 
             <ImageButton
@@ -101,13 +107,21 @@
                 app:layout_constraintBottom_toBottomOf="@+id/editPost_image_img"
                 app:layout_constraintEnd_toEndOf="@+id/editPost_image_img" />
 
+            <Button
+                android:id="@+id/editPost_delete_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Delete Post"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/editPost_save_btn"
+                app:layout_constraintStart_toStartOf="@+id/editPost_cancel_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
