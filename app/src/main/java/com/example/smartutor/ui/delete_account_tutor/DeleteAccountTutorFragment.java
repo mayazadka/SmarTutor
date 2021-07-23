@@ -35,8 +35,7 @@ public class DeleteAccountTutorFragment extends Fragment {
         no = root.findViewById(R.id.deleteAccountTutor_no_btn);
 
         yes.setOnClickListener(v -> {
-            deleteAccountTutorViewModel.deleteTutor();
-            getActivity().finish();
+            deleteAccountTutorViewModel.deleteTutor(()->getActivity().finish());
         });
 
         no.setOnClickListener(v -> Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));

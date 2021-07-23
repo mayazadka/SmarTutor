@@ -20,11 +20,10 @@ public class HomeStudentViewModel extends ViewModel {
     private Model model = Model.getInstance();
     private LiveData<Student> student;
     private LiveData<List<Lesson>> lessons;
-
     public HomeStudentViewModel() {}
     public void initial(String email){
         student = model.getStudent(email);
-        lessons = model.getLessonsByStudent(email);
+        lessons = model.getLessons();
     }
 
     public LiveData<Student> getStudent()               {return student;}

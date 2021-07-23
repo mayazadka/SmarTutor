@@ -94,8 +94,7 @@ public class LessonDetailsTutorFragment extends Fragment {
         });
 
         cancel.setOnClickListener(v -> {
-            viewModel.deleteLesson();
-            Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+            viewModel.deleteLesson(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
         });
 
         return root;

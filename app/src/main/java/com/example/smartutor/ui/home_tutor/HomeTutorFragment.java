@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeTutorFragment extends Fragment {
@@ -93,6 +94,7 @@ public class HomeTutorFragment extends Fragment {
 
             @Override
             public void onChanged(List<Lesson> lessons) {
+                lessons = lessons.stream().filter(lesson -> lesson.getTutorEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
                 if(student!=null){student.removeObservers(getViewLifecycleOwner());}
 
                 thisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
@@ -143,6 +145,7 @@ public class HomeTutorFragment extends Fragment {
         });
 
         homeTutorViewModel.getEvents().observe(getViewLifecycleOwner(), events ->{
+            events = events.stream().filter(e -> e.getTutorEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
             for(Event event : Utilities.getRemainEvents(events)){
                 LocalDateTime date = event.getDate();
                 LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);

@@ -18,6 +18,6 @@ public class ScheduleLessonStudentViewModel extends ViewModel {
     public ScheduleLessonStudentViewModel() {}
     public void initial(String email){tutor = model.getTutor(email);}
 
-    public void addLesson(LocalDateTime when, String tutorEmail, String studentEmail, Profession subject)   {model.addLesson(new Lesson(studentEmail, tutorEmail, when, subject));}
+    public void addLesson(LocalDateTime when, String tutorEmail, String studentEmail, Profession subject, Model.OnCompleteListener listener)   {model.addLesson(new Lesson(studentEmail, tutorEmail, when, subject, null), listener);}
     public LiveData<Tutor> getTutor(){return tutor;}
 }

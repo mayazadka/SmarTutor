@@ -29,6 +29,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class TutorDetailsFragment extends Fragment {
@@ -124,7 +126,16 @@ public class TutorDetailsFragment extends Fragment {
         });
 
         tutorDetailsViewModel.getLessons().observe(getViewLifecycleOwner(), lessons -> {
-            for(Lesson lesson : Utilities.getRemainLessons(lessons)){
+            List<Lesson> tutorLessons = lessons.stream().filter(lesson -> lesson.getTutorEmail().equals(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail())).collect(Collectors.toList());
+            for(Lesson lesson : Utilities.getRemainLessons(tutorLessons)){
+                LocalDateTime date = lesson.getDate();
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+                ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+                img.setImageResource(R.drawable.ic_baseline_block_24);
+                img.setOnClickListener(null);
+            }
+            List<Lesson> studentLessons = lessons.stream().filter(lesson -> lesson.getStudentEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
+            for(Lesson lesson : Utilities.getRemainLessons(studentLessons)){
                 LocalDateTime date = lesson.getDate();
                 LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
                 ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);

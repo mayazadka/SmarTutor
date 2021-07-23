@@ -2,14 +2,17 @@ package com.example.smartutor.ui.home_student;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -19,6 +22,7 @@ import androidx.navigation.Navigation;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.home_tutor.HomeTutorFragmentDirections;
@@ -29,6 +33,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeStudentFragment extends Fragment {
 
@@ -67,13 +72,18 @@ public class HomeStudentFragment extends Fragment {
             }
         }
 
-        homeStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> helloTv.setText("hello, " + student.getFirstName()+" " +student.getLastName()));
+        homeStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> {
+            if(student != null) {
+                helloTv.setText("hello, " + student.getFirstName() + " " + student.getLastName());
+            }
+        });
 
         homeStudentViewModel.getLessons().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
             private LiveData<Tutor> tutor = null;
 
             @Override
             public void onChanged(List<Lesson> lessons) {
+                lessons = lessons.stream().filter(lesson -> lesson.getStudentEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
                 if(tutor!=null){tutor.removeObservers(getViewLifecycleOwner());}
 
                 lessonsThisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));

@@ -7,11 +7,13 @@ import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
-public class Tutor {
+public class Tutor  {
     @PrimaryKey
     @NonNull
     private String email;
@@ -33,6 +35,16 @@ public class Tutor {
         this.professions = professions;
         this.aboutMe = aboutMe;
         this.password = password;
+    }
+    public Tutor(Map<String, Object> json){
+        email =             (String)json.get("email");
+        lastName =          (String)json.get("lastName");
+        firstName =         (String)json.get("firstName");
+        gender =            Converters.fromStringToGender((String)json.get("gender"));
+        birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
+        professions =       Converters.fromStringToProfessions((String)json.get("professions"));
+        aboutMe =           (String)json.get("aboutMe");
+        password =          (String)json.get("password");
     }
 
     public String getEmail()                                    {return email;}
@@ -62,5 +74,18 @@ public class Tutor {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    public Map<String, Object> toJson(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        data.put("lastName",  lastName);
+        data.put("firstName", firstName);
+        data.put("birthdayDate", Converters.fromDateToString(birthdayDate));
+        data.put("gender", Converters.fromGenderToString(gender));
+        data.put("professions",  Converters.fromProfessionsToString(professions));
+        data.put("aboutMe",  aboutMe);
+        data.put("password",  password);
+        return data;
     }
 }

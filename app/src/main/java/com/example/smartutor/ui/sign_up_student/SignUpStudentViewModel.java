@@ -29,10 +29,10 @@ public class SignUpStudentViewModel  extends ViewModel {
         students.observeForever(ss->{});
     }
 
-    public void addStudent(Student student)     {model.addStudent(student);}
+    public void addStudent(Student student, Model.OnCompleteListener listener)     {model.addStudent(student, listener);}
 
     public boolean isExistStudent(String email) throws Exception {
-        if(students.getValue() == null){throw new Exception("try again");}
+        if(students.getValue() == null){return false;}
         for (Student student : students.getValue()) {
             if (student.getEmail().equals(email)) {
                 return true;

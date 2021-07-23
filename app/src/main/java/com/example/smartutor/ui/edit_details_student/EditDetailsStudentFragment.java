@@ -113,7 +113,7 @@ public class EditDetailsStudentFragment extends Fragment {
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
                 Student student = new Student(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()), password.getText().toString());
-                editDetailsStudentViewModel.updateStudent(student);
+                editDetailsStudentViewModel.updateStudent(student, ()->{});
                 Navigation.findNavController(root).navigate(R.id.action_global_nav_home_student);
             }
             catch (Exception e) {

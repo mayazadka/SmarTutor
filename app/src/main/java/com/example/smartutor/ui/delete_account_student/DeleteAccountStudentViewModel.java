@@ -25,5 +25,5 @@ public class DeleteAccountStudentViewModel extends ViewModel {
         student.observeForever(student -> {});
     }
 
-    public void deleteStudent(){model.deleteStudent(student.getValue());}
+    public void deleteStudent(Model.OnCompleteListener listener){model.deleteStudent(student.getValue(), listener);}
 }

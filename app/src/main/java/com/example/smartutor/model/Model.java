@@ -1,63 +1,175 @@
 package com.example.smartutor.model;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.smartutor.MyApplication;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Model {
+    public enum LoadingState{loaded, loading, error}
+    public interface OnCompleteListener{
+        public void onComplete();
+    }
+
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static Model model = null;
 
-    private Model(){}
+    public MutableLiveData<LoadingState> studentLoadingState = new MutableLiveData<>(LoadingState.loaded);
+    public MutableLiveData<LoadingState> tutorLoadingState = new MutableLiveData<>(LoadingState.loaded);
+    public MutableLiveData<LoadingState> lessonLoadingState = new MutableLiveData<>(LoadingState.loaded);
+    public MutableLiveData<LoadingState> eventLoadingState = new MutableLiveData<>(LoadingState.loaded);
+
+    private MutableLiveData<List<Student>> students = new MutableLiveData<>(new LinkedList<>());
+    private MutableLiveData<List<Tutor>> tutors = new MutableLiveData<>(new LinkedList<>());
+    private MutableLiveData<List<Lesson>> lessons = new MutableLiveData<>(new LinkedList<>());
+    private MutableLiveData<List<Event>> events = new MutableLiveData<>(new LinkedList<>());
+
+    private Model(){
+        new ModelFireBase();
+        students.observeForever(s -> studentLoadingState.setValue(LoadingState.loaded));
+        tutors.observeForever(t -> tutorLoadingState.setValue(LoadingState.loaded));
+        lessons.observeForever(l -> lessonLoadingState.setValue(LoadingState.loaded));
+        events.observeForever(l -> eventLoadingState.setValue(LoadingState.loaded));
+    }
     public static Model getInstance(){
         if(model == null){
             model = new Model();
-            model.deleteAllLessons();
-            //model.deleteAllStudents();
-            //model.deleteAllTutors();
-            //model.deleteAllEvents();
-            //model.deleteAllPosts();
-            model.addLesson(new Lesson("a@gmail.com", "a@gmail.com", LocalDate.now().atTime(17, 0), Profession.MATH));
         }
         return model;
     }
 
-    public LiveData<List<Student>> getStudents()                    {return AppLocalDB.db.studentDao().getStudents();}
-    public void addStudent(Student student)                         {executorService.execute(()->AppLocalDB.db.studentDao().insertStudent(student));}
-    public LiveData<Student> getStudent(String email)               {return AppLocalDB.db.studentDao().getStudent(email);}
-    public void updateStudent(Student student)                      {executorService.execute(()->AppLocalDB.db.studentDao().updateStudent(student));}
-    public void deleteStudent(Student student)                      {executorService.execute(()->AppLocalDB.db.studentDao().deleteStudent(student));}
-    public void deleteAllStudents()                                 {executorService.execute(()->AppLocalDB.db.studentDao().deleteAll());}
+    public LiveData<List<Student>> getStudents(){
+        ModelFireBase.getStudents(s -> students.setValue(s));
+        return students;
+    }
+    public LiveData<Student> getStudent(String email){
+        MutableLiveData<Student> student = new MutableLiveData<>();
+        ModelFireBase.getStudents(s -> {
+            if(s.contains(new Student(email, null, null, null, null, 0, null))){
+                student.setValue(s.get(s.indexOf(new Student(email, null, null, null, null, 0, null))));
+            }
+            else{
+                student.setValue(null);
+            }
+        });
+        return student;
+    }
+    public void addStudent(Student student, OnCompleteListener listener){
+        studentLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.addStudent(student, listener);
+        getStudents();
+    }
+    public void updateStudent(Student student, OnCompleteListener listener){
+        studentLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.updateStudent(student, listener);
+        getStudent(student.getEmail());
+    }
+    public void deleteStudent(Student student, OnCompleteListener listener){
+        studentLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.deleteStudent(student, listener);
+        getStudent(student.getEmail());
+    }
 
-    public LiveData<List<Tutor>> getTutors()                        {return AppLocalDB.db.tutorDao().getTutors();}
-    public void addTutor(Tutor tutor)                               {executorService.execute(()->AppLocalDB.db.tutorDao().insertTutor(tutor));}
-    public LiveData<Tutor> getTutor(String email)                   {return AppLocalDB.db.tutorDao().getTutor(email);}
-    public void updateTutor(Tutor tutor)                            {executorService.execute(()->AppLocalDB.db.tutorDao().updateTutor(tutor));}
-    public void deleteTutor(Tutor tutor)                            {executorService.execute(()->AppLocalDB.db.tutorDao().deleteTutor(tutor));}
-    public void deleteAllTutors()                                   {executorService.execute(()->AppLocalDB.db.tutorDao().deleteAll());}
+    public LiveData<List<Tutor>> getTutors(){
+        ModelFireBase.getTutors(t -> tutors.setValue(t));
+        return tutors;
+    }
+    public LiveData<Tutor> getTutor(String email){
+        MutableLiveData<Tutor> tutor = new MutableLiveData<>();
+        ModelFireBase.getTutors(t -> {
+            if(t.contains(new Tutor(email, null, null, null, null, null, null, null))){
+                tutor.setValue(t.get(t.indexOf(new Tutor(email, null, null, null, null, null, null, null))));
+            }
+            else{
+                tutor.setValue(null);
+            }
+        });
+        return tutor;
+    }
+    public void addTutor(Tutor tutor, OnCompleteListener listener){
+        tutorLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.addTutor(tutor, listener);
+        getTutors();
+    }
+    public void updateTutor(Tutor tutor, OnCompleteListener listener){
+        tutorLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.updateTutor(tutor, listener);
+        getTutor(tutor.getEmail());
+    }
+    public void deleteTutor(Tutor tutor, OnCompleteListener listener){
+        tutorLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.deleteTutor(tutor, listener);
+        getTutor(tutor.getEmail());
+    }
 
-    public LiveData<List<Lesson>> getLessons()                      {return AppLocalDB.db.lessonDao().getLessons();}
-    public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {return AppLocalDB.db.lessonDao().getLessonByTutor(tutorEmail, date);}
-    public LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date) {return AppLocalDB.db.lessonDao().getLessonByStudent(studentEmail, date);}
-    public LiveData<List<Lesson>> getLessonsByStudent(String email) {return AppLocalDB.db.lessonDao().getLessonsByStudent(email);}
-    public LiveData<List<Lesson>> getLessonsByTutor(String email)   {return AppLocalDB.db.lessonDao().getLessonsByTutor(email);}
-    public void addLesson(Lesson lesson)                            {executorService.execute(()->AppLocalDB.db.lessonDao().insertLesson(lesson));}
-    public void deleteLesson(Lesson lesson)                         {executorService.execute(()->AppLocalDB.db.lessonDao().deleteLesson(lesson));}
-    public void deleteAllLessons()                                  {executorService.execute(()->AppLocalDB.db.lessonDao().deleteAll());}
+    public LiveData<List<Lesson>> getLessons(){
+        ModelFireBase.getLessons(l -> lessons.setValue(l));
+        return lessons;
+    }
+    public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {
+        MutableLiveData<Lesson> lessonByTutor = new MutableLiveData<>();
+        ModelFireBase.getLessons(l -> {
+            for(Lesson lesson : l){
+                if(lesson.getTutorEmail().equals(tutorEmail) && lesson.getDate().equals(date)){
+                    lessonByTutor.setValue(lesson);
+                    break;
+                }
+            }
+            lessonByTutor.setValue(null);
+        });
+        return lessonByTutor;
+    }
+    public LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date) {
+        MutableLiveData<Lesson> lessonByStudent = new MutableLiveData<>();
+        ModelFireBase.getLessons(l -> {
+            for(Lesson lesson : l){
+                if(lesson.getStudentEmail().equals(studentEmail) && lesson.getDate().equals(date)){
+                    lessonByStudent.setValue(lesson);
+                    break;
+                }
+            }
+            lessonByStudent.setValue(null);
+        });
+        return lessonByStudent;
+    }
+    public void addLesson(Lesson lesson, OnCompleteListener listener){
+        lessonLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.addLesson(lesson, listener);
+        getLessons();
+    }
+    public void deleteLesson(Lesson lesson, OnCompleteListener listener){
+        lessonLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.deleteLesson(lesson, listener);
+        getLessonByStudent(lesson.getStudentEmail(), lesson.getDate());
+        getLessonByTutor(lesson.getTutorEmail(), lesson.getDate());
+    }
 
-    public LiveData<List<Event>> getEventsByTutor(String email)     {return AppLocalDB.db.eventDao().getEventsByTutor(email);}
-    public void addEvent(Event event)                               {executorService.execute(()->AppLocalDB.db.eventDao().insertEvent(event));}
-    public void deleteEvent(Event event)                            {executorService.execute(()->AppLocalDB.db.eventDao().deleteEvent(event));}
-    public void deleteAllEvents()                                   {executorService.execute(()->AppLocalDB.db.eventDao().deleteAll());}
+    public LiveData<List<Event>> getEvents() {
+        ModelFireBase.getEvents(e -> events.setValue(e));
+        return events;
+    }
+    public void addEvent(Event event, OnCompleteListener listener){
+        eventLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.addEvent(event, listener);
+        getEvents();
+    }
+    public void deleteEvent(Event event, OnCompleteListener listener){
+        eventLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.deleteEvent(event, listener);
+        getEvents();
+    }
 
     public LiveData<List<Post>> getPosts()                          {return AppLocalDB.db.postDao().getPosts();}
     public void addPost(Post post)                                  {executorService.execute(()->AppLocalDB.db.postDao().insertPost(post));}

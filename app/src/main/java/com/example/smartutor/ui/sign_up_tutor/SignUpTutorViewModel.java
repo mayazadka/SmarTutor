@@ -31,10 +31,10 @@ public class SignUpTutorViewModel  extends ViewModel {
         tutors.observeForever(ts-> {});
     }
 
-    public void addTutor(Tutor tutor)   {model.addTutor(tutor);}
+    public void addTutor(Tutor tutor, Model.OnCompleteListener listener)   {model.addTutor(tutor, listener);}
 
     public boolean isExistTutor(String email) throws Exception {
-        if(tutors.getValue() == null){throw new Exception("try again");}
+        if(tutors.getValue() == null){return false;}
         for (Tutor tutor : tutors.getValue()) {
             if (tutor.getEmail().equals(email)) {
                 return true;

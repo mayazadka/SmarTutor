@@ -121,11 +121,13 @@ public class SignUpTutorFragment extends Fragment {
                 }
                 else{
                     Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString(), password.getText().toString());
-                    signUpTutorViewModel.addTutor(tutor);
-                    Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
-                    intent.putExtra("EMAIL", email.getText().toString());
-                    Navigation.findNavController(view).navigate(R.id.action_global_signIn);
-                    startActivity(intent);
+                    signUpTutorViewModel.addTutor(tutor, ()->{
+                        Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
+                        intent.putExtra("EMAIL", email.getText().toString());
+                        Navigation.findNavController(view).navigate(R.id.action_global_signIn);
+                        startActivity(intent);
+                    });
+
                 }
             }
             catch (Exception e){

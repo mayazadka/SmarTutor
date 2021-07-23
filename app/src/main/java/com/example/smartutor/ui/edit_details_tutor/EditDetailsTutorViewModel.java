@@ -29,6 +29,6 @@ public class EditDetailsTutorViewModel extends ViewModel {
         tutor = model.getTutor(email);
     }
 
-    public LiveData<Tutor> getTutor()           {return tutor;}
-    public void updateTutor(Tutor tutor)        {tutor.setEmail(this.tutor.getValue().getEmail()); model.updateTutor(tutor);}
+    public LiveData<Tutor> getTutor()                                           {return tutor;}
+    public void updateTutor(Tutor tutor, Model.OnCompleteListener listener)     {tutor.setEmail(this.tutor.getValue().getEmail()); model.updateTutor(tutor, listener);}
 }

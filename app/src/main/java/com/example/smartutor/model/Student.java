@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -30,6 +32,15 @@ public class Student {
         this.birthdayDate = birthdayDate;
         this.grade = grade;
         this.password = password;
+    }
+    public Student(Map<String, Object> json){
+        email =             (String)json.get("email");
+        lastName =          (String)json.get("lastName");
+        firstName =         (String)json.get("firstName");
+        gender =            Converters.fromStringToGender((String)json.get("gender"));
+        birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
+        grade =             ((Long)json.get("grade")).intValue();
+        password =          (String)json.get("password");
     }
 
     public String getEmail()                            {return email;}
@@ -57,5 +68,17 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    public Map<String, Object> toJson(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        data.put("lastName", lastName);
+        data.put("firstName",  firstName);
+        data.put("gender", Converters.fromGenderToString(gender));
+        data.put("birthdayDate",  Converters.fromDateToString(birthdayDate));
+        data.put("grade",  grade);
+        data.put("password",  password);
+        return data;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class SignUpStudentFragment extends Fragment {
     private EditText firstName;
     private EditText password;
     private EditText confirm;
+    private ProgressBar pb;
 
     public SignUpStudentFragment() {
         // Required empty public constructor
@@ -74,12 +76,13 @@ public class SignUpStudentFragment extends Fragment {
         firstName = view.findViewById(R.id.signUpStudent_firstName_et);
         password = view.findViewById(R.id.signUpStudent_password_et);
         confirm = view.findViewById(R.id.signUpStudent_confirmPassword_et);
+        pb = view.findViewById(R.id.signUpStudent_pb);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
         ArrayAdapter<CharSequence> gradeAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.grade,R.layout.spinner_item);
         grade.setAdapter(gradeAdapter);
-
+        pb.setVisibility(View.INVISIBLE);
 
         // events setup
         signIn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_global_signIn));
@@ -94,6 +97,8 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
+            pb.setVisibility(View.VISIBLE);
+            signUp.setEnabled(false);
             try {
                 Utilities.validateEmail(email.getText().toString());
                 Utilities.validateLastName(lastName.getText().toString());
@@ -102,18 +107,23 @@ public class SignUpStudentFragment extends Fragment {
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
                 if(signUpStudentViewModel.isExistStudent(email.getText().toString())){
                     Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    pb.setVisibility(View.INVISIBLE);
+                    signUp.setEnabled(true);
                 }
                 else{
                     Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()), password.getText().toString());
-                    signUpStudentViewModel.addStudent(student);
-                    Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-                    intent.putExtra("EMAIL", email.getText().toString());
-                    Navigation.findNavController(view).navigate(R.id.action_global_signIn);
-                    startActivity(intent);
+                    signUpStudentViewModel.addStudent(student, ()->{
+                        Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
+                        intent.putExtra("EMAIL", email.getText().toString());
+                        Navigation.findNavController(view).navigate(R.id.action_global_signIn);
+                        startActivity(intent);
+                    });
                 }
             }
             catch (Exception e) {
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                pb.setVisibility(View.INVISIBLE);
+                signUp.setEnabled(true);
             }
 
         });

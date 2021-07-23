@@ -19,7 +19,7 @@ public class LessonDetailsTutorViewModel extends ViewModel {
         lesson.observeForever(l->{ });
     }
 
-    public void deleteLesson()   {model.deleteLesson(lesson.getValue());}
+    public void deleteLesson(Model.OnCompleteListener listener)   {model.deleteLesson(lesson.getValue(), listener);}
     public LiveData<Student> getStudent(String email) {return model.getStudent(email);}
     public LiveData<Lesson> getLesson() {return lesson;}
 

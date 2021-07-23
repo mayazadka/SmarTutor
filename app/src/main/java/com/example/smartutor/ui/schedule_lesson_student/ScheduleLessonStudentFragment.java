@@ -69,28 +69,31 @@ public class ScheduleLessonStudentFragment extends Fragment {
             if(t!=null){
                 tutorName.setText(t.getFirstName() +" "+t.getLastName());
             }
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, android.R.id.text1);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            subjects.setAdapter(spinnerAdapter);
+
+            for(Profession profession:t.getProfessions()){
+                String p = profession.toString().replace("_", " ");
+                p = p.toLowerCase();
+                spinnerAdapter.add(p);
+            }
+            spinnerAdapter.notifyDataSetChanged();
         });
 
         schedule.setOnClickListener(v -> {
             if(subject == null){
-                Snackbar.make(v, "choosw subject", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(v, "choose subject", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
             else{
-                viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject);
-                ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
-                Navigation.findNavController(root).navigate(action);
+                viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject, ()->{
+                    ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
+                    Navigation.findNavController(root).navigate(action);
+                });
             }
         });
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, android.R.id.text1);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subjects.setAdapter(spinnerAdapter);
-        spinnerAdapter.add("Math");
-        spinnerAdapter.add("Language");
-        spinnerAdapter.add("Science");
-        spinnerAdapter.add("Computer Science");
-        spinnerAdapter.add("Literature");
-        spinnerAdapter.add("History");
+
         subjects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -127,7 +130,6 @@ public class ScheduleLessonStudentFragment extends Fragment {
             }
 
         });
-        spinnerAdapter.notifyDataSetChanged();
 
 
         return root;

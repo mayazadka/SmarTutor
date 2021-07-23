@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Entity(primaryKeys = {"studentEmail", "tutorEmail", "date"})
@@ -13,13 +15,22 @@ public class Lesson {
     @NonNull private String tutorEmail;
     @NonNull private LocalDateTime date;
     private Profession subject;
+    private Long id;
 
     public Lesson(){}
-    public Lesson(String studentEmail, String tutorEmail, LocalDateTime date, Profession subject) {
+    public Lesson(String studentEmail, String tutorEmail, LocalDateTime date, Profession subject, Long id) {
         this.studentEmail = studentEmail;
         this.tutorEmail = tutorEmail;
         this.date = date;
         this.subject = subject;
+        this.id = id;
+    }
+    public Lesson(Map<String, Object> json){
+        studentEmail =              (String)json.get("studentEmail");
+        tutorEmail =                (String)json.get("tutorEmail");
+        date =                      Converters.fromStringToLocalDateTime((String)json.get("date"));
+        subject =                   Converters.fromStringToProfession((String)json.get("subject"));
+        id =                        (long)json.get("id");
     }
 
     public String getStudentEmail()                     {return studentEmail;}
@@ -30,6 +41,8 @@ public class Lesson {
     public void setDate(LocalDateTime date)             {this.date = date;}
     public Profession getSubject()                      {return subject;}
     public void setSubject(Profession subject)          {this.subject = subject;}
+    public Long getId()                                 {return id;}
+    public void setId(Long id)                          {this.id = id;}
 
     @Override
     public boolean equals(Object o) {
@@ -43,5 +56,15 @@ public class Lesson {
     @Override
     public int hashCode() {
         return Objects.hash(studentEmail, tutorEmail, date);
+    }
+
+    public Map<String, Object> toJson(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("studentEmail", studentEmail);
+        data.put("tutorEmail", tutorEmail);
+        data.put("date",  Converters.fromLocalDateTimeToString(date));
+        data.put("subject",  Converters.fromProfessionToString(subject));
+        data.put("id", id);
+        return data;
     }
 }

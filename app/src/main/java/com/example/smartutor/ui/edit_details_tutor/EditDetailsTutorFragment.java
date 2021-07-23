@@ -93,31 +93,33 @@ public class EditDetailsTutorFragment extends Fragment {
         });
 
         editDetailsTutorViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
-            lastName.setText(tutor.getLastName());
-            firstName.setText(tutor.getFirstName());
-            switch (tutor.getGender()){
-                case MALE:
-                    gender.setSelection(0);
-                    break;
-                case FEMALE:
-                    gender.setSelection(1);
-                    break;
-                case OTHER:
-                    gender.setSelection(2);
-                    break;
+            if(tutor != null){
+                lastName.setText(tutor.getLastName());
+                firstName.setText(tutor.getFirstName());
+                switch (tutor.getGender()){
+                    case MALE:
+                        gender.setSelection(0);
+                        break;
+                    case FEMALE:
+                        gender.setSelection(1);
+                        break;
+                    case OTHER:
+                        gender.setSelection(2);
+                        break;
+                }
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat.setLenient(false);
+                date.setText(dateFormat.format(tutor.getBirthdayDate()));
+                Profession[] allProfessions = Profession.values();
+                boolean selected[] = new boolean[allProfessions.length];
+                for (int i=0;i<selected.length;i++){
+                    selected[i] = tutor.getProfessions().indexOf(allProfessions[i]) != -1;
+                }
+                professions.setSelected(selected);
+                aboutMe.setText(tutor.getAboutMe());
+                password.setText(tutor.getPassword());
+                confirm.setText(tutor.getPassword());
             }
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            dateFormat.setLenient(false);
-            date.setText(dateFormat.format(tutor.getBirthdayDate()));
-            Profession[] allProfessions = Profession.values();
-            boolean selected[] = new boolean[allProfessions.length];
-            for (int i=0;i<selected.length;i++){
-                selected[i] = tutor.getProfessions().indexOf(allProfessions[i]) != -1;
-            }
-            professions.setSelected(selected);
-            aboutMe.setText(tutor.getAboutMe());
-            password.setText(tutor.getPassword());
-            confirm.setText(tutor.getPassword());
         });
 
         save.setOnClickListener(v -> {
@@ -130,8 +132,7 @@ public class EditDetailsTutorFragment extends Fragment {
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
                 Tutor tutor = new Tutor(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString(), password.getText().toString());
-                editDetailsTutorViewModel.updateTutor(tutor);
-                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+                editDetailsTutorViewModel.updateTutor(tutor, ()-> Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             }
             catch (Exception e){
                 Snackbar.make(save, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();

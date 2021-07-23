@@ -24,7 +24,7 @@ public class TutorDetailsViewModel extends ViewModel {
     public TutorDetailsViewModel() {}
     public void initial(String email){
         tutor = model.getTutor(email);
-        lessons = model.getLessonsByTutor(email);
+        lessons = model.getLessons();
     }
 
     public LiveData<Tutor> getTutor()               { return tutor; }

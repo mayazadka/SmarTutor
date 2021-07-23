@@ -47,15 +47,13 @@ public class AvailableTutorFragment extends Fragment {
         if(!AvailableTutorFragmentArgs.fromBundle(getArguments()).getAvailable()){
             set.setText("Set Unavailable");
             set.setOnClickListener(v -> {
-                viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"));
-                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+                viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"), ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
         else{
             set.setText("Set Available");
             set.setOnClickListener(v -> {
-                viewModel.deleteEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"));
-                Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor);
+                viewModel.deleteEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"), ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
 

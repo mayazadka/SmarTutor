@@ -34,7 +34,7 @@ public class DeleteAccountStudentFragment extends Fragment {
         no = root.findViewById(R.id.deleteAccountStudent_no_btn);
 
         yes.setOnClickListener(v -> {
-            deleteAccountStudentViewModel.deleteStudent();
+            deleteAccountStudentViewModel.deleteStudent(()->{});
             getActivity().finish();
         });
 

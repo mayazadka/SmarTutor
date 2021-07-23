@@ -24,6 +24,6 @@ public class EditDetailsStudentViewModel extends ViewModel {
         student = model.getStudent(email);
     }
 
-    public LiveData<Student> getStudent()       {return student;}
-    public void updateStudent(Student student)  {student.setEmail(this.student.getValue().getEmail()); model.updateStudent(student);}
+    public LiveData<Student> getStudent()                                           {return student;}
+    public void updateStudent(Student student, Model.OnCompleteListener listener)  {student.setEmail(this.student.getValue().getEmail()); model.updateStudent(student, listener);}
 }
