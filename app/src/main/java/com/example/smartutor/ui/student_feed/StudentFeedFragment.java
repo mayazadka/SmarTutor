@@ -1,4 +1,4 @@
-package com.example.smartutor.ui.my_feed;
+package com.example.smartutor.ui.student_feed;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -6,9 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,74 +15,73 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.ui.edit_post.EditPostFragmentDirections;
+import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.my_feed.MyFeedFragment;
+import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
+import com.example.smartutor.ui.my_feed.MyFeedViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
 
+public class StudentFeedFragment extends Fragment {
 
-public class MyFeedFragment extends Fragment {
-    private MyFeedViewModel myFeedViewModel;
+    private StudentFeedViewModel studentFeedViewModel;
     private List<Post> listPosts;
-    private String tutorEmail;
 
+    //views
     private RecyclerView postListRecyclerView;
-    private Button add;
+
+    public StudentFeedFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
+        studentFeedViewModel = new ViewModelProvider(this).get(StudentFeedViewModel.class);
+        studentFeedViewModel.initial();
 
-        myFeedViewModel = new ViewModelProvider(this).get(MyFeedViewModel.class);
-        myFeedViewModel.initial(tutorEmail);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_student_feed, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_my_feed, container, false);
-
-        postListRecyclerView = view.findViewById(R.id.myFeed_list_rv);
-        add = view.findViewById(R.id.myFeed_addPost_btn);
+        postListRecyclerView = view.findViewById(R.id.studentFeed_list_rv);
         postListRecyclerView.setHasFixedSize(true);
-
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
+        StudentFeedFragment.MyAdapter adapter = new StudentFeedFragment.MyAdapter();
 
+        // TODO: open tutor details
         adapter.setOnItemClickListener((v, p) ->{
-            MyFeedFragmentDirections.ActionNavMyFeedTutorToEditPostFragment action = MyFeedFragmentDirections.actionNavMyFeedTutorToEditPostFragment();
-            Log.d("TAG", "position in myFeed: " + p);
-            action.setPosition(p);
+            String tutorEmail = listPosts.get(p).getTutorEmail();
+            StudentFeedFragmentDirections.ActionNavFeedStudentToNavTutorDetailsStudent action = StudentFeedFragmentDirections.actionNavFeedStudentToNavTutorDetailsStudent(tutorEmail);
             Navigation.findNavController(view).navigate(action);
         });
         postListRecyclerView.setAdapter(adapter);
-        add.setOnClickListener(v->Navigation.findNavController(view).navigate(R.id.action_nav_my_feed_tutor_to_addPostFragment));
 
         listPosts = new LinkedList<>();
 
-        myFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
+        studentFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             if(posts == null){
                 listPosts = new LinkedList<Post>();
             }
             else { listPosts = posts; }
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
-
         return view;
     }
 
 
-    static class MyFeedViewHolder extends RecyclerView.ViewHolder{
-        MyFeedFragment.OnItemClickListener listener;
+    static class StudentFeedViewHolder extends RecyclerView.ViewHolder{
+        StudentFeedFragment.OnItemClickListener listener;
         TextView owner;
         ImageView postImg;
         TextView description;
         View item;
 
-        public MyFeedViewHolder(@NonNull View itemView, MyFeedFragment.OnItemClickListener listener) {
+        public StudentFeedViewHolder(@NonNull View itemView, StudentFeedFragment.OnItemClickListener listener) {
             super(itemView);
             item = itemView;
             owner = itemView.findViewById(R.id.postRow_owner_tv);
@@ -104,33 +101,36 @@ public class MyFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
+            // TODO: fix image
             this.postImg.setImageResource(R.drawable.ic_gender_male);
         }
     }
     public interface OnItemClickListener {
         void onClick(View view, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<MyFeedFragment.MyFeedViewHolder>{
-        MyFeedFragment.OnItemClickListener listener;
+    class MyAdapter extends RecyclerView.Adapter<StudentFeedFragment.StudentFeedViewHolder>{
+        StudentFeedFragment.OnItemClickListener listener;
 
-        public void setOnItemClickListener(MyFeedFragment.OnItemClickListener listener){
+        public void setOnItemClickListener(StudentFeedFragment.OnItemClickListener listener){
             this.listener = listener;
         }
 
         @NonNull
         @Override
-        public MyFeedFragment.MyFeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public StudentFeedFragment.StudentFeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(R.layout.post_row, parent, false);
-            MyFeedFragment.MyFeedViewHolder holder = new MyFeedFragment.MyFeedViewHolder(view, listener);
+            StudentFeedFragment.StudentFeedViewHolder holder = new StudentFeedFragment.StudentFeedViewHolder(view, listener);
             return holder;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull StudentFeedFragment.StudentFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);
-            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), null, post.getText()));
+            // TODO: correct the names
+            Tutor tutor = studentFeedViewModel.getTutor(post.getTutorEmail());
+            holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), null, post.getText());
         }
 
         @Override

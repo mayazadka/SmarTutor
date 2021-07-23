@@ -16,6 +16,10 @@
             android:id="@+id/nav_search_tutors_student"
             android:icon="@drawable/ic_menu_search"
             android:title="@string/menu_search_tutors_student" />
+        <item
+            android:id="@+id/nav_feed_student"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_feed_student" />
 
         <item
             android:id="@+id/nav_delete_account_student"

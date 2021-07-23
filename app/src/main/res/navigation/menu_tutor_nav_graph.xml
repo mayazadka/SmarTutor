@@ -65,7 +65,11 @@
             app:destination="@id/addPostFragment" />
         <action
             android:id="@+id/action_nav_my_feed_tutor_to_editPostFragment"
-            app:destination="@id/editPostFragment" />
+            app:destination="@id/editPostFragment" >
+            <argument
+                android:name="position"
+                android:defaultValue="0" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -80,7 +84,14 @@
         android:id="@+id/editPostFragment"
         android:name="com.example.smartutor.ui.edit_post.EditPostFragment"
         android:label="Edit Post"
-        tools:layout="@layout/fragment_edit_post" />
+        tools:layout="@layout/fragment_edit_post" >
+        <action
+            android:id="@+id/action_editPostFragment_to_nav_my_feed_tutor"
+            app:destination="@id/nav_my_feed_tutor" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
     <action
         android:id="@+id/action_global_nav_home_tutor"
         app:destination="@id/nav_home_tutor"

@@ -7,16 +7,18 @@
     tools:context=".ui.edit_post.EditPostFragment">
 
     <Button
-        android:id="@+id/editPost_delete_btn"
-        android:layout_width="wrap_content"
+        android:id="@+id/editPost_cancel_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/quicksand_bold"
-        android:text="Delete"
+        android:text="Cancel"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editPost_save_btn"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -54,8 +56,10 @@
 
     <Button
         android:id="@+id/editPost_save_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="Save"
@@ -63,19 +67,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/editPost_delete_btn" />
+        app:layout_constraintStart_toEndOf="@+id/editPost_cancel_btn" />
 
     <ImageView
         android:id="@+id/editPost_image_img"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/editPost_save_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPost_description_etml"
         tools:src="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/editPost_camera_btn"
+        android:layout_width="57dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/editPost_image_img"
+        app:layout_constraintEnd_toEndOf="@+id/editPost_image_img" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
