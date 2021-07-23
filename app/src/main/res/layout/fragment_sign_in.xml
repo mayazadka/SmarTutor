@@ -6,201 +6,219 @@
     android:layout_height="match_parent"
     tools:context=".ui.sign_in.SignInFragment">
 
-    <ImageView
-        android:id="@+id/signIn_logo_img"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/signIn_title_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Sign In"
-        android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/title_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_logo_img" />
-
-    <TextView
-        android:id="@+id/signIn_subTitle_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Hi there! Enter your details."
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_title_tv" />
-
-    <TextView
-        android:id="@+id/signIn_email_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Email"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_subTitle_tv" />
-
-    <EditText
-        android:id="@+id/signIn_email_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_bold"
-        android:hint="Your email."
-        android:inputType="textPersonName"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_email_tv" />
-
-    <TextView
-        android:id="@+id/signIn_password_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Password"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_email_et" />
-
-    <ImageButton
-        android:id="@+id/signIn_showHide_imgbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/ic_eye"
-        app:layout_constraintBottom_toBottomOf="@+id/signIn_password_et"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
-
-    <EditText
-        android:id="@+id/signIn_password_et"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_bold"
-        android:hint="Your password."
-        android:inputType="textPassword"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintEnd_toStartOf="@+id/signIn_showHide_imgbtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
-
-    <RadioGroup
-        android:id="@+id/signIn_identify_rg"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:checkedButton="@id/signIn_student_rb"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_password_et">
-
-        <RadioButton
-            android:id="@+id/signIn_student_rb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_bold"
-            android:text="Student"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size" />
-
-        <RadioButton
-            android:id="@+id/signIn_tutor_rb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/quicksand_bold"
-            android:text="Tutor"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size" />
-
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/signIn_signIn_btn"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Sign In"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn_identify_rg" />
-
-    <TextView
-        android:id="@+id/signIn_question_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Don't have an account yet?"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signIn_signUp_tv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/signIn_signUp_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Sign Up"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/signIn_question_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/signIn_question_tv"
-        app:layout_constraintTop_toTopOf="@+id/signIn_question_tv" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/signIn_logo_img"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/signIn_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Sign In"
+                android:textAlignment="viewStart"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/title_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_logo_img" />
+
+            <TextView
+                android:id="@+id/signIn_subTitle_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Hi there! Enter your details."
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_title_tv" />
+
+            <TextView
+                android:id="@+id/signIn_email_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Email"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_subTitle_tv" />
+
+            <EditText
+                android:id="@+id/signIn_email_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:fontFamily="@font/quicksand_bold"
+                android:hint="Your email."
+                android:inputType="textPersonName"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_email_tv" />
+
+            <TextView
+                android:id="@+id/signIn_password_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Password"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_email_et" />
+
+            <ImageButton
+                android:id="@+id/signIn_showHide_imgbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/ic_eye"
+                app:layout_constraintBottom_toBottomOf="@+id/signIn_password_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
+
+            <EditText
+                android:id="@+id/signIn_password_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:fontFamily="@font/quicksand_bold"
+                android:hint="Your password."
+                android:inputType="textPassword"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toStartOf="@+id/signIn_showHide_imgbtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_password_tv" />
+
+            <RadioGroup
+                android:id="@+id/signIn_identify_rg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:checkedButton="@id/signIn_student_rb"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_password_et">
+
+                <RadioButton
+                    android:id="@+id/signIn_student_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Student"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="@dimen/text_size" />
+
+                <RadioButton
+                    android:id="@+id/signIn_tutor_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Tutor"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="@dimen/text_size" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/signIn_signIn_btn"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Sign In"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="@dimen/button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_identify_rg" />
+
+            <TextView
+                android:id="@+id/signIn_question_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Don't have an account yet?"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/signIn_signUp_tv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signIn_signIn_btn" />
+
+            <TextView
+                android:id="@+id/signIn_signUp_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Sign Up"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/signIn_question_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/signIn_question_tv"
+                app:layout_constraintTop_toTopOf="@+id/signIn_question_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
