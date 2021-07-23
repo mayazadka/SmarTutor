@@ -3,11 +3,12 @@ package com.example.smartutor.ui.edit_post;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -28,6 +29,8 @@ import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,9 +48,12 @@ public class EditPostFragment extends Fragment {
     private Button deleteBtn;
 
     private ImageButton editImage;
+    private ImageButton galleryBtn;
 
     // images
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_LOAD_IMG = 2;
+
     Bitmap imageBitmap;
     View view;
 
@@ -73,6 +79,8 @@ public class EditPostFragment extends Fragment {
         saveBtn = view.findViewById(R.id.editPost_save_btn);
         cancelBtn = view.findViewById(R.id.editPost_cancel_btn);
         deleteBtn = view.findViewById(R.id.editPost_delete_btn);
+        editImage = view.findViewById(R.id.editPost_camera_btn);
+        galleryBtn = view.findViewById(R.id.editPost_gallery_btn);
 
         editPostViewModel.getPost().observe(getViewLifecycleOwner(), new Observer<Post>() {
             @Override
@@ -86,22 +94,23 @@ public class EditPostFragment extends Fragment {
                 }
             }
         });
-
         saveBtn.setOnClickListener(v -> { savePicture(); });
-
         cancelBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
         });
         deleteBtn.setOnClickListener(v -> {
             editPostViewModel.deletePost(() -> {Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);});
         });
-
-        // camera
-        editImage = view.findViewById(R.id.editPost_camera_btn);
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePicture();
+            }
+        });
+        galleryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPictureFromGallery();
             }
         });
         return view;
@@ -114,7 +123,11 @@ public class EditPostFragment extends Fragment {
         /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
         }*/
     }
-
+    void loadPictureFromGallery(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUEST_LOAD_IMG);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -124,6 +137,20 @@ public class EditPostFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 image.setImageBitmap(imageBitmap);
+            }
+        }
+        else if(requestCode == REQUEST_LOAD_IMG){
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    Uri imageUri = data.getData();
+                    InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
+                    imageBitmap = BitmapFactory.decodeStream(imageStream);
+                    image.setImageBitmap(imageBitmap);
+                } catch (FileNotFoundException e) {
+                    Log.d("TAG", "Something went wrong");
+                }
+            }else {
+                Log.d("TAG", "You haven't picked Image");
             }
         }
     }

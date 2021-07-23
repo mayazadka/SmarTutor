@@ -3,6 +3,8 @@ package com.example.smartutor.ui.add_post;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +22,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class AddPostFragment extends Fragment {
     // view model
@@ -32,10 +39,13 @@ public class AddPostFragment extends Fragment {
     private EditText description;
     private Button addBtn;
     private ImageView image;
+
     private ImageButton editImage;
+    private ImageButton galleryBtn;
 
     // images
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_LOAD_IMG = 2;
     Bitmap imageBitmap;
     View view;
 
@@ -55,18 +65,21 @@ public class AddPostFragment extends Fragment {
         description = view.findViewById(R.id.addPost_description_etml);
         addBtn = view.findViewById(R.id.addPost_add_btn);
         image = view.findViewById(R.id.addPost_image_img);
+        editImage = view.findViewById(R.id.addPost_camera_btn);
+        galleryBtn = view.findViewById(R.id.addPost_gallery_btn);
 
         addBtn.setOnClickListener(v -> {
             savePost();
         });
-
-        // camera
-        editImage = view.findViewById(R.id.addPost_camera_btn);
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePicture();
             }
+        });
+        galleryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { loadPictureFromGallery(); }
         });
         return view;
     }
@@ -78,6 +91,11 @@ public class AddPostFragment extends Fragment {
         /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
         }*/
     }
+    void loadPictureFromGallery(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUEST_LOAD_IMG);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -87,6 +105,20 @@ public class AddPostFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 image.setImageBitmap(imageBitmap);
+            }
+        }
+        else if(requestCode == REQUEST_LOAD_IMG){
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    Uri imageUri = data.getData();
+                    InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
+                    imageBitmap = BitmapFactory.decodeStream(imageStream);
+                    image.setImageBitmap(imageBitmap);
+                } catch (FileNotFoundException e) {
+                    Log.d("TAG", "Something went wrong");
+                }
+            }else {
+                Log.d("TAG", "You haven't picked Image");
             }
         }
     }
