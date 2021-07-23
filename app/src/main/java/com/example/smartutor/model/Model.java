@@ -64,6 +64,7 @@ public class Model {
                 student.setValue(null);
             }
         });
+        getStudents();
         return student;
     }
     public void addStudent(Student student, OnCompleteListener listener){
@@ -96,6 +97,7 @@ public class Model {
                 tutor.setValue(null);
             }
         });
+        getTutors();
         return tutor;
     }
     public void addTutor(Tutor tutor, OnCompleteListener listener){
@@ -124,11 +126,12 @@ public class Model {
             for(Lesson lesson : l){
                 if(lesson.getTutorEmail().equals(tutorEmail) && lesson.getDate().equals(date)){
                     lessonByTutor.setValue(lesson);
-                    break;
+                    return;
                 }
             }
             lessonByTutor.setValue(null);
         });
+        getLessons();
         return lessonByTutor;
     }
     public LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date) {
@@ -137,11 +140,12 @@ public class Model {
             for(Lesson lesson : l){
                 if(lesson.getStudentEmail().equals(studentEmail) && lesson.getDate().equals(date)){
                     lessonByStudent.setValue(lesson);
-                    break;
+                    return;
                 }
             }
             lessonByStudent.setValue(null);
         });
+        getLessons();
         return lessonByStudent;
     }
     public void addLesson(Lesson lesson, OnCompleteListener listener){
@@ -159,6 +163,20 @@ public class Model {
     public LiveData<List<Event>> getEvents() {
         ModelFireBase.getEvents(e -> events.setValue(e));
         return events;
+    }
+    public LiveData<Event> getEvent(String email, LocalDateTime date) {
+        MutableLiveData<Event> event = new MutableLiveData<>();
+        ModelFireBase.getEvents(events -> {
+            for(Event e : events){
+                if(e.getTutorEmail().equals(email) && e.getDate().equals(date)){
+                    event.setValue(e);
+                    return;
+                }
+            }
+            event.setValue(null);
+        });
+        getEvents();
+        return event;
     }
     public void addEvent(Event event, OnCompleteListener listener){
         eventLoadingState.setValue(LoadingState.loading);

@@ -31,16 +31,17 @@ public class AvailableTutorFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LocalDateTime now = LocalDateTime.now();
         AvailableTutorViewModel viewModel = new ViewModelProvider(this).get(AvailableTutorViewModel.class);
+        dateTime = LocalDate.now().atTime(AvailableTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(AvailableTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
+        viewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), dateTime);
         View root = inflater.inflate(R.layout.fragment_available_tutor, container, false);
 
         date = root.findViewById(R.id.availableTutor_date_tv);
         hour = root.findViewById(R.id.availableTutor_hour_tv);
         set = root.findViewById(R.id.availableTutor_set_btn);
 
-        LocalDateTime now = LocalDateTime.now();
 
-        dateTime = LocalDate.now().atTime(AvailableTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(AvailableTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
         date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
 
@@ -53,7 +54,7 @@ public class AvailableTutorFragment extends Fragment {
         else{
             set.setText("Set Available");
             set.setOnClickListener(v -> {
-                viewModel.deleteEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"), ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
+                viewModel.deleteEvent(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
 

@@ -1,5 +1,7 @@
 package com.example.smartutor.ui.lesson_details_tutor;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,7 +18,7 @@ public class LessonDetailsTutorViewModel extends ViewModel {
     public LessonDetailsTutorViewModel() {}
     public void initial(String email, LocalDateTime dateTime){
         lesson = model.getLessonByTutor(email, dateTime);
-        lesson.observeForever(l->{ });
+        lesson.observeForever(l-> { });
     }
 
     public void deleteLesson(Model.OnCompleteListener listener)   {model.deleteLesson(lesson.getValue(), listener);}

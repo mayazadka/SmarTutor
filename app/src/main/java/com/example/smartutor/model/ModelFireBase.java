@@ -126,7 +126,7 @@ public class ModelFireBase {
     }
     public static void deleteLesson(Lesson lesson, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance()
-                .collection("tutors").document(lesson.getId().toString())
+                .collection("lessons").document(lesson.getId().toString())
                 .delete()
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
