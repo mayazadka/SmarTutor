@@ -21,6 +21,7 @@
     <string name="title_activity_tutor_menu">TutorMenuActivity</string>
     <string name="menu_my_feed_tutor">My Feed</string>
     <string name="subject">subject</string>
+    <string name="menu_feed_student">Feed</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>

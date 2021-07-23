@@ -55,6 +55,9 @@
         <argument
             android:name="email"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_tutor_details_student_to_tutorFeedStudentFragment"
+            app:destination="@id/tutorFeedStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/lessonDetailsStudentFragment"
@@ -93,4 +96,25 @@
         app:destination="@id/nav_home_student"
         app:popUpTo="@id/nav_home_student"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/nav_feed_student"
+        android:name="com.example.smartutor.ui.student_feed.StudentFeedFragment"
+        android:label="@string/menu_feed_student"
+        tools:layout="@layout/fragment_student_feed">
+        <action
+            android:id="@+id/action_nav_feed_student_to_nav_tutor_details_student"
+            app:destination="@id/nav_tutor_details_student" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorFeedStudentFragment"
+        android:name="com.example.smartutor.ui.tutor_feed_student.TutorFeedStudentFragment"
+        android:label="Tutor's Feed"
+        tools:layout="@layout/fragment_tutor_feed_student">
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_tutorFeedStudentFragment_to_nav_tutor_details_student"
+            app:destination="@id/nav_tutor_details_student" />
+    </fragment>
 </navigation>

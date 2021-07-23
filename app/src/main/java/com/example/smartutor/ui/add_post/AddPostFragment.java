@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Post;
 
-
 public class AddPostFragment extends Fragment {
     // view model
     private AddPostViewModel addPostViewModel;
@@ -61,7 +60,7 @@ public class AddPostFragment extends Fragment {
         });
 
         // camera
-        editImage = view.findViewById(R.id.addPost_editImage_btn);
+        editImage = view.findViewById(R.id.addPost_camera_btn);
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

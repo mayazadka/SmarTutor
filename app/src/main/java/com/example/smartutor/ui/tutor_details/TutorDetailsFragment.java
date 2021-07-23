@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.home_student.HomeStudentFragmentDirections;
 import com.example.smartutor.ui.home_tutor.HomeTutorFragmentDirections;
 import com.example.smartutor.ui.schedule_lesson_student.ScheduleLessonStudentFragmentDirections;
+import com.example.smartutor.ui.student_feed.StudentFeedFragmentDirections;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +38,7 @@ import java.util.stream.Collectors;
 public class TutorDetailsFragment extends Fragment {
 
     private TutorDetailsViewModel tutorDetailsViewModel;
+    private String tutorEmail;
 
     private TextView emailTv;
     private TextView ageTv;
@@ -43,6 +46,7 @@ public class TutorDetailsFragment extends Fragment {
     private LinearLayout subjectsLL;
     private TextView aboutMeTv;
     private LinearLayout calendarLinearLayout;
+    private Button myPostsBtn;
 
     public TutorDetailsFragment() {
         // Required empty public constructor
@@ -51,7 +55,8 @@ public class TutorDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         tutorDetailsViewModel = new ViewModelProvider(this).get(TutorDetailsViewModel.class);
-        tutorDetailsViewModel.initial(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail());
+        tutorEmail = TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail();
+        tutorDetailsViewModel.initial(tutorEmail);
 
         View view = inflater.inflate(R.layout.fragment_tutor_details, container, false);
 
@@ -61,6 +66,7 @@ public class TutorDetailsFragment extends Fragment {
         subjectsLL = view.findViewById(R.id.tutorDetails_subjects_linearLayout);
         aboutMeTv = view.findViewById(R.id.tutorDetails_aboutMe_tv);
         calendarLinearLayout = view.findViewById(R.id.tutorDetails_calendar_ll);
+        myPostsBtn = view.findViewById(R.id.tutorDetails_my_posts_btn);
 
         for(int i=8;i<=20;i++){
             for(int j = 1;j<=7;j++){
@@ -143,6 +149,12 @@ public class TutorDetailsFragment extends Fragment {
                 img.setOnClickListener(null);
             }
         });
+
+        myPostsBtn.setOnClickListener(v -> {
+            TutorDetailsFragmentDirections.ActionNavTutorDetailsStudentToTutorFeedStudentFragment action = TutorDetailsFragmentDirections.actionNavTutorDetailsStudentToTutorFeedStudentFragment(tutorEmail);
+            Navigation.findNavController(view).navigate(action);
+        });
+
         return view;
     }
 

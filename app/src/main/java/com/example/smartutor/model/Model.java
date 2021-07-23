@@ -1,5 +1,7 @@
 package com.example.smartutor.model;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Delete;
@@ -193,7 +195,9 @@ public class Model {
     public void addPost(Post post)                                  {executorService.execute(()->AppLocalDB.db.postDao().insertPost(post));}
     public LiveData<List<Post>> getPostsByTutor(String email)       {return AppLocalDB.db.postDao().getPostsByTutor(email);}
     public LiveData<Post> getPostById(int id)                       {return AppLocalDB.db.postDao().getPostById(id);}
-    public void updatePost(Post post)                               {executorService.execute(()->AppLocalDB.db.postDao().updatePost(post));}
+    public void updatePost(Post post)                               {
+        Log.d("TAG", "description in model: " + post.getText());
+        executorService.execute(()->AppLocalDB.db.postDao().updatePost(post));}
     public void deletePost(Post post)                               {executorService.execute(()->AppLocalDB.db.postDao().deletePost(post));}
     public void deletePostByTutor(String email)                     {executorService.execute(()->AppLocalDB.db.postDao().deleteByTutor(email));}
     public void deleteAllPosts()                                    {executorService.execute(()->AppLocalDB.db.postDao().deleteAll());}

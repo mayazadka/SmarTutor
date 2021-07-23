@@ -66,7 +66,7 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/addPost_editImage_btn"
+        android:id="@+id/addPost_camera_btn"
         android:layout_width="59dp"
         android:layout_height="57dp"
         android:layout_marginEnd="8dp"
