@@ -32,6 +32,9 @@ public class Model {
     public interface OnCompleteListener{
         public void onComplete();
     }
+    public interface OnCompleteSignInListener{
+        public void onComplete(boolean signIn);
+    }
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static Model model = null;
@@ -268,5 +271,18 @@ public class Model {
 
     public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
         ModelFireBase.uploadImage(imageBmp, name, listener);
+    }
+
+    public boolean checkCurrentUser(){
+        return ModelFireBase.checkCurrentUser();
+    }
+    public boolean createUserAccount(String email, String password) {
+        return ModelFireBase.createUserAccount(email, password);
+    }
+    public void signIn(String email, String password, OnCompleteSignInListener listener) {
+        ModelFireBase.signIn(email, password, listener);
+    }
+    public boolean sendEmailVerification() {
+        return ModelFireBase.sendEmailVerification();
     }
 }

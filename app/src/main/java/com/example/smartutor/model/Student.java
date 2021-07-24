@@ -33,6 +33,14 @@ public class Student {
     private Long lastUpdated;
 
     public Student(){}
+    public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade) {
+        this.email = email;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.birthdayDate = birthdayDate;
+        this.grade = grade;
+    }
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade, String password) {
         this.email = email;
         this.lastName = lastName;

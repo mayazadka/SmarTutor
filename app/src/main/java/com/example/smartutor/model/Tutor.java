@@ -26,6 +26,15 @@ public class Tutor  {
     private String password;
 
     public Tutor(){}
+    public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe) {
+        this.email = email;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.birthdayDate = birthdayDate;
+        this.professions = professions;
+        this.aboutMe = aboutMe;
+    }
     public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe, String password) {
         this.email = email;
         this.lastName = lastName;

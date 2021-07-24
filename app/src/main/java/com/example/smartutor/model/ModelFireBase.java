@@ -115,11 +115,18 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deleteStudent(Student student, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance()
-                .collection("students").document(student.getEmail())
+        FirebaseAuth.getInstance()
+                .getCurrentUser()
                 .delete()
-                .addOnSuccessListener(aVoid -> listener.onComplete())
-                .addOnFailureListener(aVoid -> listener.onComplete());
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        FirebaseFirestore.getInstance()
+                                .collection("students").document(student.getEmail())
+                                .delete()
+                                .addOnSuccessListener(aVoid -> listener.onComplete())
+                                .addOnFailureListener(aVoid -> listener.onComplete());
+                    }
+                });
     }
     public static void getTutors(Consumer<List<Tutor>> consumer){
         FirebaseFirestore.getInstance().collection("tutors")
@@ -147,11 +154,18 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deleteTutor(Tutor tutor, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance()
-                .collection("tutors").document(tutor.getEmail())
+        FirebaseAuth.getInstance()
+                .getCurrentUser()
                 .delete()
-                .addOnSuccessListener(aVoid -> listener.onComplete())
-                .addOnFailureListener(aVoid -> listener.onComplete());
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        FirebaseFirestore.getInstance()
+                                .collection("tutors").document(tutor.getEmail())
+                                .delete()
+                                .addOnSuccessListener(aVoid -> listener.onComplete())
+                                .addOnFailureListener(aVoid -> listener.onComplete());
+                    }
+                });
     }
     public static void getLessons(Consumer<List<Lesson>> consumer){
         FirebaseFirestore.getInstance().collection("lessons")
@@ -311,7 +325,7 @@ public class ModelFireBase {
         });
         return result.get();
     }
-    public static boolean signIn(String email, String password) {
+    public static void signIn(String email, String password, Model.OnCompleteSignInListener listener) {
         // sign in with email
         AtomicBoolean result = new AtomicBoolean(false);
         mAuth.signInWithEmailAndPassword(email, password)
@@ -321,25 +335,23 @@ public class ModelFireBase {
                         Log.d("TAG", "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         //updateUI(user);
-                        result.set(true);
+                        listener.onComplete(true);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.d("TAG", "signInWithEmail:failure", task.getException());
                         //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
                         //updateUI(null);
-                        result.set(false);
+                        listener.onComplete(false);
                     }
                 });
-        return result.get();
-        // [END sign_in_with_email]
     }
     public static boolean sendEmailVerification() {
         // Send verification email
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener((task) -> {
-                        // Email sent
-                    });
+                    // Email sent
+                });
         return true;
     }
 }

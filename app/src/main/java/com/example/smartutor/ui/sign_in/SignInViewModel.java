@@ -6,15 +6,10 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
-import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -30,33 +25,42 @@ public class SignInViewModel extends ViewModel {
 
         students.observeForever(ss->{});
         tutors.observeForever(ts->{});
-
-        //model.deleteAllTutors();
-        //model.deleteAllStudents();
-        //model.deleteAllLessons();
-
-        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 20, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 21, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 23, 1, 0, 0), Profession.COMPUTER_SCIENCE));
-        //model.addLesson(new Lesson("student@gmail.com", "tutor@gmail.com", LocalDateTime.of(2021, 6, 24, 1, 0, 0), Profession.COMPUTER_SCIENCE));
     }
 
-    public boolean isExistStudent(String email, String password) throws Exception {
+    public void isExistStudent(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
+        int flag = 0;
         if(students.getValue() == null){throw new Exception("try again");}
         for (Student student : students.getValue()) {
-            if (student.getEmail().equals(email) && student.getPassword().equals(password)) {
-                return true;
+            if (student.getEmail().equals(email)) {
+                flag = 1;
+                signIn(email, password, listener);
+                break;
             }
         }
-        return false;
+        if(flag == 0)
+            listener.onComplete(false);
     }
-    public boolean isExistTutor(String email, String password) throws Exception {
+    public void isExistTutor(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
+        int flag = 0;
         if(tutors.getValue() == null){throw new Exception("try again");}
         for (Tutor tutor : tutors.getValue()) {
-            if (tutor.getEmail().equals(email) && tutor.getPassword().equals(password)) {
-                return true;
+            if (tutor.getEmail().equals(email)) {
+                flag = 1;
+                signIn(email, password, listener);
+                break;
             }
         }
-        return false;
+        if(flag == 0)
+            listener.onComplete(false);
+    }
+
+    public boolean checkCurrentUser(){
+        return model.checkCurrentUser();
+    }
+    public void signIn(String email, String password, Model.OnCompleteSignInListener listener) {
+        model.signIn(email, password, listener);
+    }
+    public boolean sendEmailVerification() {
+        return model.sendEmailVerification();
     }
 }
