@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,8 +72,9 @@ public class ModelFireBase {
                 });
     }
 
-    public static void getStudents(Consumer<List<Student>> consumer){
+    public static void getStudents(Long since, Consumer<List<Student>> consumer){
         FirebaseFirestore.getInstance().collection("students")
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Student> students = new LinkedList<>();
@@ -82,6 +84,22 @@ public class ModelFireBase {
                         }
                     } else {}
                     consumer.accept(students);
+                });
+    }
+    public static void getStudent(Long since, String email, Consumer<Student> consumer){
+
+        FirebaseFirestore.getInstance().collection("students")
+                .whereEqualTo("email", email)
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    Student student = null;
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            student = new Student(document.getData());
+                        }
+                    } else {}
+                    consumer.accept(student);
                 });
     }
     public static void addStudent(Student student, Model.OnCompleteListener listener){

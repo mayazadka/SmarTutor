@@ -1,6 +1,7 @@
 package com.example.smartutor.model;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -41,7 +42,6 @@ public class Model {
     public MutableLiveData<LoadingState> eventLoadingState = new MutableLiveData<>(LoadingState.loaded);
     public MutableLiveData<LoadingState> postLoadingState = new MutableLiveData<>(LoadingState.loaded);
 
-    private MutableLiveData<List<Student>> students = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Tutor>> tutors = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Lesson>> lessons = new MutableLiveData<>(new LinkedList<>());
     private MutableLiveData<List<Event>> events = new MutableLiveData<>(new LinkedList<>());
@@ -49,10 +49,10 @@ public class Model {
 
     private Model(){
         new ModelFireBase();
-        students.observeForever(s -> studentLoadingState.setValue(LoadingState.loaded));
         tutors.observeForever(t -> tutorLoadingState.setValue(LoadingState.loaded));
         lessons.observeForever(l -> lessonLoadingState.setValue(LoadingState.loaded));
         events.observeForever(l -> eventLoadingState.setValue(LoadingState.loaded));
+        posts.observeForever(p -> postLoadingState.setValue(LoadingState.loaded));
     }
     public static Model getInstance(){
         if(model == null){
@@ -62,43 +62,67 @@ public class Model {
     }
 
     public LiveData<List<Student>> getStudents(){
-        ModelFireBase.getStudents(s -> students.setValue(s));
-        return students;
+        studentLoadingState.setValue(LoadingState.loading);
+
+        Long localLastTimeUpdate = Student.getLocalLatUpdateTime();
+
+        ModelFireBase.getStudents(localLastTimeUpdate, s -> executorService.execute(()->{
+            Long lastUpdate = Long.valueOf(0);
+            for(Student st: s){
+                AppLocalDB.db.studentDao().insertStudent(st);
+                if(lastUpdate < st.getLastUpdated()){
+                    lastUpdate = st.getLastUpdated();
+                }
+            }
+            Student.setLocalLatUpdateTime(lastUpdate);
+            studentLoadingState.postValue(LoadingState.loaded);
+        }));
+        return AppLocalDB.db.studentDao().getStudents();
     }
     public LiveData<Student> getStudent(String email){
-        MutableLiveData<Student> student = new MutableLiveData<>();
-        ModelFireBase.getStudents(s -> {
-            if(s.contains(new Student(email, null, null, null, null, 0, null))){
-                student.setValue(s.get(s.indexOf(new Student(email, null, null, null, null, 0, null))));
+        studentLoadingState.setValue(LoadingState.loading);
+
+        Long localLastTimeUpdate = Student.getLocalLatUpdateTime();
+        ModelFireBase.getStudent(localLastTimeUpdate, email, s -> executorService.execute(()->{
+            Long lastUpdate = Long.valueOf(0);
+            if(s != null){
+                AppLocalDB.db.studentDao().insertStudent(s);
+                if (lastUpdate < s.getLastUpdated()) {
+                    lastUpdate = s.getLastUpdated();
+                }
+                Student.setLocalLatUpdateTime(lastUpdate);
             }
-            else{
-                student.setValue(null);
-            }
-        });
-        getStudents();
-        return student;
+            studentLoadingState.postValue(LoadingState.loaded);
+        }));
+        return AppLocalDB.db.studentDao().getStudent(email);
     }
     public void addStudent(Student student, OnCompleteListener listener){
         studentLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.addStudent(student, listener);
-        getStudents();
+        ModelFireBase.addStudent(student, ()->{
+            getStudents();
+            listener.onComplete();
+        });
     }
     public void updateStudent(Student student, OnCompleteListener listener){
-        studentLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.updateStudent(student, listener);
-        getStudent(student.getEmail());
+        ModelFireBase.updateStudent(student, ()->{
+            getStudents();
+            listener.onComplete();
+        });
     }
     public void deleteStudent(Student student, OnCompleteListener listener){
-        studentLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.deleteStudent(student, listener);
-        getStudent(student.getEmail());
+        ModelFireBase.deleteStudent(student, ()->{
+            getStudents();
+            listener.onComplete();
+        });
     }
 
     public LiveData<List<Tutor>> getTutors(){
+        tutorLoadingState.setValue(LoadingState.loading);
         ModelFireBase.getTutors(t -> tutors.setValue(t));
         return tutors;
     }
     public LiveData<Tutor> getTutor(String email){
+        tutorLoadingState.setValue(LoadingState.loading);
         MutableLiveData<Tutor> tutor = new MutableLiveData<>();
         ModelFireBase.getTutors(t -> {
             if(t.contains(new Tutor(email, null, null, null, null, null, null, null))){
@@ -128,10 +152,12 @@ public class Model {
     }
 
     public LiveData<List<Lesson>> getLessons(){
+        lessonLoadingState.setValue(LoadingState.loading);
         ModelFireBase.getLessons(l -> lessons.setValue(l));
         return lessons;
     }
     public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {
+        lessonLoadingState.setValue(LoadingState.loading);
         MutableLiveData<Lesson> lessonByTutor = new MutableLiveData<>();
         ModelFireBase.getLessons(l -> {
             for(Lesson lesson : l){
@@ -146,6 +172,7 @@ public class Model {
         return lessonByTutor;
     }
     public LiveData<Lesson> getLessonByStudent(String studentEmail, LocalDateTime date) {
+        lessonLoadingState.setValue(LoadingState.loading);
         MutableLiveData<Lesson> lessonByStudent = new MutableLiveData<>();
         ModelFireBase.getLessons(l -> {
             for(Lesson lesson : l){
@@ -172,10 +199,12 @@ public class Model {
     }
 
     public LiveData<List<Event>> getEvents() {
+        eventLoadingState.setValue(LoadingState.loading);
         ModelFireBase.getEvents(e -> events.setValue(e));
         return events;
     }
     public LiveData<Event> getEvent(String email, LocalDateTime date) {
+        eventLoadingState.setValue(LoadingState.loading);
         MutableLiveData<Event> event = new MutableLiveData<>();
         ModelFireBase.getEvents(events -> {
             for(Event e : events){
@@ -201,11 +230,8 @@ public class Model {
     }
 
     public LiveData<List<Post>> getPosts() {
-        //studentsLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.getPosts((p)->{
-            posts.setValue(p);
-            //studentsLoadingState.setValue(LoadingState.loaded);
-        });
+        postLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.getPosts((p)-> posts.setValue(p));
         return posts;
     }
     public Long addPost(Post post, OnCompleteListener listener){
@@ -215,6 +241,7 @@ public class Model {
         return id;
     }
     public LiveData<Post> getPost(Long id) {
+        postLoadingState.setValue(LoadingState.loading);
         MutableLiveData<Post> post = new MutableLiveData<>();
         ModelFireBase.getPosts(posts -> {
             for(Post p : posts){

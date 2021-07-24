@@ -12,7 +12,7 @@ import java.util.List;
 
 @androidx.room.Dao
 public interface StudentDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE) void insertStudent(Student student);
+    @Insert(onConflict = OnConflictStrategy.REPLACE) void insertStudent(Student student);
     @Update void updateStudent(Student student);
     @Delete void deleteStudent(Student student);
     @Transaction @Query("SELECT * FROM Student") LiveData<List<Student>> getStudents();

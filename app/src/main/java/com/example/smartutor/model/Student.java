@@ -1,10 +1,18 @@
 package com.example.smartutor.model;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.example.smartutor.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +30,7 @@ public class Student {
     private Date birthdayDate;
     private int grade;
     private String password;
+    private Long lastUpdated;
 
     public Student(){}
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade, String password) {
@@ -32,6 +41,7 @@ public class Student {
         this.birthdayDate = birthdayDate;
         this.grade = grade;
         this.password = password;
+        this.lastUpdated = Long.valueOf(0);
     }
     public Student(Map<String, Object> json){
         email =             (String)json.get("email");
@@ -41,6 +51,10 @@ public class Student {
         birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
         grade =             ((Long)json.get("grade")).intValue();
         password =          (String)json.get("password");
+        Timestamp ts =      (Timestamp)json.get("lastUpdated");
+        if(ts!=null)        {lastUpdated =ts.getSeconds();}
+        else                {lastUpdated = Long.valueOf(0);}
+
     }
 
     public String getEmail()                            {return email;}
@@ -57,6 +71,8 @@ public class Student {
     public void setGrade(int grade)                     {this.grade = grade;}
     public String getPassword()                         {return password;}
     public void setPassword(String password)            {this.password = password;}
+    public Long getLastUpdated()                        {return lastUpdated;}
+    public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
 
     @Override
     public boolean equals(Object o) {
@@ -79,6 +95,18 @@ public class Student {
         data.put("birthdayDate",  Converters.fromDateToString(birthdayDate));
         data.put("grade",  grade);
         data.put("password",  password);
+        data.put("lastUpdated", FieldValue.serverTimestamp());
         return data;
+    }
+
+    static public void setLocalLatUpdateTime(Long timeStamp){
+        Log.d("omer", timeStamp.toString());
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        editor.putLong("StudentLastUpdate", timeStamp);
+        editor.commit();
+    }
+
+    static public Long getLocalLatUpdateTime(){
+        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("StudentLastUpdate", 0);
     }
 }
