@@ -272,7 +272,7 @@ public class ModelFireBase {
         else
             return false;
     }
-    private static boolean createUserAccount(String email, String password) {
+    public static boolean createUserAccount(String email, String password) {
         // create user with email
         AtomicBoolean result = new AtomicBoolean(false);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
@@ -293,7 +293,7 @@ public class ModelFireBase {
         });
         return result.get();
     }
-    private static boolean signIn(String email, String password) {
+    public static boolean signIn(String email, String password) {
         // sign in with email
         AtomicBoolean result = new AtomicBoolean(false);
         mAuth.signInWithEmailAndPassword(email, password)
@@ -315,7 +315,7 @@ public class ModelFireBase {
         return result.get();
         // [END sign_in_with_email]
     }
-    private static boolean sendEmailVerification() {
+    public static boolean sendEmailVerification() {
         // Send verification email
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
