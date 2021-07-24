@@ -42,6 +42,7 @@ public class SignInFragment extends Fragment {
     private Button signIn;
     private EditText email;
 
+
     public SignInFragment() {
         // Required empty public constructor
     }

@@ -2,12 +2,15 @@ package com.example.smartutor.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -18,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class ModelFireBase {
@@ -25,7 +29,13 @@ public class ModelFireBase {
     private static Long eventID = Long.valueOf(0);
     private static Long postID = Long.valueOf(0);
 
+    //********auth************
+    private static FirebaseAuth mAuth;
+
     public ModelFireBase(){
+        //********auth************
+        mAuth = FirebaseAuth.getInstance();
+
         FirebaseFirestore.getInstance().collection("lessons")
                 .orderBy("id", Query.Direction.DESCENDING)
                 .limit(1)
@@ -229,7 +239,6 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
-
     public static void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imagesRef = storage.getReference().child("pictures").child(name);
@@ -254,5 +263,65 @@ public class ModelFireBase {
                 });
             }
         });
+    }
+    public static boolean checkCurrentUser(){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            return true;
+        }
+        else
+            return false;
+    }
+    private static boolean createUserAccount(String email, String password, int type) {
+        // create user with email
+        AtomicBoolean result = new AtomicBoolean(false);
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
+            if(task.isSuccessful()){
+                // Sign in success, update UI with the signed-in user's information
+                Log.d("TAG", "createUserWithEmail:success");
+                FirebaseUser user = mAuth.getCurrentUser();
+                result.set(true);
+                //updateUI(user);
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.d("TAG", "createUserWithEmail:failure", task.getException());
+                /*Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();*/
+                result.set(false);
+                //updateUI(null);
+            }
+        });
+        return result.get();
+    }
+    private static boolean signIn(String email, String password) {
+        // sign in with email
+        AtomicBoolean result = new AtomicBoolean(false);
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("TAG", "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        //updateUI(user);
+                        result.set(true);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.d("TAG", "signInWithEmail:failure", task.getException());
+                        //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                        //updateUI(null);
+                        result.set(false);
+                    }
+                });
+        return result.get();
+        // [END sign_in_with_email]
+    }
+    private static boolean sendEmailVerification() {
+        // Send verification email
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener((task) -> {
+                        // Email sent
+                    });
+        return true;
     }
 }
