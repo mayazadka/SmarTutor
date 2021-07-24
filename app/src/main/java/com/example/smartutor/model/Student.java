@@ -30,6 +30,7 @@ public class Student {
     private Date birthdayDate;
     private int grade;
     private Long lastUpdated;
+    private Boolean isDeleted;
 
     public Student(){}
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade) {
@@ -39,6 +40,7 @@ public class Student {
         this.gender = gender;
         this.birthdayDate = birthdayDate;
         this.grade = grade;
+        this.isDeleted = false;
         this.lastUpdated = Long.valueOf(0);
     }
     public Student(Map<String, Object> json){
@@ -51,7 +53,7 @@ public class Student {
         Timestamp ts =      (Timestamp)json.get("lastUpdated");
         if(ts!=null)        {lastUpdated =ts.getSeconds();}
         else                {lastUpdated = Long.valueOf(0);}
-
+        isDeleted =         (Boolean)json.get("isDeleted");
     }
 
     public String getEmail()                            {return email;}
@@ -68,6 +70,8 @@ public class Student {
     public void setGrade(int grade)                     {this.grade = grade;}
     public Long getLastUpdated()                        {return lastUpdated;}
     public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
+    public Boolean getDeleted() {return isDeleted;}
+    public void setDeleted(Boolean deleted) {isDeleted = deleted;}
 
     @Override
     public boolean equals(Object o) {
@@ -90,6 +94,8 @@ public class Student {
         data.put("birthdayDate",  Converters.fromDateToString(birthdayDate));
         data.put("grade",  grade);
         data.put("lastUpdated", FieldValue.serverTimestamp());
+        data.put("isDeleted", isDeleted);
+
         return data;
     }
 

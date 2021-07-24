@@ -72,7 +72,8 @@ public class Model {
         ModelFireBase.getStudents(localLastTimeUpdate, s -> executorService.execute(()->{
             Long lastUpdate = Long.valueOf(0);
             for(Student st: s){
-                AppLocalDB.db.studentDao().insertStudent(st);
+                if(st.getDeleted()){AppLocalDB.db.studentDao().deleteStudent(st);}
+                else{AppLocalDB.db.studentDao().insertStudent(st);}
                 if(lastUpdate < st.getLastUpdated()){
                     lastUpdate = st.getLastUpdated();
                 }
@@ -113,6 +114,7 @@ public class Model {
         });
     }
     public void deleteStudent(Student student, OnCompleteListener listener){
+        student.setDeleted(true);
         ModelFireBase.deleteStudent(student, ()->{
             getStudents();
             listener.onComplete();

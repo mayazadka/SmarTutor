@@ -122,7 +122,7 @@ public class ModelFireBase {
                     if (task.isSuccessful()) {
                         FirebaseFirestore.getInstance()
                                 .collection("students").document(student.getEmail())
-                                .delete()
+                                .update("isDeleted", true)
                                 .addOnSuccessListener(aVoid -> listener.onComplete())
                                 .addOnFailureListener(aVoid -> listener.onComplete());
                     }
