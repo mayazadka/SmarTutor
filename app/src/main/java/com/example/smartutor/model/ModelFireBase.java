@@ -272,7 +272,7 @@ public class ModelFireBase {
         else
             return false;
     }
-    private static boolean createUserAccount(String email, String password, int type) {
+    private static boolean createUserAccount(String email, String password) {
         // create user with email
         AtomicBoolean result = new AtomicBoolean(false);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
