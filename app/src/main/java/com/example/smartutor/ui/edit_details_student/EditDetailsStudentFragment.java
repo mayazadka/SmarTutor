@@ -1,10 +1,7 @@
 package com.example.smartutor.ui.edit_details_student;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -24,7 +20,6 @@ import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
-import com.example.smartutor.ui.StudentMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,8 +37,6 @@ public class EditDetailsStudentFragment extends Fragment {
     private Spinner grade;
     private Button chooseDate;
     private EditText date;
-    private EditText password;
-    private EditText confirm;
     private Button save;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,8 +54,6 @@ public class EditDetailsStudentFragment extends Fragment {
         grade = root.findViewById(R.id.editDetailsStudent_grade_spn);
         chooseDate = root.findViewById(R.id.editDetailsStudent_birthdayDate_btn);
         date = root.findViewById(R.id.editDetailsStudent_birthdayDate_et);
-        password = root.findViewById(R.id.editDetailsStudent_password_et);
-        confirm = root.findViewById(R.id.editDetailsStudent_confirmPassword_et);
         save = root.findViewById(R.id.editDetailsStudent_save_btn);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
@@ -100,8 +91,6 @@ public class EditDetailsStudentFragment extends Fragment {
             dateFormat.setLenient(false);
             date.setText(dateFormat.format(student.getBirthdayDate()));
             grade.setSelection(student.getGrade() - 1);
-            password.setText(student.getPassword());
-            confirm.setText(student.getPassword());
         });
 
 
@@ -110,9 +99,8 @@ public class EditDetailsStudentFragment extends Fragment {
                 Utilities.validateLastName(lastName.getText().toString());
                 Utilities.validateFirstName(firstName.getText().toString());
                 Utilities.validateDate(date.getText().toString());
-                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
-                Student student = new Student(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()), password.getText().toString());
+                Student student = new Student(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
                 editDetailsStudentViewModel.updateStudent(student, ()->{});
                 Navigation.findNavController(root).navigate(R.id.action_global_nav_home_student);
             }

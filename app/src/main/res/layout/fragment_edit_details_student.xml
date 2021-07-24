@@ -176,74 +176,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_grade_tv" />
 
-            <TextView
-                android:id="@+id/editDetailsStudent_password_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Password"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_grade_spn" />
-
-            <EditText
-                android:id="@+id/editDetailsStudent_password_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand_bold"
-                android:hint="Your password."
-                android:inputType="textPassword"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_password_tv" />
-
-            <TextView
-                android:id="@+id/editDetailsStudent_confirmPassword_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Confirm Password"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_password_et" />
-
-            <EditText
-                android:id="@+id/editDetailsStudent_confirmPassword_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand_bold"
-                android:hint="Confirm your password."
-                android:inputType="textPassword"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_confirmPassword_tv" />
-
             <Button
                 android:id="@+id/editDetailsStudent_save_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/quicksand_bold"
@@ -253,7 +191,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_confirmPassword_et" />
+                app:layout_constraintTop_toBottomOf="@+id/editDetailsStudent_grade_spn" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,11 +21,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Student;
-import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.TutorMenuActivity;
-import com.example.smartutor.ui.delete_account_student.DeleteAccountStudentViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 @RequiresApi(api = Build.VERSION_CODES.O)

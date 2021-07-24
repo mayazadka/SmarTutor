@@ -1,9 +1,7 @@
 package com.example.smartutor.ui.edit_details_tutor;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +10,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -26,9 +21,7 @@ import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Profession;
-import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.TutorMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,8 +29,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsTutorFragment extends Fragment {
@@ -51,8 +42,6 @@ public class EditDetailsTutorFragment extends Fragment {
     private Button chooseDate;
     private MultiSpinner professions;
     private EditText aboutMe;
-    private EditText password;
-    private EditText confirm;
     private Button save;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,8 +60,6 @@ public class EditDetailsTutorFragment extends Fragment {
         chooseDate = root.findViewById(R.id.editDetailsTutor_birthdayDate_btn);
         professions = root.findViewById(R.id.editDetailsTutor_professions_spn);
         aboutMe = root.findViewById(R.id.signUpTutor_aboutMe_etml);
-        password = root.findViewById(R.id.editDetailsTutor_password_et);
-        confirm = root.findViewById(R.id.editDetailsTutor_confirmPassword_et);
         save = root.findViewById(R.id.editDetailsTutor_save_btn);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
@@ -117,8 +104,6 @@ public class EditDetailsTutorFragment extends Fragment {
                 }
                 professions.setSelected(selected);
                 aboutMe.setText(tutor.getAboutMe());
-                password.setText(tutor.getPassword());
-                confirm.setText(tutor.getPassword());
             }
         });
 
@@ -129,9 +114,8 @@ public class EditDetailsTutorFragment extends Fragment {
                 Utilities.validateDate(date.getText().toString());
                 Utilities.validateProfessions(professions.getSelectedItem());
                 Utilities.validateAboutMe(aboutMe.getText().toString());
-                Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
-                Tutor tutor = new Tutor(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString(), password.getText().toString());
+                Tutor tutor = new Tutor(null, lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString());
                 editDetailsTutorViewModel.updateTutor(tutor, ()-> Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             }
             catch (Exception e){

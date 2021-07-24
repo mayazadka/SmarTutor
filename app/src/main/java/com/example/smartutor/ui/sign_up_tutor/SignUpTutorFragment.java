@@ -1,7 +1,5 @@
 package com.example.smartutor.ui.sign_up_tutor;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,18 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,19 +23,13 @@ import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
-import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.TutorMenuActivity;
-import com.example.smartutor.ui.sign_up_student.SignUpStudentViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class SignUpTutorFragment extends Fragment {

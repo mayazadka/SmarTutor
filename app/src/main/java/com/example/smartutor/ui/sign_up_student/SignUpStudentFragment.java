@@ -24,13 +24,10 @@ import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Student;
-import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.StudentMenuActivity;
-import com.example.smartutor.ui.sign_in.SignInViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
