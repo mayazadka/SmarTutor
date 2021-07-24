@@ -22,10 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 
 import java.io.FileNotFoundException;
@@ -115,6 +113,7 @@ public class AddPostFragment extends Fragment {
                     imageBitmap = BitmapFactory.decodeStream(imageStream);
                     image.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
+                    // TODO: display on the view
                     Log.d("TAG", "Something went wrong");
                 }
             }else {

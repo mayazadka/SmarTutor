@@ -211,6 +211,18 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deletePost(Post post, Model.OnCompleteListener listener){
+        if(post.getPicture().compareTo("") == 0 || post.getPicture() == null){
+            deletePostDetails(post, listener);
+        }
+        else{
+            FirebaseStorage.getInstance()
+                    .getReferenceFromUrl(post.getPicture())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> deletePostDetails(post, listener))
+                    .addOnFailureListener(aVoid -> deletePostDetails(post, listener));
+        }
+    }
+    private static void deletePostDetails(Post post, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance()
                 .collection("posts").document(post.getId().toString())
                 .delete()

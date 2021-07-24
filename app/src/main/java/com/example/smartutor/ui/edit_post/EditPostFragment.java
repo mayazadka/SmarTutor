@@ -99,6 +99,11 @@ public class EditPostFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
         });
         deleteBtn.setOnClickListener(v -> {
+            saveBtn.setEnabled(false);
+            editImage.setEnabled(false);
+            cancelBtn.setEnabled(false);
+            deleteBtn.setEnabled(false);
+            galleryBtn.setEnabled(false);
             editPostViewModel.deletePost(() -> {Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);});
         });
         editImage.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +166,7 @@ public class EditPostFragment extends Fragment {
         editImage.setEnabled(false);
         cancelBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
+        galleryBtn.setEnabled(false);
 
         Long postId = editPostViewModel.getPost().getValue().getId();
 
