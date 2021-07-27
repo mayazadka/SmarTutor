@@ -15,9 +15,25 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/appBar_student_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorOnPrimary"
-            app:popupTheme="@style/Theme.SmarTutor.AppBarOverlay" />
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            app:popupTheme="@style/Theme.SmarTutor.AppBarOverlay">
+
+            <ImageButton
+                android:id="@+id/logout_imgbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="300dp"
+                android:layout_marginEnd="16dp"
+                android:background="#00FFFFFF"
+                android:layoutDirection="ltr"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/ic_baseline_login_24"
+                tools:ignore="VectorDrawableCompat" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

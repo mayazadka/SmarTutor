@@ -36,12 +36,6 @@ public class StudentMenuActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.student_menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

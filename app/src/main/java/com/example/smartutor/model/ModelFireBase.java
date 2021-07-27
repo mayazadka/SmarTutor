@@ -154,8 +154,9 @@ public class ModelFireBase {
                 });
     }
 
-    public static void getLessons(Consumer<List<Lesson>> consumer){
+    public static void getLessons(Long since, Consumer<List<Lesson>> consumer){
         FirebaseFirestore.getInstance().collection("lessons")
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Lesson> lessons = new LinkedList<>();
@@ -178,7 +179,7 @@ public class ModelFireBase {
     public static void deleteLesson(Lesson lesson, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance()
                 .collection("lessons").document(lesson.getId().toString())
-                .delete()
+                .update("isDeleted", true)
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
