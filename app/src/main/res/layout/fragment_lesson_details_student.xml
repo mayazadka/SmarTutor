@@ -6,106 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".ui.lesson_details_student.LessonDetailsStudentFragment">
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_hour_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="15:00"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv"
-        app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_tutor_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_hourTitle_tv"
-        app:layout_constraintVertical_bias="0.555" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/lessonDetailsStudent_swipeUp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_TutorTitle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Tutor:"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_hourTitle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Hour:"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_hour_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="15:00"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv"
+                app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_tutor_tv"
+                app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_hourTitle_tv"
+                app:layout_constraintVertical_bias="0.555" />
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="12.5.2021"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv"
-        app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_hour_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_dateTitle_tv" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_TutorTitle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Tutor:"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_hourTitle_tv" />
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_tutor_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Omer Asher"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_TutorTitle_tv"
-        app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_TutorTitle_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_TutorTitle_tv"
-        app:layout_constraintVertical_bias="0.555" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_hourTitle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Hour:"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv" />
 
-    <TextView
-        android:id="@+id/lessonDetailsStudent_dateTitle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Date:"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="12.5.2021"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_dateTitle_tv"
+                app:layout_constraintStart_toStartOf="@+id/lessonDetailsStudent_hour_tv"
+                app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_dateTitle_tv" />
 
-    <ImageView
-        android:id="@+id/lessonDetailsStudent_subject_img"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_subject_math"
-        app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_tutor_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_tutor_tv"
-        app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_date_tv" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_tutor_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Omer Asher"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_TutorTitle_tv"
+                app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_TutorTitle_tv"
+                app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_TutorTitle_tv"
+                app:layout_constraintVertical_bias="0.555" />
 
-    <Button
-        android:id="@+id/lessonDetailsStudent_cancel_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Cancel Lesson"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_subject_img" />
+            <TextView
+                android:id="@+id/lessonDetailsStudent_dateTitle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Date:"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/lessonDetailsStudent_subject_img"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_subject_math"
+                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsStudent_tutor_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/lessonDetailsStudent_tutor_tv"
+                app:layout_constraintTop_toTopOf="@+id/lessonDetailsStudent_date_tv" />
+
+            <Button
+                android:id="@+id/lessonDetailsStudent_cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Cancel Lesson"
+                android:textSize="@dimen/button_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessonDetailsStudent_subject_img" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

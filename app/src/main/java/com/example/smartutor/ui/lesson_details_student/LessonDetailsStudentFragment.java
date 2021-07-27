@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorFragmentArgs;
@@ -33,6 +35,7 @@ public class LessonDetailsStudentFragment extends Fragment {
     TextView tutorName;
     ImageView image;
     Button cancel;
+    SwipeRefreshLayout swipeUp;
 
     LocalDateTime dateTime;
 
@@ -53,6 +56,7 @@ public class LessonDetailsStudentFragment extends Fragment {
         tutorName = root.findViewById(R.id.lessonDetailsStudent_tutor_tv);
         image = root.findViewById(R.id.lessonDetailsStudent_subject_img);
         cancel = root.findViewById(R.id.lessonDetailsStudent_cancel_btn);
+        swipeUp = root.findViewById(R.id.lessonDetailsStudent_swipeUp);
 
         date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -94,10 +98,30 @@ public class LessonDetailsStudentFragment extends Fragment {
         });
 
         cancel.setOnClickListener(v -> {
+            v.setEnabled(false);
             viewModel.deleteLesson(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_student));
 
         });
 
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshTutors();
+            Model.getInstance().refreshLessons();
+        });
+
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+
         return root;
+    }
+
+    void handleLoading(){
+        if(Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
+            cancel.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            cancel.setEnabled(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }

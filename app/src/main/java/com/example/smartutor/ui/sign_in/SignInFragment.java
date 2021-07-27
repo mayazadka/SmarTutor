@@ -82,10 +82,8 @@ public class SignInFragment extends Fragment {
                 return false;
             });
         signIn.setOnClickListener(v -> {
-            signIn.setEnabled(false);
-            swipeUp.setRefreshing(true);
+            v.setEnabled(false);
             try {
-
                 if (isStudent.isChecked()) {
                      signInViewModel.isExistStudent(email.getText().toString(), password.getText().toString(), (flag)->{
                          isStudent.setEnabled(false);
@@ -163,8 +161,6 @@ public class SignInFragment extends Fragment {
             catch (Exception e){
                 Snackbar.make(signIn, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
-            signIn.setEnabled(true);
-            swipeUp.setRefreshing(false);
         });
 
         Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());

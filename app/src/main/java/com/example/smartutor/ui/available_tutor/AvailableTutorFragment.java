@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.ui.home_tutor.HomeTutorViewModel;
 
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ public class AvailableTutorFragment extends Fragment {
     TextView hour;
     Button set;
     LocalDateTime dateTime;
+    SwipeRefreshLayout swipeUp;
 
     public AvailableTutorFragment(){}
 
@@ -40,7 +43,7 @@ public class AvailableTutorFragment extends Fragment {
         date = root.findViewById(R.id.availableTutor_date_tv);
         hour = root.findViewById(R.id.availableTutor_hour_tv);
         set = root.findViewById(R.id.availableTutor_set_btn);
-
+        swipeUp = root.findViewById(R.id.availableTutor_swipeUp);
 
         date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -54,9 +57,25 @@ public class AvailableTutorFragment extends Fragment {
         else{
             set.setText("Set Available");
             set.setOnClickListener(v -> {
+                v.setEnabled(false);
                 viewModel.deleteEvent(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
+
+        Model.getInstance().eventLoadingState.observe(getViewLifecycleOwner(), state->{
+            if(state == Model.LoadingState.loaded){
+                set.setEnabled(true);
+                swipeUp.setRefreshing(false);
+            }
+            else{
+                set.setEnabled(false);
+                swipeUp.setRefreshing(true);
+            }
+        });
+
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshEvents();
+        });
 
         return root;
     }

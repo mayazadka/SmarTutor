@@ -137,7 +137,6 @@ public class HomeTutorFragment extends Fragment {
         });
 
         homeTutorViewModel.getEventsByTutor().observe(getViewLifecycleOwner(), events ->{
-            Log.d("omer", "omer");
             setCalendar();
             setCalendarByEvents(events);
             LiveData<List<Lesson>> lessonsLiveData = homeTutorViewModel.getLessonsByTutor();
@@ -218,7 +217,7 @@ public class HomeTutorFragment extends Fragment {
             LocalDateTime date = lesson.getDate();
             LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
             ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
-            img.setImageResource(R.drawable.ic_baseline_block_24);
+            img.setImageResource(R.drawable.ic_baseline_info_24);
             img.setOnClickListener(v -> {
                 HomeTutorFragmentDirections.ActionNavHomeTutorToLessonDetailsTutorFragment action = HomeTutorFragmentDirections.actionNavHomeTutorToLessonDetailsTutorFragment(date.getHour(), (date.getDayOfWeek().getValue() % 7) + 1);
                 Navigation.findNavController(root).navigate(action);

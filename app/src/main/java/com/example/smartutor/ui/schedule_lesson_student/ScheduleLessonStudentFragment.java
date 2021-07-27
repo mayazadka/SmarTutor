@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.ui.available_tutor.AvailableTutorFragmentArgs;
 import com.example.smartutor.ui.available_tutor.AvailableTutorViewModel;
@@ -35,6 +37,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
     Button schedule;
     ImageView img;
     Spinner subjects;
+    SwipeRefreshLayout swipeUp;
 
     LocalDateTime dateTime;
     Profession subject;
@@ -55,8 +58,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
         tutorName = root.findViewById(R.id.scheduleLessonStudent_tutor_tv);
         img = root.findViewById(R.id.scheduleLessonStudent_subject_img);
         subjects = root.findViewById(R.id.scheduleLessonStudent_subject_spn);
-
-        subject = Profession.MATH;
+        swipeUp = root.findViewById(R.id.scheduleLessonStudent_swipeUp);
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -73,6 +75,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjects.setAdapter(spinnerAdapter);
 
+            subject = t.getProfessions().get(0);
             for(Profession profession:t.getProfessions()){
                 String p = profession.toString().replace("_", " ");
                 p = p.toLowerCase();
@@ -82,15 +85,13 @@ public class ScheduleLessonStudentFragment extends Fragment {
         });
 
         schedule.setOnClickListener(v -> {
-            if(subject == null){
-                Snackbar.make(v, "choose subject", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-            else{
-                viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject, ()->{
-                    ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
-                    Navigation.findNavController(root).navigate(action);
-                });
-            }
+            v.setEnabled(false);
+
+            viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject, ()->{
+                ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
+                Navigation.findNavController(root).navigate(action);
+            });
+
         });
 
 
@@ -129,6 +130,18 @@ public class ScheduleLessonStudentFragment extends Fragment {
                 // your code here
             }
 
+        });
+
+        swipeUp.setOnRefreshListener(()->Model.getInstance().refreshTutors());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->{
+            if(state == Model.LoadingState.loaded){
+                schedule.setEnabled(true);
+                swipeUp.setRefreshing(false);
+            }
+            else{
+                schedule.setEnabled(false);
+                swipeUp.setRefreshing(true);
+            }
         });
 
 

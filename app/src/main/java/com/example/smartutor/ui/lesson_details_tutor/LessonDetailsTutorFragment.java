@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.ui.available_tutor.AvailableTutorFragmentArgs;
 import com.example.smartutor.ui.available_tutor.AvailableTutorViewModel;
@@ -32,6 +34,7 @@ public class LessonDetailsTutorFragment extends Fragment {
     TextView studentName;
     ImageView image;
     Button cancel;
+    SwipeRefreshLayout swipeUp;
 
     LocalDateTime dateTime;
 
@@ -52,6 +55,7 @@ public class LessonDetailsTutorFragment extends Fragment {
         studentName = root.findViewById(R.id.lessonDetailsTutor_student_tv);
         image = root.findViewById(R.id.lessonDetailsTutor_subject_img);
         cancel = root.findViewById(R.id.lessonDetailsTutor_cancel_btn);
+        swipeUp = root.findViewById(R.id.lessonDetailsTutor_swipeUp);
 
 
         date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -94,9 +98,29 @@ public class LessonDetailsTutorFragment extends Fragment {
         });
 
         cancel.setOnClickListener(v -> {
+            v.setEnabled(false);
             viewModel.deleteLesson(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
         });
 
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshStudents();
+            Model.getInstance().refreshLessons();
+        });
+
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+
         return root;
+    }
+
+    void handleLoading(){
+        if(Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue()== Model.LoadingState.loaded){
+            cancel.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            cancel.setEnabled(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }

@@ -95,8 +95,7 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            signUp.setEnabled(false);
-            swipeUp.setRefreshing(true);
+            v.setEnabled(false);
             try {
                 Utilities.validateEmail(email.getText().toString());
                 Utilities.validateLastName(lastName.getText().toString());
@@ -119,8 +118,6 @@ public class SignUpStudentFragment extends Fragment {
             catch (Exception e) {
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
-            signUp.setEnabled(true);
-            swipeUp.setRefreshing(false);
 
         });
 
