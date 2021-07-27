@@ -20,7 +20,7 @@
             app:popupTheme="@style/Theme.SmarTutor.AppBarOverlay">
 
             <ImageButton
-                android:id="@+id/logout_imgbtn"
+                android:id="@+id/logout_student_imgbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="300dp"
