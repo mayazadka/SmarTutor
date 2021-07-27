@@ -86,22 +86,6 @@ public class ModelFireBase {
                     consumer.accept(students);
                 });
     }
-    public static void getStudent(Long since, String email, Consumer<Student> consumer){
-
-        FirebaseFirestore.getInstance().collection("students")
-                .whereEqualTo("email", email)
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
-                .get()
-                .addOnCompleteListener(task -> {
-                    Student student = null;
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            student = new Student(document.getData());
-                        }
-                    } else {}
-                    consumer.accept(student);
-                });
-    }
     public static void addStudent(Student student, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance().collection("students").document(student.getEmail())
             .set(student.toJson())
@@ -128,8 +112,10 @@ public class ModelFireBase {
                     }
                 });
     }
-    public static void getTutors(Consumer<List<Tutor>> consumer){
+
+    public static void getTutors(Long since, Consumer<List<Tutor>> consumer){
         FirebaseFirestore.getInstance().collection("tutors")
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Tutor> tutors = new LinkedList<>();
@@ -161,12 +147,13 @@ public class ModelFireBase {
                     if (task.isSuccessful()) {
                         FirebaseFirestore.getInstance()
                                 .collection("tutors").document(tutor.getEmail())
-                                .delete()
+                                .update("isDeleted", true)
                                 .addOnSuccessListener(aVoid -> listener.onComplete())
                                 .addOnFailureListener(aVoid -> listener.onComplete());
                     }
                 });
     }
+
     public static void getLessons(Consumer<List<Lesson>> consumer){
         FirebaseFirestore.getInstance().collection("lessons")
                 .get()
@@ -195,6 +182,7 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
+
     public static void getEvents(Consumer<List<Event>> consumer){
         FirebaseFirestore.getInstance().collection("events")
                 .get()
@@ -223,6 +211,7 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
+
     public static void getPosts(Consumer<List<Post>> consumer){
         FirebaseFirestore.getInstance().collection("posts")
                 .get()
@@ -271,6 +260,7 @@ public class ModelFireBase {
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
+
     public static void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imagesRef = storage.getReference().child("pictures").child(name);
@@ -296,6 +286,7 @@ public class ModelFireBase {
             }
         });
     }
+
     public static boolean checkCurrentUser(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -310,13 +301,13 @@ public class ModelFireBase {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
             if(task.isSuccessful()){
                 // Sign in success, update UI with the signed-in user's information
-                Log.d("TAG", "createUserWithEmail:success");
+                Log.d("omer", "createUserWithEmail:success");
                 FirebaseUser user = mAuth.getCurrentUser();
                 result.set(true);
                 //updateUI(user);
             } else {
                 // If sign in fails, display a message to the user.
-                Log.d("TAG", "createUserWithEmail:failure", task.getException());
+                Log.d("omer", "createUserWithEmail:failure", task.getException());
                 /*Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
                         Toast.LENGTH_SHORT).show();*/
                 result.set(false);

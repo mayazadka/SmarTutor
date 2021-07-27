@@ -1,9 +1,16 @@
 package com.example.smartutor.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.example.smartutor.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +30,8 @@ public class Tutor  {
     private Date birthdayDate;
     private List<Profession> professions;
     private String aboutMe;
-    private String password;
+    private Long lastUpdated;
+    private Boolean isDeleted;
 
     public Tutor(){}
     public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe) {
@@ -34,16 +42,8 @@ public class Tutor  {
         this.birthdayDate = birthdayDate;
         this.professions = professions;
         this.aboutMe = aboutMe;
-    }
-    public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe, String password) {
-        this.email = email;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.gender = gender;
-        this.birthdayDate = birthdayDate;
-        this.professions = professions;
-        this.aboutMe = aboutMe;
-        this.password = password;
+        this.isDeleted = false;
+        this.lastUpdated = Long.valueOf(0);
     }
     public Tutor(Map<String, Object> json){
         email =             (String)json.get("email");
@@ -53,7 +53,10 @@ public class Tutor  {
         birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
         professions =       Converters.fromStringToProfessions((String)json.get("professions"));
         aboutMe =           (String)json.get("aboutMe");
-        password =          (String)json.get("password");
+        Timestamp ts =      (Timestamp)json.get("lastUpdated");
+        if(ts!=null)        {lastUpdated =ts.getSeconds();}
+        else                {lastUpdated = Long.valueOf(0);}
+        isDeleted =         (Boolean)json.get("isDeleted");
     }
 
     public String getEmail()                                    {return email;}
@@ -70,8 +73,10 @@ public class Tutor  {
     public void setProfessions(List<Profession> professions)    {this.professions = professions;}
     public String getAboutMe()                                  {return aboutMe;}
     public void setAboutMe(String aboutMe)                      {this.aboutMe = aboutMe;}
-    public String getPassword()                                 {return password;}
-    public void setPassword(String password)                    {this.password = password;}
+    public Long getLastUpdated()                        {return lastUpdated;}
+    public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
+    public Boolean getDeleted()                         {return isDeleted;}
+    public void setDeleted(Boolean deleted)             {isDeleted = deleted;}
 
     @Override
     public boolean equals(Object o) {
@@ -94,7 +99,18 @@ public class Tutor  {
         data.put("gender", Converters.fromGenderToString(gender));
         data.put("professions",  Converters.fromProfessionsToString(professions));
         data.put("aboutMe",  aboutMe);
-        data.put("password",  password);
+        data.put("lastUpdated", FieldValue.serverTimestamp());
+        data.put("isDeleted", isDeleted);
         return data;
+    }
+
+    static public void setLocalLatUpdateTime(Long timeStamp){
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        editor.putLong("TutorLastUpdate", timeStamp);
+        editor.commit();
+    }
+
+    static public Long getLocalLatUpdateTime(){
+        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("TutorLastUpdate", 0);
     }
 }

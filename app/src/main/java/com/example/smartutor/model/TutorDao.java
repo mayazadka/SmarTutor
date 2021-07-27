@@ -12,7 +12,7 @@ import java.util.List;
 
 @androidx.room.Dao
 public interface TutorDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE) void insertTutor(Tutor tutor);
+    @Insert(onConflict = OnConflictStrategy.REPLACE) void insertTutor(Tutor tutor);
     @Update void updateTutor(Tutor tutor);
     @Delete void deleteTutor(Tutor tutor);
     @Transaction @Query("SELECT * FROM Tutor") LiveData<List<Tutor>> getTutors();

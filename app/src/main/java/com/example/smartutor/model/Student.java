@@ -70,8 +70,8 @@ public class Student {
     public void setGrade(int grade)                     {this.grade = grade;}
     public Long getLastUpdated()                        {return lastUpdated;}
     public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
-    public Boolean getDeleted() {return isDeleted;}
-    public void setDeleted(Boolean deleted) {isDeleted = deleted;}
+    public Boolean getDeleted()                         {return isDeleted;}
+    public void setDeleted(Boolean deleted)             {isDeleted = deleted;}
 
     @Override
     public boolean equals(Object o) {
@@ -100,7 +100,6 @@ public class Student {
     }
 
     static public void setLocalLatUpdateTime(Long timeStamp){
-        Log.d("omer", timeStamp.toString());
         SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         editor.putLong("StudentLastUpdate", timeStamp);
         editor.commit();

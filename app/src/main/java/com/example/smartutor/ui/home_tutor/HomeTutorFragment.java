@@ -87,7 +87,11 @@ public class HomeTutorFragment extends Fragment {
 
             }
         }
-        homeTutorViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> helloTv.setText("hello, " + tutor.getFirstName()+" " +tutor.getLastName()));
+        homeTutorViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
+            if(tutor != null){
+                helloTv.setText("hello, " + tutor.getFirstName()+" " +tutor.getLastName());
+            }
+        });
 
         homeTutorViewModel.getLessons().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
             private LiveData<Student> student = null;
