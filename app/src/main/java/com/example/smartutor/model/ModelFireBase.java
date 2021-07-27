@@ -104,11 +104,14 @@ public class ModelFireBase {
                 .delete()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) {
-                        FirebaseFirestore.getInstance()
-                                .collection("students").document(student.getEmail())
-                                .update("isDeleted", true)
-                                .addOnSuccessListener(aVoid -> listener.onComplete())
-                                .addOnFailureListener(aVoid -> listener.onComplete());
+                        if(student!=null){
+                            FirebaseFirestore.getInstance()
+                                    .collection("students").document(student.getEmail())
+                                    .update("isDeleted", true)
+                                    .addOnSuccessListener(aVoid -> listener.onComplete())
+                                    .addOnFailureListener(aVoid -> listener.onComplete());
+                        }
+                        else{listener.onComplete();}
                     }
                 });
     }
@@ -145,11 +148,14 @@ public class ModelFireBase {
                 .delete()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) {
-                        FirebaseFirestore.getInstance()
-                                .collection("tutors").document(tutor.getEmail())
-                                .update("isDeleted", true)
-                                .addOnSuccessListener(aVoid -> listener.onComplete())
-                                .addOnFailureListener(aVoid -> listener.onComplete());
+                        if(tutor!=null){
+                            FirebaseFirestore.getInstance()
+                                    .collection("tutors").document(tutor.getEmail())
+                                    .update("isDeleted", true)
+                                    .addOnSuccessListener(aVoid -> listener.onComplete())
+                                    .addOnFailureListener(aVoid -> listener.onComplete());
+                        }
+                        else{listener.onComplete();}
                     }
                 });
     }
@@ -177,15 +183,19 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deleteLesson(Lesson lesson, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance()
-                .collection("lessons").document(lesson.getId().toString())
-                .update("isDeleted", true)
-                .addOnSuccessListener(aVoid -> listener.onComplete())
-                .addOnFailureListener(aVoid -> listener.onComplete());
+        if(lesson != null){
+            FirebaseFirestore.getInstance()
+                    .collection("lessons").document(lesson.getId().toString())
+                    .update("isDeleted", true)
+                    .addOnSuccessListener(aVoid -> listener.onComplete())
+                    .addOnFailureListener(aVoid -> listener.onComplete());
+        }
+        else{listener.onComplete();}
     }
 
-    public static void getEvents(Consumer<List<Event>> consumer){
+    public static void getEvents(Long since, Consumer<List<Event>> consumer){
         FirebaseFirestore.getInstance().collection("events")
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Event> events = new LinkedList<>();
@@ -206,15 +216,19 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deleteEvent(Event event, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance()
-                .collection("events").document(event.getId().toString())
-                .delete()
-                .addOnSuccessListener(aVoid -> listener.onComplete())
-                .addOnFailureListener(aVoid -> listener.onComplete());
+        if(event != null){
+            FirebaseFirestore.getInstance()
+                    .collection("events").document(event.getId().toString())
+                    .update("isDeleted", true)
+                    .addOnSuccessListener(aVoid -> listener.onComplete())
+                    .addOnFailureListener(aVoid -> listener.onComplete());
+        }
+        else{listener.onComplete();}
     }
 
-    public static void getPosts(Consumer<List<Post>> consumer){
+    public static void getPosts(Long since, Consumer<List<Post>> consumer){
         FirebaseFirestore.getInstance().collection("posts")
+                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> posts = new LinkedList<>();
@@ -235,15 +249,14 @@ public class ModelFireBase {
                 .addOnFailureListener(v->listener.onComplete());
         return post.getId();
     }
-    public static void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
-        post.setId(postId);
-        FirebaseFirestore.getInstance().collection("posts").document(postId.toString())
+    public static void updatePost(Post post, Model.OnCompleteListener listener){
+        FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
                 .set(post.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void deletePost(Post post, Model.OnCompleteListener listener){
-        if(post.getPicture().compareTo("") == 0 || post.getPicture() == null){
+        if(post.getPicture().equals("") || post.getPicture() == null){
             deletePostDetails(post, listener);
         }
         else{
@@ -257,7 +270,7 @@ public class ModelFireBase {
     private static void deletePostDetails(Post post, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance()
                 .collection("posts").document(post.getId().toString())
-                .delete()
+                .update("isDeleted", true)
                 .addOnSuccessListener(aVoid -> listener.onComplete())
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }

@@ -122,31 +122,25 @@ public class AddPostFragment extends Fragment {
         }
     }
     private void savePicture(Long postId){
-        LiveData<Post> post = addPostViewModel.getPost(postId);
-
-        if(imageBitmap != null){
-            addPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), new AddPostViewModel.UploadImageListener() {
-                @Override
-                public void onComplete(String url) {
-                    addPostViewModel.updatePost(postId, new Post(post.getValue().getTutorEmail(), post.getValue().getText(), url), ()->{
+        addPostViewModel.getPost(postId).observe(getViewLifecycleOwner(), post ->{
+            if(post!=null){
+                if(imageBitmap != null && view != null){
+                    addPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), url -> addPostViewModel.updatePost(postId, new Post(post.getTutorEmail(), post.getText(), url), ()->{
                         Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
-                    });
+                    }));
+                } else{
+                    Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
                 }
-            });
-        } else{
-            Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
-        }
+            }
+        });
+
 
     }
     private void savePost(){
         // progress bar visible
         addBtn.setEnabled(false);
         editImage.setEnabled(false);
-        Post post = new Post();
-
-        post.setTutorEmail(getActivity().getIntent().getStringExtra("EMAIL"));
-        post.setText(description.getText().toString());
-        post.setPicture("");
+        Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
 
         addPostViewModel.addPost(post, ()->{
             savePicture(post.getId());

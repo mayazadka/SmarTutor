@@ -109,9 +109,9 @@ public class MyFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            this.postImg.setImageResource(R.drawable.ic_gender_male);
-            if(image != null && image != ""){
-                Picasso.get().load(image).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(this.postImg);
+            this.postImg.setImageResource(R.drawable.ic_baseline_hourglass_empty_24);
+            if(image != null && !image.equals("")){
+                Picasso.get().load(image).placeholder(R.drawable.ic_baseline_hourglass_empty_24).error(R.drawable.ic_baseline_report_problem_24).into(this.postImg);
             }
         }
     }

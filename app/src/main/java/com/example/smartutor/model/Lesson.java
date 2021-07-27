@@ -97,6 +97,6 @@ public class Lesson {
     }
 
     static public Long getLocalLatUpdateTime(){
-        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("lessonLastUpdate", 0);
+        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("LessonLastUpdate", 0);
     }
 }

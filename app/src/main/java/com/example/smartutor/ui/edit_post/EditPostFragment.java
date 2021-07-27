@@ -180,9 +180,7 @@ public class EditPostFragment extends Fragment {
         } else{ savePost(null); }
     }
     private void savePost(String url) {
-        Post post = new Post();
-        post.setTutorEmail(editPostViewModel.getPost().getValue().getTutorEmail());
-        post.setText(description.getText().toString());
+        Post post = new Post(editPostViewModel.getPost().getValue().getTutorEmail(), description.getText().toString(), null);
         post.setId(editPostViewModel.getPost().getValue().getId());
         if (url == null) {
             post.setPicture(editPostViewModel.getPost().getValue().getPicture());

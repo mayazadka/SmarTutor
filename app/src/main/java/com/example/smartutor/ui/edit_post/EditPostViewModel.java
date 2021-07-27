@@ -32,7 +32,12 @@ public class EditPostViewModel extends ViewModel {
 
     public LiveData<Post> getPost()                                                                             {return post;}
     public LiveData<Tutor> getTutor()                                                                           {return tutor;}
-    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener)                           { model.updatePost(postId, post, listener); }
+    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
+        if(this.post.getValue()!=null){
+            post.setId(postId);
+            model.updatePost(post, listener);
+        }
+    }
     public void deletePost(Model.OnCompleteListener listener)                                                   {model.deletePost(post.getValue(), listener);}
     public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener)  { Model.getInstance().uploadImage(imageBmp, name, listener); }
 }

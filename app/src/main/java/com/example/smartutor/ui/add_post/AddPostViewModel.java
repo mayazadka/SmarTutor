@@ -18,19 +18,16 @@ public class AddPostViewModel extends ViewModel {
     MutableLiveData<List<Post>> Posts = new MutableLiveData<List<Post>>(new LinkedList<Post>());
 
     public AddPostViewModel() { }
-    public interface OnCompleteListener{
-        void onComplete();
-    }
+
     public LiveData<List<Post>> getPosts()                                                      { return model.getPosts(); }
-    public void addPost(Post post, OnCompleteListener listener) {
-        //studentsLoadingState.setValue(LoadingState.loading);
-        model.addPost(post, ()->{
-            listener.onComplete();
-        });
-        getPosts();
+    public void addPost(Post post, Model.OnCompleteListener listener) {
+        model.addPost(post, listener);
     }
     public interface UploadImageListener                                                        { void onComplete(String url);}
     public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener)   { Model.getInstance().uploadImage(imageBmp, name, listener); }
     public LiveData<Post> getPost(Long postId)                                                  {return model.getPost(postId);}
-    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener)           {model.updatePost(postId, post, listener);}
+    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
+        post.setId(postId);
+        model.updatePost(post, listener);
+    }
 }

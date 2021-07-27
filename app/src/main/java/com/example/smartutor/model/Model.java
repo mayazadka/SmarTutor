@@ -45,15 +45,8 @@ public class Model {
     public MutableLiveData<LoadingState> eventLoadingState = new MutableLiveData<>(LoadingState.loaded);
     public MutableLiveData<LoadingState> postLoadingState = new MutableLiveData<>(LoadingState.loaded);
 
-    private MutableLiveData<List<Lesson>> lessons = new MutableLiveData<>(new LinkedList<>());
-    private MutableLiveData<List<Event>> events = new MutableLiveData<>(new LinkedList<>());
-    private MutableLiveData<List<Post>> posts = new MutableLiveData<>(new LinkedList<>());
-
     private Model(){
-        new ModelFireBase();
-        lessons.observeForever(l -> lessonLoadingState.setValue(LoadingState.loaded));
-        events.observeForever(l -> eventLoadingState.setValue(LoadingState.loaded));
-        posts.observeForever(p -> postLoadingState.setValue(LoadingState.loaded));
+        new ModelFireBase(); //TODO:delete
     }
     public static Model getInstance(){
         if(model == null){
@@ -203,72 +196,95 @@ public class Model {
         });
     }
 
-    public LiveData<List<Event>> getEvents() {
+
+    public void refreshEvents(){
         eventLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.getEvents(e -> events.setValue(e));
-        return events;
-    }
-    public LiveData<Event> getEvent(String email, LocalDateTime date) {
-        eventLoadingState.setValue(LoadingState.loading);
-        MutableLiveData<Event> event = new MutableLiveData<>();
-        ModelFireBase.getEvents(events -> {
-            for(Event e : events){
-                if(e.getTutorEmail().equals(email) && e.getDate().equals(date)){
-                    event.setValue(e);
-                    return;
+
+        Long localLastTimeUpdate = Event.getLocalLatUpdateTime();
+
+        ModelFireBase.getEvents(localLastTimeUpdate, e -> executorService.execute(()->{
+            Long lastUpdate = Long.valueOf(0);
+            for(Event ev: e){
+                if(ev.getDeleted()){AppLocalDB.db.eventDao().deleteEvent(ev);}
+                else{AppLocalDB.db.eventDao().insertEvent(ev);}
+                if(lastUpdate < ev.getLastUpdated()){
+                    lastUpdate = ev.getLastUpdated();
                 }
             }
-            event.setValue(null);
-        });
-        getEvents();
-        return event;
+            Event.setLocalLatUpdateTime(lastUpdate);
+            eventLoadingState.postValue(LoadingState.loaded);
+        }));
+    }
+    public LiveData<List<Event>> getEvents() {
+        refreshEvents();
+        return AppLocalDB.db.eventDao().getEvents();
+    }
+    public LiveData<Event> getEvent(String email, LocalDateTime date) {
+        refreshEvents();
+        return AppLocalDB.db.eventDao().getEvent(email, date);
     }
     public void addEvent(Event event, OnCompleteListener listener){
         eventLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.addEvent(event, listener);
-        getEvents();
+        ModelFireBase.addEvent(event, ()->{
+            refreshEvents();
+            listener.onComplete();
+        });
     }
     public void deleteEvent(Event event, OnCompleteListener listener){
         eventLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.deleteEvent(event, listener);
-        getEvents();
+        ModelFireBase.deleteEvent(event, ()->{
+            refreshEvents();
+            listener.onComplete();
+        });
     }
 
-    public LiveData<List<Post>> getPosts() {
+    public void refreshPosts(){
         postLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.getPosts((p)-> posts.setValue(p));
-        return posts;
+
+        Long localLastTimeUpdate = Post.getLocalLatUpdateTime();
+
+        ModelFireBase.getPosts(localLastTimeUpdate, p -> executorService.execute(()->{
+            Long lastUpdate = Long.valueOf(0);
+            for(Post po: p){
+                if(po.getDeleted()){AppLocalDB.db.postDao().deletePost(po);}
+                else{AppLocalDB.db.postDao().insertPost(po);}
+                if(lastUpdate < po.getLastUpdated()){
+                    lastUpdate = po.getLastUpdated();
+                }
+            }
+            Post.setLocalLatUpdateTime(lastUpdate);
+            postLoadingState.postValue(LoadingState.loaded);
+        }));
+    }
+    public LiveData<List<Post>> getPosts() {
+        refreshPosts();
+        return AppLocalDB.db.postDao().getPosts();
+    }
+    public LiveData<Post> getPost(Long id) {
+        refreshPosts();
+        return AppLocalDB.db.postDao().getPostById(id);
     }
     public Long addPost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        Long id = ModelFireBase.addPost(post, listener);
-        getPosts();
+        Long id = ModelFireBase.addPost(post, ()->{
+            refreshPosts();
+            listener.onComplete();
+        });
         return id;
     }
-    public LiveData<Post> getPost(Long id) {
+    public void updatePost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        MutableLiveData<Post> post = new MutableLiveData<>();
-        ModelFireBase.getPosts(posts -> {
-            for(Post p : posts){
-                if(p.getId().equals(id)){
-                    post.setValue(p);
-                    return;
-                }
-            }
-            post.setValue(null);
+        ModelFireBase.updatePost(post, ()->{
+            refreshPosts();
+            listener.onComplete();
         });
-        getPosts();
-        return post;
-    }
-    public void updatePost(Long postId, Post post, OnCompleteListener listener){
-        postLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.updatePost(postId, post, listener);
-        getPost(post.getId());
     }
     public void deletePost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.deletePost(post, listener);
-        getPosts();
+        ModelFireBase.deletePost(post, ()->{
+            refreshPosts();
+            listener.onComplete();
+        });
     }
 
     public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){

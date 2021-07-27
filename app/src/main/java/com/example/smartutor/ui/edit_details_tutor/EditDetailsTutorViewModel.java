@@ -30,5 +30,10 @@ public class EditDetailsTutorViewModel extends ViewModel {
     }
 
     public LiveData<Tutor> getTutor()                                           {return tutor;}
-    public void updateTutor(Tutor tutor, Model.OnCompleteListener listener)     {tutor.setEmail(this.tutor.getValue().getEmail()); model.updateTutor(tutor, listener);}
+    public void updateTutor(Tutor tutor, Model.OnCompleteListener listener){
+        if(this.tutor.getValue()!=null){
+            tutor.setEmail(this.tutor.getValue().getEmail());
+            model.updateTutor(tutor, listener);
+        }
+    }
 }
