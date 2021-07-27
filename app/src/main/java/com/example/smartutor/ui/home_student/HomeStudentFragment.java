@@ -18,6 +18,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
@@ -47,6 +48,7 @@ public class HomeStudentFragment extends Fragment {
     private TextView nextLessonDate;
     private ImageView nextLessonSubjectImg;
     private LinearLayout calendarLinearLayout;
+    private SwipeRefreshLayout swipeUp;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeStudentViewModel = new ViewModelProvider(this).get(HomeStudentViewModel.class);
@@ -63,14 +65,9 @@ public class HomeStudentFragment extends Fragment {
         nextLessonDate = root.findViewById(R.id.homeStudent_date_tv);
         nextLessonSubjectImg = root.findViewById(R.id.homeStudent_subject_img);
         calendarLinearLayout = root.findViewById(R.id.homeStudent_calendar_ll);
+        swipeUp = root.findViewById(R.id.homeStudent_swipeUp);
 
-        for(int i=8;i<=20;i++){
-            for(int j = 1;j<=7;j++){
-                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
-                ImageView img = (ImageView)hourRow.getChildAt(j);
-                img.setImageResource(R.drawable.ic_baseline_block_24);
-            }
-        }
+        setCalendar();
 
         homeStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> {
             if(student != null) {
@@ -78,46 +75,55 @@ public class HomeStudentFragment extends Fragment {
             }
         });
 
-        homeStudentViewModel.getLessons().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
+        homeStudentViewModel.getLessonsByStudent().observe(getViewLifecycleOwner(), new Observer<List<Lesson>>() {
             private LiveData<Tutor> tutor = null;
 
             @Override
             public void onChanged(List<Lesson> lessons) {
-                lessons = lessons.stream().filter(lesson -> lesson.getStudentEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
                 if(tutor!=null){tutor.removeObservers(getViewLifecycleOwner());}
+
 
                 lessonsThisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
                 lessonsRemain.setText(String.valueOf(Utilities.getRemainLessons(lessons).size()));
                 lessonsTotal.setText(String.valueOf(lessons.size()));
 
                 Lesson nextLesson = Utilities.getNextLesson(lessons);
-                if(nextLesson == null){return;}
-
-                nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
-                nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE)+" - "+nextLesson.getDate().getHour()+":00");
-                tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
-                tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
-                switch (nextLesson.getSubject()) {
-                    case MATH:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-                        break;
-                    case HISTORY:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-                        break;
-                    case SCIENCE:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-                        break;
-                    case LANGUAGE:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-                        break;
-                    case LITERATURE:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-                        break;
-                    case COMPUTER_SCIENCE:
-                        nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-                        break;
+                if(nextLesson == null){
+                    nextLessonSubject.setText("");
+                    nextLessonDate.setText("");
+                    nextLessonTutor.setText("");
+                    nextLessonSubjectImg.setImageResource(R.drawable.ic_baseline_block_24);
+                }
+                else{
+                    nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
+                    nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE)+" - "+nextLesson.getDate().getHour()+":00");
+                    tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
+                    tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
+                    switch (nextLesson.getSubject()) {
+                        case MATH:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+                            break;
+                        case HISTORY:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
+                            break;
+                        case SCIENCE:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
+                            break;
+                        case LANGUAGE:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
+                            break;
+                        case LITERATURE:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
+                            break;
+                        case COMPUTER_SCIENCE:
+                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
+                            break;
+                    }
                 }
 
+
+
+                setCalendar();
                 for(Lesson lesson : Utilities.getRemainLessons(lessons)){
                     LocalDateTime date = lesson.getDate();
                     LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
@@ -132,6 +138,48 @@ public class HomeStudentFragment extends Fragment {
             }
 
         });
+
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
+        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
+
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshStudents();
+            Model.getInstance().refreshLessons();
+            Model.getInstance().refreshTutors();
+        });
         return root;
+    }
+
+
+    public void enableCalendar(boolean state){
+        for(int i=8;i<=20;i++){
+            LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+            for(int j = 1;j<=7;j++){
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                img.setEnabled(state);
+            }
+        }
+    }
+
+    public void setCalendar(){
+        for(int i=8;i<=20;i++){
+            for(int j = 1;j<=7;j++){
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                img.setImageResource(R.drawable.ic_baseline_block_24);
+            }
+        }
+    }
+
+    public void handleLoading(){
+        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().lessonLoadingState.getValue() == Model.LoadingState.loaded  && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
+            enableCalendar(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            enableCalendar(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }

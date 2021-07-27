@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.example.smartutor.ui.TutorMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +40,7 @@ public class SignInFragment extends Fragment {
     private EditText password;
     private Button signIn;
     private EditText email;
+    private SwipeRefreshLayout swipeUp;
 
 
     public SignInFragment() {
@@ -60,6 +63,7 @@ public class SignInFragment extends Fragment {
         password = view.findViewById(R.id.signIn_password_et);
         signIn = view.findViewById(R.id.signIn_signIn_btn);
         email = view.findViewById(R.id.signIn_email_et);
+        swipeUp = view.findViewById(R.id.signIn_swipeUp);
 
         // events setup
         signUp.setOnClickListener(v -> {
@@ -78,6 +82,8 @@ public class SignInFragment extends Fragment {
                 return false;
             });
         signIn.setOnClickListener(v -> {
+            signIn.setEnabled(false);
+            swipeUp.setRefreshing(true);
             try {
 
                 if (isStudent.isChecked()) {
@@ -113,6 +119,7 @@ public class SignInFragment extends Fragment {
                              email.setText("");
                              password.setText("");
                              Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
                          }
                      });
                 } else if (isTutor.isChecked()) {
@@ -148,6 +155,7 @@ public class SignInFragment extends Fragment {
                             email.setText("");
                             password.setText("");
                             Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
                         }
                     });
                 }
@@ -155,7 +163,28 @@ public class SignInFragment extends Fragment {
             catch (Exception e){
                 Snackbar.make(signIn, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
+            signIn.setEnabled(true);
+            swipeUp.setRefreshing(false);
         });
+
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshStudents();
+            Model.getInstance().refreshTutors();
+        });
+
         return view;
+    }
+
+    public void handleLoading(){
+        if(Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded){
+            signIn.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            signIn.setEnabled(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }

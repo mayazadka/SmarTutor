@@ -159,8 +159,12 @@ public class Model {
         ModelFireBase.getLessons(localLastTimeUpdate, l -> executorService.execute(()->{
             Long lastUpdate = Long.valueOf(0);
             for(Lesson le: l){
-                if(le.getDeleted()){AppLocalDB.db.lessonDao().deleteLesson(le);}
-                else{AppLocalDB.db.lessonDao().insertLesson(le);}
+                if(le.getDeleted()){
+                    AppLocalDB.db.lessonDao().deleteLesson(le);
+                }
+                else{
+                    AppLocalDB.db.lessonDao().insertLesson(le);
+                }
                 if(lastUpdate < le.getLastUpdated()){
                     lastUpdate = le.getLastUpdated();
                 }
@@ -172,6 +176,14 @@ public class Model {
     public LiveData<List<Lesson>> getLessons(){
         refreshLessons();
         return AppLocalDB.db.lessonDao().getLessons();
+    }
+    public LiveData<List<Lesson>> getLessonsByTutor(String email){
+        refreshLessons();
+        return AppLocalDB.db.lessonDao().getLessonsByTutor(email);
+    }
+    public LiveData<List<Lesson>> getLessonsByStudent(String email){
+        refreshLessons();
+        return AppLocalDB.db.lessonDao().getLessonsByStudent(email);
     }
     public LiveData<Lesson> getLessonByTutor(String tutorEmail, LocalDateTime date) {
         refreshLessons();
@@ -196,7 +208,6 @@ public class Model {
         });
     }
 
-
     public void refreshEvents(){
         eventLoadingState.setValue(LoadingState.loading);
 
@@ -205,8 +216,13 @@ public class Model {
         ModelFireBase.getEvents(localLastTimeUpdate, e -> executorService.execute(()->{
             Long lastUpdate = Long.valueOf(0);
             for(Event ev: e){
-                if(ev.getDeleted()){AppLocalDB.db.eventDao().deleteEvent(ev);}
-                else{AppLocalDB.db.eventDao().insertEvent(ev);}
+
+                if(ev.getDeleted() == true){
+                    AppLocalDB.db.eventDao().deleteEvent(ev);
+                }
+                else{
+                    AppLocalDB.db.eventDao().insertEvent(ev);
+                }
                 if(lastUpdate < ev.getLastUpdated()){
                     lastUpdate = ev.getLastUpdated();
                 }
@@ -215,9 +231,9 @@ public class Model {
             eventLoadingState.postValue(LoadingState.loaded);
         }));
     }
-    public LiveData<List<Event>> getEvents() {
+    public LiveData<List<Event>> getEventsByTutor(String email){
         refreshEvents();
-        return AppLocalDB.db.eventDao().getEvents();
+        return AppLocalDB.db.eventDao().getEventsByTutor(email);
     }
     public LiveData<Event> getEvent(String email, LocalDateTime date) {
         refreshEvents();

@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.ui.StudentMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -47,7 +49,7 @@ public class SignUpStudentFragment extends Fragment {
     private EditText firstName;
     private EditText password;
     private EditText confirm;
-    private ProgressBar pb;
+    private SwipeRefreshLayout swipeUp;
 
     public SignUpStudentFragment() {
         // Required empty public constructor
@@ -73,13 +75,12 @@ public class SignUpStudentFragment extends Fragment {
         firstName = view.findViewById(R.id.signUpStudent_firstName_et);
         password = view.findViewById(R.id.signUpStudent_password_et);
         confirm = view.findViewById(R.id.signUpStudent_confirmPassword_et);
-        pb = view.findViewById(R.id.signUpStudent_pb);
+        swipeUp = view.findViewById(R.id.signUpStudent_swipeUp);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
         ArrayAdapter<CharSequence> gradeAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.grade,R.layout.spinner_item);
         grade.setAdapter(gradeAdapter);
-        pb.setVisibility(View.INVISIBLE);
 
         // events setup
         signIn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_global_signIn));
@@ -94,8 +95,8 @@ public class SignUpStudentFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
-            pb.setVisibility(View.VISIBLE);
             signUp.setEnabled(false);
+            swipeUp.setRefreshing(true);
             try {
                 Utilities.validateEmail(email.getText().toString());
                 Utilities.validateLastName(lastName.getText().toString());
@@ -104,8 +105,6 @@ public class SignUpStudentFragment extends Fragment {
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
                 if(signUpStudentViewModel.isExistStudent(email.getText().toString()) || signUpStudentViewModel.isExistTutor(email.getText().toString())){
                     Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    pb.setVisibility(View.INVISIBLE);
-                    signUp.setEnabled(true);
                 }
                 else{
                     Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
@@ -119,11 +118,30 @@ public class SignUpStudentFragment extends Fragment {
             }
             catch (Exception e) {
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                pb.setVisibility(View.INVISIBLE);
-                signUp.setEnabled(true);
             }
+            signUp.setEnabled(true);
+            swipeUp.setRefreshing(false);
 
         });
+
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshStudents();
+            Model.getInstance().refreshTutors();
+        });
+
         return view;
+    }
+
+    public void handleLoading(){
+        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
+            signUp.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            signUp.setEnabled(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }

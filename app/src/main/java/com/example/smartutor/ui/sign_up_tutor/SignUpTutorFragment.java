@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.TutorMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,7 +51,7 @@ public class SignUpTutorFragment extends Fragment {
     private EditText lastName;
     private EditText firstName;
     private  EditText aboutMe;
-
+    private SwipeRefreshLayout swipeUp;
     public SignUpTutorFragment() {
         // Required empty public constructor
     }
@@ -75,6 +77,7 @@ public class SignUpTutorFragment extends Fragment {
         lastName = view.findViewById(R.id.signUpTutor_lastName_et);
         firstName = view.findViewById(R.id.signUpTutor_firstName_et);
         aboutMe = view.findViewById(R.id.signUpTutor_aboutMe_etml);
+        swipeUp = view.findViewById(R.id.signUpTutor_swipeUp);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
@@ -95,6 +98,8 @@ public class SignUpTutorFragment extends Fragment {
             builder.show();
         });
         signUp.setOnClickListener(v -> {
+            signUp.setEnabled(false);
+            swipeUp.setRefreshing(true);
             try{
                 Utilities.validateEmail(email.getText().toString());
                 Utilities.validateLastName(lastName.getText().toString());
@@ -120,8 +125,28 @@ public class SignUpTutorFragment extends Fragment {
             catch (Exception e){
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
+            signUp.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        });
+
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshStudents();
+            Model.getInstance().refreshTutors();
         });
 
         return view;
+    }
+
+    public void  handleLoading(){
+        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
+            signUp.setEnabled(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            signUp.setEnabled(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 }
