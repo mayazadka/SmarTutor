@@ -85,53 +85,15 @@ public class SignInFragment extends Fragment {
             v.setEnabled(false);
             try {
                 if (isStudent.isChecked()) {
-                     signInViewModel.isExistStudent(email.getText().toString(), password.getText().toString(), (flag)->{
-                         isStudent.setEnabled(false);
-                         isTutor.setEnabled(false);
-                         signIn.setEnabled(false);
-                         signUp.setEnabled(false);
-                         email.setEnabled(false);
-                         password.setEnabled(false);
-                         Intent intent = null;
-                         if(flag) {
-                             intent = new Intent(getActivity(), StudentMenuActivity.class);
-                         }
-                         if (intent != null) {
-                             isStudent.setEnabled(true);
-                             isTutor.setEnabled(true);
-                             signIn.setEnabled(true);
-                             signUp.setEnabled(true);
-                             email.setEnabled(true);
-                             password.setEnabled(true);
-                             intent.putExtra("EMAIL", email.getText().toString());
-                             startActivity(intent);
-                             email.setText("");
-                             password.setText("");
-                         } else {
-                             isStudent.setEnabled(true);
-                             isTutor.setEnabled(true);
-                             signIn.setEnabled(true);
-                             signUp.setEnabled(true);
-                             email.setEnabled(true);
-                             password.setEnabled(true);
-                             email.setText("");
-                             password.setText("");
-                             Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                         }
-                     });
-                } else if (isTutor.isChecked()) {
-                    signInViewModel.isExistTutor(email.getText().toString(), password.getText().toString(), (flag) -> {
-                        isStudent.setEnabled(false);
-                        isTutor.setEnabled(false);
-                        signIn.setEnabled(false);
-                        signUp.setEnabled(false);
-                        email.setEnabled(false);
-                        password.setEnabled(false);
+                    isStudent.setEnabled(false);
+                    isTutor.setEnabled(false);
+                    signIn.setEnabled(false);
+                    signUp.setEnabled(false);
+                    email.setEnabled(false);
+                    password.setEnabled(false);
+                    signInViewModel.signIn("student", email.getText().toString(), password.getText().toString(), () -> {
                         Intent intent = null;
-                        if(flag) {
-                            intent = new Intent(getActivity(), TutorMenuActivity.class);
-                        }
+                        intent = new Intent(getActivity(), StudentMenuActivity.class);
                         if (intent != null) {
                             isStudent.setEnabled(true);
                             isTutor.setEnabled(true);
@@ -143,7 +105,41 @@ public class SignInFragment extends Fragment {
                             startActivity(intent);
                             email.setText("");
                             password.setText("");
-                        } else {
+                        }
+                    }, () -> {
+                        isStudent.setEnabled(true);
+                        isTutor.setEnabled(true);
+                        signIn.setEnabled(true);
+                        signUp.setEnabled(true);
+                        email.setEnabled(true);
+                        password.setEnabled(true);
+                        email.setText("");
+                        password.setText("");
+                        Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    });
+                } else if (isTutor.isChecked()) {
+                    isStudent.setEnabled(false);
+                    isTutor.setEnabled(false);
+                    signIn.setEnabled(false);
+                    signUp.setEnabled(false);
+                    email.setEnabled(false);
+                    password.setEnabled(false);
+                    signInViewModel.signIn("tutor", email.getText().toString(), password.getText().toString(), () -> {
+                        Intent intent = null;
+                        intent = new Intent(getActivity(), TutorMenuActivity.class);
+                        if (intent != null) {
+                            isStudent.setEnabled(true);
+                            isTutor.setEnabled(true);
+                            signIn.setEnabled(true);
+                            signUp.setEnabled(true);
+                            email.setEnabled(true);
+                            password.setEnabled(true);
+                            intent.putExtra("EMAIL", email.getText().toString());
+                            startActivity(intent);
+                            email.setText("");
+                            password.setText("");
+                        }
+                        }, () -> {
                             isStudent.setEnabled(true);
                             isTutor.setEnabled(true);
                             signIn.setEnabled(true);
@@ -153,9 +149,7 @@ public class SignInFragment extends Fragment {
                             email.setText("");
                             password.setText("");
                             Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                        }
-                    });
+                        });
                 }
             }
             catch (Exception e){

@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -22,7 +23,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class ModelFireBase {
@@ -301,63 +301,76 @@ public class ModelFireBase {
         });
     }
 
-    public static boolean checkCurrentUser(){
+    public static void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            return true;
+            OnSuccess.onComplete();
         }
         else
-            return false;
+            OnFailure.onComplete();
     }
-    public static boolean createUserAccount(String email, String password) {
+    public static void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // create user with email
-        AtomicBoolean result = new AtomicBoolean(false);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
-            if(task.isSuccessful()){
+            if(task.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("omer", "createUserWithEmail:success");
                 FirebaseUser user = mAuth.getCurrentUser();
-                result.set(true);
-                //updateUI(user);
+                if(user == null) {
+                    OnFailure.onComplete();
+                }
+                else {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(type)
+                            .build();
+
+                    user.updateProfile(profileUpdates)
+                            .addOnCompleteListener((task1) -> {
+                                if (task1.isSuccessful()) {
+                                    OnSuccess.onComplete();
+                                }
+                            });
+                }
             } else {
                 // If sign in fails, display a message to the user.
-                Log.d("omer", "createUserWithEmail:failure", task.getException());
-                /*Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();*/
-                result.set(false);
-                //updateUI(null);
+                OnFailure.onComplete();
             }
         });
-        return result.get();
     }
-    public static void signIn(String email, String password, Model.OnCompleteSignInListener listener) {
+    public static String getCurrentUserEmail(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null)
+            return user.getEmail();
+        return null;
+    }
+    public static void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // sign in with email
-        AtomicBoolean result = new AtomicBoolean(false);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d("TAG", "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        //updateUI(user);
-                        listener.onComplete(true);
+                        if(user == null) {
+                            OnFailure.onComplete();
+                        }
+                        else if(type.compareTo(user.getDisplayName()) == 0)
+                            OnSuccess.onComplete();
+                        else
+                            OnFailure.onComplete();
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.d("TAG", "signInWithEmail:failure", task.getException());
-                        //Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        //updateUI(null);
-                        listener.onComplete(false);
+                        OnFailure.onComplete();
                     }
                 });
     }
-    public static boolean sendEmailVerification() {
+    public static void sendEmailVerification(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // Send verification email
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener((task) -> {
-                    // Email sent
+                    if (task.isSuccessful()) { OnSuccess.onComplete(); }
+                    else { OnFailure.onComplete(); }
                 });
-        return true;
     }
     public static void signOut()
     {

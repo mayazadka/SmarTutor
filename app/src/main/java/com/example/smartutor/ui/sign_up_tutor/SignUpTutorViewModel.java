@@ -28,30 +28,24 @@ public class SignUpTutorViewModel  extends ViewModel {
         students.observeForever(ss-> {});
     }
 
-    public void addTutor(Tutor tutor, String password, Model.OnCompleteListener listener)   {
-        createUserAccount(tutor.getEmail(), password);
-        model.addTutor(tutor, listener);
+    public void addTutor(Tutor tutor, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure)   {
+        createUserAccount("tutor", tutor.getEmail(), password, () -> {
+            model.addTutor(tutor, OnSuccess);
+        }, OnFailure);
     }
 
-    public boolean isExistTutor(String email) throws Exception {
-        if(tutors.getValue() == null){return false;}
-        for (Tutor tutor : tutors.getValue()) {
-            if (tutor.getEmail().equals(email)) {
-                return true;
-            }
-        }
-        return false;
+    public void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
+        model.checkCurrentUser(OnSuccess, OnFailure);
     }
-    public boolean isExistStudent(String email) throws Exception {
-        if(students.getValue() == null){return false;}
-        for (Student student : students.getValue()) {
-            if (student.getEmail().equals(email)) {
-                return true;
-            }
-        }
-        return false;
+    public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        model.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }
-    public boolean createUserAccount(String email, String password) {
-        return model.createUserAccount(email, password);
+    public String getCurrentUserEmail(){
+        return model.getCurrentUserEmail();
     }
+    public void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        model.signIn(type, email, password, OnSuccess, OnFailure);
+    }
+
+    public void signOut() {model.signOut();}
 }

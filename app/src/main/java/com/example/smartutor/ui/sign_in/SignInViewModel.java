@@ -31,51 +31,17 @@ public class SignInViewModel extends ViewModel {
         });
     }
 
-    public void isExistStudent(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
-        int flag = 0;
-        if (students.getValue() == null) {
-            throw new Exception("try again");
-        }
-        for (Student student : students.getValue()) {
-            if (student.getEmail().equals(email)) {
-                flag = 1;
-                signIn(email, password, listener);
-                break;
-            }
-        }
-        if (flag == 0)
-            listener.onComplete(false);
+    public void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
+        model.checkCurrentUser(OnSuccess, OnFailure);
     }
-
-    public void isExistTutor(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
-        int flag = 0;
-        if (tutors.getValue() == null) {
-            throw new Exception("try again");
-        }
-        for (Tutor tutor : tutors.getValue()) {
-            if (tutor.getEmail().equals(email)) {
-                flag = 1;
-                signIn(email, password, listener);
-                break;
-            }
-        }
-        if (flag == 0)
-            listener.onComplete(false);
+    public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        model.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }
-
-    public boolean checkCurrentUser() {
-        return model.checkCurrentUser();
+    public String getCurrentUserEmail(){
+        return model.getCurrentUserEmail();
     }
-
-    public void signIn(String email, String password, Model.OnCompleteSignInListener listener) {
-        model.signIn(email, password, listener);
+    public void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        model.signIn(type, email, password, OnSuccess, OnFailure);
     }
-
-    public boolean sendEmailVerification() {
-        return model.sendEmailVerification();
-    }
-
-    public void signOut() {
-        model.signOut();
-    }
+    public void signOut() {model.signOut();}
 }

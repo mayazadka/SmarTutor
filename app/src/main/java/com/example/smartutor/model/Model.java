@@ -16,6 +16,7 @@ import com.example.smartutor.MyApplication;
 import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,9 +32,6 @@ public class Model {
     public enum LoadingState{loaded, loading, error}
     public interface OnCompleteListener{
         public void onComplete();
-    }
-    public interface OnCompleteSignInListener{
-        public void onComplete(boolean signIn);
     }
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -307,17 +305,20 @@ public class Model {
         ModelFireBase.uploadImage(imageBmp, name, listener);
     }
 
-    public boolean checkCurrentUser(){
-        return ModelFireBase.checkCurrentUser();
+    public void checkCurrentUser(OnCompleteListener OnSuccess, OnCompleteListener OnFailure){
+        ModelFireBase.checkCurrentUser(OnSuccess, OnFailure);
     }
-    public boolean createUserAccount(String email, String password) {
-        return ModelFireBase.createUserAccount(email, password);
+    public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        ModelFireBase.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }
-    public void signIn(String email, String password, OnCompleteSignInListener listener) {
-        ModelFireBase.signIn(email, password, listener);
+    public String getCurrentUserEmail(){
+        return ModelFireBase.getCurrentUserEmail();
     }
-    public boolean sendEmailVerification() {
-        return ModelFireBase.sendEmailVerification();
+    public void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        ModelFireBase.signIn(type, email, password, OnSuccess, OnFailure);
+    }
+    public static void sendEmailVerification(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
+        ModelFireBase.sendEmailVerification(OnSuccess, OnFailure);
     }
     public void signOut() {ModelFireBase.signOut();}
 }
