@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.model.Model;
+import com.example.smartutor.model.ModelFireBase;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
@@ -24,13 +25,17 @@ public class SignInViewModel extends ViewModel {
         students = model.getStudents();
         tutors = model.getTutors();
 
-        students.observeForever(ss->{});
-        tutors.observeForever(ts->{});
+        students.observeForever(ss -> {
+        });
+        tutors.observeForever(ts -> {
+        });
     }
 
     public void isExistStudent(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
         int flag = 0;
-        if(students.getValue() == null){throw new Exception("try again");}
+        if (students.getValue() == null) {
+            throw new Exception("try again");
+        }
         for (Student student : students.getValue()) {
             if (student.getEmail().equals(email)) {
                 flag = 1;
@@ -38,12 +43,15 @@ public class SignInViewModel extends ViewModel {
                 break;
             }
         }
-        if(flag == 0)
+        if (flag == 0)
             listener.onComplete(false);
     }
+
     public void isExistTutor(String email, String password, Model.OnCompleteSignInListener listener) throws Exception {
         int flag = 0;
-        if(tutors.getValue() == null){throw new Exception("try again");}
+        if (tutors.getValue() == null) {
+            throw new Exception("try again");
+        }
         for (Tutor tutor : tutors.getValue()) {
             if (tutor.getEmail().equals(email)) {
                 flag = 1;
@@ -51,17 +59,23 @@ public class SignInViewModel extends ViewModel {
                 break;
             }
         }
-        if(flag == 0)
+        if (flag == 0)
             listener.onComplete(false);
     }
 
-    public boolean checkCurrentUser(){
+    public boolean checkCurrentUser() {
         return model.checkCurrentUser();
     }
+
     public void signIn(String email, String password, Model.OnCompleteSignInListener listener) {
         model.signIn(email, password, listener);
     }
+
     public boolean sendEmailVerification() {
         return model.sendEmailVerification();
+    }
+
+    public void signOut() {
+        model.signOut();
     }
 }

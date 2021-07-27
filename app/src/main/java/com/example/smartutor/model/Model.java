@@ -319,4 +319,5 @@ public class Model {
     public boolean sendEmailVerification() {
         return ModelFireBase.sendEmailVerification();
     }
+    public void signOut() {ModelFireBase.signOut();}
 }

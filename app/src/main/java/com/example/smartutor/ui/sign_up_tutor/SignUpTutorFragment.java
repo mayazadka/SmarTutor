@@ -26,7 +26,7 @@ import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.TutorMenuActivity;
+import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 

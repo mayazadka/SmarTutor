@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
-import com.example.smartutor.ui.StudentMenuActivity;
-import com.example.smartutor.ui.TutorMenuActivity;
+import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
+import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -182,5 +182,11 @@ public class SignInFragment extends Fragment {
             signIn.setEnabled(false);
             swipeUp.setRefreshing(true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        signInViewModel.signOut();
     }
 }

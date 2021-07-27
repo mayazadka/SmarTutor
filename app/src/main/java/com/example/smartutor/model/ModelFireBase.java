@@ -359,4 +359,8 @@ public class ModelFireBase {
                 });
         return true;
     }
+    public static void signOut()
+    {
+        mAuth.signOut();
+    }
 }

@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmarTutor" >
         <activity
-            android:name=".ui.TutorMenuActivity"
+            android:name=".ui.tutor_menu_activity.TutorMenuActivity"
             android:label="@string/title_activity_tutor_menu"
             android:theme="@style/Theme.SmarTutor.NoActionBar" >
         </activity>
         <activity
-            android:name=".ui.StudentMenuActivity"
+            android:name=".ui.student_menu_activity.StudentMenuActivity"
             android:label="@string/title_activity_student_menu"
             android:theme="@style/Theme.SmarTutor.NoActionBar" >
         </activity>
