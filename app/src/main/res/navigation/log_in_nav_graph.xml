@@ -9,7 +9,12 @@
         android:id="@+id/signIn"
         android:name="com.example.smartutor.ui.sign_in.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <argument
+            android:name="toSignOut"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
     <fragment
         android:id="@+id/studentSignUp"
         android:name="com.example.smartutor.ui.sign_up_student.SignUpStudentFragment"

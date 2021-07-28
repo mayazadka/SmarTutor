@@ -18,12 +18,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.smartutor.LogInNavGraphDirections;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
+import com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragmentDirections;
 import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -103,7 +105,9 @@ public class SignUpStudentFragment extends Fragment {
                 Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
                 signUpStudentViewModel.addStudent(student, password.getText().toString(), ()->{
                     Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-                    Navigation.findNavController(view).navigate(R.id.action_global_signIn);
+                    LogInNavGraphDirections.ActionGlobalSignIn action = SignUpStudentFragmentDirections.actionGlobalSignIn();
+                    action.setToSignOut(false);
+                    Navigation.findNavController(view).navigate(action);
                     startActivity(intent);
                     }, ()->{
                         Snackbar.make(signUp, "invalid email", Snackbar.LENGTH_LONG).setAction("Action", null).show();

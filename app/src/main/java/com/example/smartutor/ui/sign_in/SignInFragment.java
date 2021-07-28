@@ -23,6 +23,7 @@ import com.example.smartutor.R;
 import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
+import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
 import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -148,6 +149,6 @@ public class SignInFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        signInViewModel.signOut();
+        if(SignInFragmentArgs.fromBundle(getArguments()).getToSignOut()) { signInViewModel.signOut(); }
     }
 }

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.smartutor.LogInNavGraphDirections;
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
@@ -25,6 +26,7 @@ import com.example.smartutor.model.Gender;
 import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
+import com.example.smartutor.ui.sign_up_student.SignUpStudentFragmentDirections;
 import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -109,7 +111,9 @@ public class SignUpTutorFragment extends Fragment {
                 Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString());
                 signUpTutorViewModel.addTutor(tutor, password.getText().toString(), () -> {
                     Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
-                    Navigation.findNavController(view).navigate(R.id.action_global_signIn);
+                    LogInNavGraphDirections.ActionGlobalSignIn action = SignUpTutorFragmentDirections.actionGlobalSignIn();
+                    action.setToSignOut(false);
+                    Navigation.findNavController(view).navigate(action);
                     startActivity(intent);
                 }, () -> {
                     Snackbar.make(signUp, "email", Snackbar.LENGTH_LONG).setAction("Action", null).show();
