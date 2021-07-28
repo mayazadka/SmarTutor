@@ -11,8 +11,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.my_feed.MyFeedFragment;
@@ -29,11 +32,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StudentFeedFragment extends Fragment {
 
     private StudentFeedViewModel studentFeedViewModel;
     private List<Post> listPosts;
+    private SwipeRefreshLayout swipeUp;
+    private AtomicBoolean enabled;
 
     //views
     private RecyclerView postListRecyclerView;
@@ -51,16 +57,24 @@ public class StudentFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_student_feed, container, false);
 
         postListRecyclerView = view.findViewById(R.id.studentFeed_list_rv);
+        swipeUp = view.findViewById(R.id.studentFeed_swipeUp);
+
         postListRecyclerView.setHasFixedSize(true);
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StudentFeedFragment.MyAdapter adapter = new StudentFeedFragment.MyAdapter();
 
         postListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+        enabled = new AtomicBoolean();
+        enabled.set(true);
         adapter.setOnItemClickListener((v, p) ->{
-            String tutorEmail = listPosts.get(p).getTutorEmail();
-            StudentFeedFragmentDirections.ActionNavFeedStudentToNavTutorDetailsStudent action = StudentFeedFragmentDirections.actionNavFeedStudentToNavTutorDetailsStudent(tutorEmail);
-            Navigation.findNavController(view).navigate(action);
+            if(enabled.get()){
+                enabled.set(false);
+                String tutorEmail = listPosts.get(p).getTutorEmail();
+                StudentFeedFragmentDirections.ActionNavFeedStudentToNavTutorDetailsStudent action = StudentFeedFragmentDirections.actionNavFeedStudentToNavTutorDetailsStudent(tutorEmail);
+                Navigation.findNavController(view).navigate(action);
+
+            }
         });
         postListRecyclerView.setAdapter(adapter);
 
@@ -71,9 +85,27 @@ public class StudentFeedFragment extends Fragment {
             listPosts = posts;
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
+
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshPosts();
+            Model.getInstance().refreshTutors();
+        });
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().postLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+
+
         return view;
     }
-
+    private void handleLoading(){
+        if(Model.getInstance().postLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
+            swipeUp.setRefreshing(false);
+            enabled.set(true);
+        }
+        else{
+            swipeUp.setRefreshing(true);
+            enabled.set(false);
+        }
+    }
 
     static class StudentFeedViewHolder extends RecyclerView.ViewHolder{
         StudentFeedFragment.OnItemClickListener listener;

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -23,9 +24,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.ui.add_post.AddPostViewModel;
 import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
@@ -45,6 +48,7 @@ public class EditPostFragment extends Fragment {
     private Button saveBtn;
     private Button cancelBtn;
     private Button deleteBtn;
+    private SwipeRefreshLayout swipeUp;
 
     private ImageButton editImage;
     private ImageButton galleryBtn;
@@ -79,6 +83,7 @@ public class EditPostFragment extends Fragment {
         deleteBtn = view.findViewById(R.id.editPost_delete_btn);
         editImage = view.findViewById(R.id.editPost_camera_btn);
         galleryBtn = view.findViewById(R.id.editPost_gallery_btn);
+        swipeUp = view.findViewById(R.id.editPost_swipeUp);
 
         editPostViewModel.getPost().observe(getViewLifecycleOwner(), post -> {
             if(post != null){
@@ -94,14 +99,18 @@ public class EditPostFragment extends Fragment {
             v.setEnabled(false);
             enableButtons(false);
 
-            if(description.getText().toString().trim().equals("") || imageBitmap == null){
-                //TODO:validation
+            if(description.getText().toString().trim().equals("")){
+                Snackbar.make(saveBtn, "you must enter description", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 enableButtons(true);
-                return;
             }
-            Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
-            post.setId(postId);
-            editPostViewModel.updatePost(post, imageBitmap,()->Navigation.findNavController(view).navigateUp());
+            if(imageBitmap==null){
+                Navigation.findNavController(view).navigateUp();
+            }
+            else{
+                Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+                post.setId(postId);
+                editPostViewModel.updatePost(post, imageBitmap,()->Navigation.findNavController(view).navigateUp());
+            }
         });
 
         cancelBtn.setOnClickListener(v -> {
@@ -117,6 +126,18 @@ public class EditPostFragment extends Fragment {
         });
         editImage.setOnClickListener(v -> takePicture());
         galleryBtn.setOnClickListener(v -> loadPictureFromGallery());
+
+        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshPosts());
+        Model.getInstance().postLoadingState.observeForever(state->{
+            if(state == Model.LoadingState.loaded){
+                enableButtons(true);
+                swipeUp.setRefreshing(false);
+            }
+            else{
+                enableButtons(false);
+                swipeUp.setRefreshing(true);
+            }
+        });
         return view;
     }
 

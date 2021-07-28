@@ -24,6 +24,7 @@ import android.widget.ImageView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Post;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -67,19 +68,20 @@ public class AddPostFragment extends Fragment {
 
         addBtn.setOnClickListener(v -> {
             v.setEnabled(false);
-            editImage.setEnabled(false);
-            galleryBtn.setEnabled(false);
+            enableButtons(false);
 
-            if(imageBitmap == null || description.getText().toString().trim().equals("")) {
-                //TODO: validation
-                v.setEnabled(true);
-                editImage.setEnabled(true);
-                galleryBtn.setEnabled(true);
-                return;
+            if(description.getText().toString().trim().equals("")){
+                Snackbar.make(addBtn, "you must enter description", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                enableButtons(true);
             }
-            Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
-
-            addPostViewModel.addPost(post, imageBitmap, () -> Navigation.findNavController(view).navigateUp());
+            else if(imageBitmap==null){
+                Snackbar.make(addBtn, "you must choose photo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                enableButtons(true);
+            }
+            else {
+                Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+                addPostViewModel.addPost(post, imageBitmap, () -> Navigation.findNavController(view).navigateUp());
+            }
         });
 
         editImage.setOnClickListener(v -> takePicture());
@@ -87,6 +89,11 @@ public class AddPostFragment extends Fragment {
         return view;
     }
 
+    void enableButtons(boolean state){
+        addBtn.setEnabled(state);
+        editImage.setEnabled(state);
+        galleryBtn.setEnabled(state);
+    }
     void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);

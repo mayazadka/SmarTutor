@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.ui.student_feed.StudentFeedFragmentDirections;
 import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
@@ -27,6 +29,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class TutorFeedStudentFragment extends Fragment {
@@ -34,6 +37,8 @@ public class TutorFeedStudentFragment extends Fragment {
     TutorFeedStudentViewModel tutorFeedStudentViewModel;
     private List<Post> listPosts;
     private String tutorEmail;
+    private SwipeRefreshLayout swipeUp;
+    private AtomicBoolean enabled;
 
     private RecyclerView listPostsRecyclerView;
     public TutorFeedStudentFragment() {
@@ -55,10 +60,14 @@ public class TutorFeedStudentFragment extends Fragment {
         listPostsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         TutorFeedStudentFragment.MyAdapter adapter = new TutorFeedStudentFragment.MyAdapter();
 
-        //TODO: fix this
+        enabled = new AtomicBoolean();
+        enabled.set(true);
         adapter.setOnItemClickListener((v, p) ->{
-            TutorFeedStudentFragmentDirections.ActionTutorFeedStudentFragmentToNavTutorDetailsStudent action = TutorFeedStudentFragmentDirections.actionTutorFeedStudentFragmentToNavTutorDetailsStudent(tutorEmail);
-            Navigation.findNavController(view).navigate(action);
+            if(enabled.get()){
+                enabled.set(false);
+                TutorFeedStudentFragmentDirections.ActionTutorFeedStudentFragmentToNavTutorDetailsStudent action = TutorFeedStudentFragmentDirections.actionTutorFeedStudentFragmentToNavTutorDetailsStudent(tutorEmail);
+                Navigation.findNavController(view).navigate(action);
+            }
         });
         listPostsRecyclerView.setAdapter(adapter);
 
@@ -70,9 +79,26 @@ public class TutorFeedStudentFragment extends Fragment {
             listPostsRecyclerView.getAdapter().notifyDataSetChanged();
         });
 
+
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshPosts();
+            Model.getInstance().refreshTutors();
+        });
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().postLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+
         return view;
     }
-
+    private void handleLoading(){
+        if(Model.getInstance().postLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
+            swipeUp.setRefreshing(false);
+            enabled.set(true);
+        }
+        else{
+            swipeUp.setRefreshing(true);
+            enabled.set(false);
+        }
+    }
     static class TutorFeedStudentViewHolder extends RecyclerView.ViewHolder{
         TutorFeedStudentFragment.OnItemClickListener listener;
         TextView owner;
@@ -100,9 +126,9 @@ public class TutorFeedStudentFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            this.postImg.setImageResource(R.drawable.ic_gender_male);
+            this.postImg.setImageResource(R.drawable.ic_baseline_hourglass_empty_24);
             if(image != null && image != ""){
-                Picasso.get().load(image).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(this.postImg);
+                Picasso.get().load(image).placeholder(R.drawable.ic_baseline_hourglass_empty_24).error(R.drawable.ic_baseline_report_problem_24).into(this.postImg);
             }
         }
     }

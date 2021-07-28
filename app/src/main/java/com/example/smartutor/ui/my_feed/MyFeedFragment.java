@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.example.smartutor.ui.edit_post.EditPostFragmentDirections;
 import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
@@ -32,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 
@@ -39,9 +42,10 @@ public class MyFeedFragment extends Fragment {
     private MyFeedViewModel myFeedViewModel;
     private List<Post> listPosts;
     private String tutorEmail;
-
+    private AtomicBoolean enabled;
     private RecyclerView postListRecyclerView;
     private Button add;
+    private SwipeRefreshLayout swipeUp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +58,11 @@ public class MyFeedFragment extends Fragment {
 
         postListRecyclerView = view.findViewById(R.id.myFeed_list_rv);
         add = view.findViewById(R.id.myFeed_addPost_btn);
+        swipeUp = view.findViewById(R.id.myFeed_swipeUp);
+
+        enabled = new AtomicBoolean();
+
+        enabled.set(true);
         postListRecyclerView.setHasFixedSize(true);
 
         postListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
@@ -61,9 +70,11 @@ public class MyFeedFragment extends Fragment {
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
 
         adapter.setOnItemClickListener((v, p) ->{
-            Log.d("TAG", "id: " + listPosts.get(p).getId() + " " + listPosts.get(p).getText());
-            MyFeedFragmentDirections.ActionNavMyFeedTutorToEditPostFragment action = MyFeedFragmentDirections.actionNavMyFeedTutorToEditPostFragment(listPosts.get(p).getId());
-            Navigation.findNavController(view).navigate(action);
+            if(enabled.get()){
+                enabled.set(false);
+                MyFeedFragmentDirections.ActionNavMyFeedTutorToEditPostFragment action = MyFeedFragmentDirections.actionNavMyFeedTutorToEditPostFragment(listPosts.get(p).getId());
+                Navigation.findNavController(view).navigate(action);
+            }
         });
         postListRecyclerView.setAdapter(adapter);
         add.setOnClickListener(v->Navigation.findNavController(view).navigate(R.id.action_nav_my_feed_tutor_to_addPostFragment));
@@ -77,9 +88,27 @@ public class MyFeedFragment extends Fragment {
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
 
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshTutors();
+            Model.getInstance().refreshPosts();
+        });
+
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().postLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+
         return view;
     }
 
+    private void handleLoading(){
+        if(Model.getInstance().postLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
+            swipeUp.setRefreshing(false);
+            enabled.set(true);
+        }
+        else{
+            swipeUp.setRefreshing(true);
+            enabled.set(false);
+        }
+    }
 
     static class MyFeedViewHolder extends RecyclerView.ViewHolder{
         MyFeedFragment.OnItemClickListener listener;
