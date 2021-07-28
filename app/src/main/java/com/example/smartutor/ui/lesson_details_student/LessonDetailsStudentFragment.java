@@ -19,10 +19,7 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
-import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorFragmentArgs;
-import com.example.smartutor.ui.lesson_details_tutor.LessonDetailsTutorViewModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,7 +34,6 @@ public class LessonDetailsStudentFragment extends Fragment {
     private ImageView image;
     private Button cancel;
     private SwipeRefreshLayout swipeUp;
-
     private LocalDateTime dateTime;
 
     public  LessonDetailsStudentFragment(){}
@@ -48,7 +44,7 @@ public class LessonDetailsStudentFragment extends Fragment {
         dateTime = LocalDate.now().atTime(LessonDetailsStudentFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(LessonDetailsStudentFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
 
         LessonDetailsStudentViewModel viewModel = new ViewModelProvider(this).get(LessonDetailsStudentViewModel.class);
-        viewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), dateTime);
+        viewModel.initial(dateTime);
 
         View root = inflater.inflate(R.layout.fragment_lesson_details_student, container, false);
 

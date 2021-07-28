@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 public class Model {
     public enum LoadingState{loaded, loading, error}
@@ -287,9 +286,6 @@ public class Model {
             listener.onComplete();
         });
     }
-    private void uploadImage(Bitmap imageBmp, String name, Consumer<String> listener){
-        ModelFireBase.uploadImage(imageBmp, name, listener);
-    }
 
     public void checkCurrentUser(OnCompleteListener OnSuccess, OnCompleteListener OnFailure){
         ModelFireBase.checkCurrentUser(OnSuccess, OnFailure);
@@ -302,9 +298,6 @@ public class Model {
     }
     public void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         ModelFireBase.signIn(type, email, password, OnSuccess, OnFailure);
-    }
-    public static void sendEmailVerification(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
-        ModelFireBase.sendEmailVerification(OnSuccess, OnFailure);
     }
     public void signOut() {ModelFireBase.signOut();}
 }

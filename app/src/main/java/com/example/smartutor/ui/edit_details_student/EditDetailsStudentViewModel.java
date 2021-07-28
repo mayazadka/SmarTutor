@@ -20,13 +20,14 @@ public class EditDetailsStudentViewModel extends ViewModel {
     private LiveData<Student> student;
 
     public EditDetailsStudentViewModel() { }
-    public void initial(String email){
-        student = model.getStudent(email);
+    public void initial() {
+        student = model.getStudent(getCurrentUserEmail());
     }
 
-    public LiveData<Student> getStudent()                                           {return student;}
-    public void updateStudent(Student student, Model.OnCompleteListener listener)  {
-        if(this.student.getValue()!=null){
+    public LiveData<Student> getStudent()   { return student; }
+    public String getCurrentUserEmail()     { return model.getCurrentUserEmail(); }
+    public void updateStudent(Student student, Model.OnCompleteListener listener) {
+        if(this.student.getValue() != null){
             student.setEmail(this.student.getValue().getEmail());
             model.updateStudent(student, listener);
         }

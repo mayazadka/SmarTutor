@@ -34,18 +34,8 @@ public class SignUpTutorViewModel  extends ViewModel {
         }, OnFailure);
     }
 
-    public void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
-        model.checkCurrentUser(OnSuccess, OnFailure);
-    }
     public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         model.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }
-    public String getCurrentUserEmail(){
-        return model.getCurrentUserEmail();
-    }
-    public void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
-        model.signIn(type, email, password, OnSuccess, OnFailure);
-    }
-
-    public void signOut() {model.signOut();}
+    public String getCurrentUserEmail() { return model.getCurrentUserEmail(); }
 }

@@ -420,15 +420,6 @@ public class ModelFireBase {
                     }
                 });
     }
-    public static void sendEmailVerification(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
-        // Send verification email
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener((task) -> {
-                    if (task.isSuccessful()) { OnSuccess.onComplete(); }
-                    else { OnFailure.onComplete(); }
-                });
-    }
     public static void signOut(){
         FirebaseAuth.getInstance().signOut();
     }

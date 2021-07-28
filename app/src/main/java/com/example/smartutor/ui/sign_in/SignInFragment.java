@@ -92,7 +92,6 @@ public class SignInFragment extends Fragment {
                         Intent intent = null;
                         intent = new Intent(getActivity(), StudentMenuActivity.class);
                         if (intent != null) {
-                            intent.putExtra("EMAIL", email.getText().toString());
                             startActivity(intent);
                             email.setText("");
                             password.setText("");
@@ -108,8 +107,6 @@ public class SignInFragment extends Fragment {
                         Intent intent = null;
                         intent = new Intent(getActivity(), TutorMenuActivity.class);
                         if (intent != null) {
-
-                            intent.putExtra("EMAIL", email.getText().toString());
                             startActivity(intent);
                             email.setText("");
                             password.setText("");

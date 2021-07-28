@@ -2,7 +2,6 @@ package com.example.smartutor.ui.home_tutor;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +26,7 @@ import com.example.smartutor.model.Student;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class HomeTutorFragment extends Fragment {
@@ -51,7 +47,7 @@ public class HomeTutorFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeTutorViewModel = new ViewModelProvider(this).get(HomeTutorViewModel.class);
-        homeTutorViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+        homeTutorViewModel.initial();
 
         root = inflater.inflate(R.layout.fragment_home_tutor, container, false);
 

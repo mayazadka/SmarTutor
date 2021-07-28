@@ -45,7 +45,7 @@ public class EditDetailsStudentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
         editDetailsStudentViewModel = new ViewModelProvider(this).get(EditDetailsStudentViewModel.class);
-        editDetailsStudentViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+        editDetailsStudentViewModel.initial();
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_edit_details_student, container, false);

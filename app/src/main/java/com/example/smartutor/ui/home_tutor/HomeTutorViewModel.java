@@ -30,14 +30,16 @@ public class HomeTutorViewModel extends ViewModel {
 
 
     public HomeTutorViewModel() {}
-    public void initial(String email){
+    public void initial(){
+        String email = getCurrentUserEmail();
         tutor = model.getTutor(email);
         lessons = model.getLessonsByTutor(email);
         events = model.getEventsByTutor(email);
     }
 
-    public LiveData<Tutor> getTutor()                   {return tutor;}
-    public LiveData<List<Lesson>> getLessonsByTutor()   {return lessons;}
-    public LiveData<List<Event>> getEventsByTutor()     {return events;}
-    public LiveData<Student> getStudent(String email)   {return model.getStudent(email);}
+    public LiveData<Tutor> getTutor()                   { return tutor; }
+    public LiveData<List<Lesson>> getLessonsByTutor()   { return lessons; }
+    public LiveData<List<Event>> getEventsByTutor()     { return events; }
+    public LiveData<Student> getStudent(String email)   { return model.getStudent(email); }
+    public String getCurrentUserEmail()                 { return model.getCurrentUserEmail(); }
 }

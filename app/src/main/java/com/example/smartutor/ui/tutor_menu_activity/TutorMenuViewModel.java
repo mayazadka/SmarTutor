@@ -7,5 +7,5 @@ public class TutorMenuViewModel extends ViewModel {
     private Model model = Model.getInstance();
 
     public TutorMenuViewModel() {}
-    public void signOut() {model.signOut();}
+    public void signOut()       { model.signOut(); }
 }

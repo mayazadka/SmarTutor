@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
-import com.example.smartutor.ui.home_tutor.HomeTutorViewModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 
 public class AvailableTutorFragment extends Fragment {
 
+    AvailableTutorViewModel availableTutorViewModel;
     private TextView date;
     private TextView hour;
     private Button set;
@@ -35,9 +34,9 @@ public class AvailableTutorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LocalDateTime now = LocalDateTime.now();
-        AvailableTutorViewModel viewModel = new ViewModelProvider(this).get(AvailableTutorViewModel.class);
+        availableTutorViewModel = new ViewModelProvider(this).get(AvailableTutorViewModel.class);
         dateTime = LocalDate.now().atTime(AvailableTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(AvailableTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
-        viewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), dateTime);
+        availableTutorViewModel.initial(dateTime);
         View root = inflater.inflate(R.layout.fragment_available_tutor, container, false);
 
         date = root.findViewById(R.id.availableTutor_date_tv);
@@ -52,14 +51,14 @@ public class AvailableTutorFragment extends Fragment {
             set.setText("Set Unavailable");
             set.setOnClickListener(v -> {
                 v.setEnabled(false);
-                viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"), ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
+                availableTutorViewModel.addEvent(dateTime, ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
         else{
             set.setText("Set Available");
             set.setOnClickListener(v -> {
                 v.setEnabled(false);
-                viewModel.deleteEvent(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
+                availableTutorViewModel.deleteEvent(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }
 

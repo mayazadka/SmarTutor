@@ -4,14 +4,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +30,6 @@ import com.example.smartutor.model.Tutor;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
 import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -41,8 +38,6 @@ public class SearchTutorsStudentFragment extends Fragment {
     private SearchTutorsStudentViewModel searchTutorsStudentViewModel;
     private RecyclerView tutorsList;
     private MultiSpinner professions;
-    private RadioButton searchByName;
-    private RadioButton searchBySubject;
     private EditText name;
     private List<Tutor> tutorsListData;
     private List<Tutor> tutorsByName;

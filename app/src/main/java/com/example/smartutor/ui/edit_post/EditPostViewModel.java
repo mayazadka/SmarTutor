@@ -29,7 +29,8 @@ public class EditPostViewModel extends ViewModel {
         post.observeForever(p->{});
     }
 
-    public LiveData<Post> getPost()                                                                             {return post;}
-    public void updatePost(Post post, Bitmap bitmap, Model.OnCompleteListener listener)                         {model.updatePost(post, bitmap, listener);}
-    public void deletePost(Model.OnCompleteListener listener)                                                   {model.deletePost(post.getValue(), listener);}
+    public LiveData<Post> getPost()                                                     { return post; }
+    public void updatePost(Post post, Bitmap bitmap, Model.OnCompleteListener listener) { model.updatePost(post, bitmap, listener); }
+    public void deletePost(Model.OnCompleteListener listener)                           { model.deletePost(post.getValue(), listener); }
+    public String getCurrentUserEmail()                                                 { return model.getCurrentUserEmail(); }
 }

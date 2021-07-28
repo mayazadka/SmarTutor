@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +22,6 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.my_feed.MyFeedFragment;
-import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
-import com.example.smartutor.ui.my_feed.MyFeedViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
@@ -77,9 +71,7 @@ public class StudentFeedFragment extends Fragment {
             }
         });
         postListRecyclerView.setAdapter(adapter);
-
         listPosts = new LinkedList<>();
-
         studentFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             if(posts == null){posts = new LinkedList<>();}
             listPosts = posts;

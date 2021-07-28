@@ -1,18 +1,13 @@
 package com.example.smartutor.ui.home_student;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -24,17 +19,11 @@ import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
-import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.home_tutor.HomeTutorFragmentDirections;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HomeStudentFragment extends Fragment {
 
@@ -52,7 +41,7 @@ public class HomeStudentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeStudentViewModel = new ViewModelProvider(this).get(HomeStudentViewModel.class);
-        homeStudentViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+        homeStudentViewModel.initial();
 
         View root = inflater.inflate(R.layout.fragment_home_student, container, false);
 

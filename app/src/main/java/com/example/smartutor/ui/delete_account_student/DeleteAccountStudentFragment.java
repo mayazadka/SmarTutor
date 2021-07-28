@@ -24,7 +24,7 @@ public class DeleteAccountStudentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         deleteAccountStudentViewModel = new ViewModelProvider(this).get(DeleteAccountStudentViewModel.class);
-        deleteAccountStudentViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"));
+        deleteAccountStudentViewModel.initial();
         View root = inflater.inflate(R.layout.fragment_delete_account_student, container, false);
 
         yes = root.findViewById(R.id.deleteAccountStudent_yes_btn);

@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,15 +70,15 @@ public class AddPostFragment extends Fragment {
             enableButtons(false);
 
             if(description.getText().toString().trim().equals("")){
-                Snackbar.make(addBtn, "you must enter description", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(addBtn, "You must enter description", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 enableButtons(true);
             }
             else if(imageBitmap==null){
-                Snackbar.make(addBtn, "you must choose photo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(addBtn, "You must choose photo", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 enableButtons(true);
             }
             else {
-                Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+                Post post = new Post(addPostViewModel.getCurrentUserEmail(), description.getText().toString(), "");
                 addPostViewModel.addPost(post, imageBitmap, () -> Navigation.findNavController(view).navigateUp());
             }
         });
@@ -122,11 +121,12 @@ public class AddPostFragment extends Fragment {
                     imageBitmap = BitmapFactory.decodeStream(imageStream);
                     image.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
-                    // TODO: display on the view
-                    Log.d("omer", "Something went wrong");
+                    Snackbar.make(addBtn, "Something went wrong", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    enableButtons(true);
                 }
             }else {
-                Log.d("omer", "You haven't picked Image");
+                Snackbar.make(addBtn, "You haven't picked Image", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                enableButtons(true);
             }
         }
     }

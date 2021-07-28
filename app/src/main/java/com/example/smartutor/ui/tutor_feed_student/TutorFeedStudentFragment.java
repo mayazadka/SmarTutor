@@ -20,11 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.ui.student_feed.StudentFeedFragmentDirections;
-import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;

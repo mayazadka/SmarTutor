@@ -6,30 +6,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.ui.edit_post.EditPostFragmentDirections;
-import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentArgs;
 import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
@@ -39,6 +32,7 @@ import java.util.stream.Collectors;
 
 
 public class MyFeedFragment extends Fragment {
+
     private MyFeedViewModel myFeedViewModel;
     private List<Post> listPosts;
     private String tutorEmail;
@@ -49,11 +43,9 @@ public class MyFeedFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
-
         myFeedViewModel = new ViewModelProvider(this).get(MyFeedViewModel.class);
-        myFeedViewModel.initial(tutorEmail);
-
+        myFeedViewModel.initial();
+        tutorEmail = myFeedViewModel.getCurrentUserEmail();
         View view = inflater.inflate(R.layout.fragment_my_feed, container, false);
 
         postListRecyclerView = view.findViewById(R.id.myFeed_list_rv);
@@ -61,7 +53,6 @@ public class MyFeedFragment extends Fragment {
         swipeUp = view.findViewById(R.id.myFeed_swipeUp);
 
         enabled = new AtomicBoolean();
-
         enabled.set(true);
         postListRecyclerView.setHasFixedSize(true);
 
@@ -100,7 +91,7 @@ public class MyFeedFragment extends Fragment {
     }
 
     private void handleLoading(){
-        if(Model.getInstance().postLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
+        if(Model.getInstance().postLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded){
             swipeUp.setRefreshing(false);
             enabled.set(true);
         }

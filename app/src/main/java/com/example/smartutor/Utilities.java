@@ -1,12 +1,9 @@
 package com.example.smartutor;
 
-import android.util.Log;
-
 import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Profession;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -15,7 +12,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TimeZone;
 
 public class Utilities {
     public static void validatePassword(String password, String confirm) throws Exception{

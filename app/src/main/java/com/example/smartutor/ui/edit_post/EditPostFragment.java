@@ -26,15 +26,11 @@ import android.widget.ImageView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
-import com.example.smartutor.ui.add_post.AddPostViewModel;
-import com.example.smartutor.ui.my_feed.MyFeedFragmentDirections;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
 
 public class EditPostFragment extends Fragment {
     // view model
@@ -68,7 +64,7 @@ public class EditPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         // view model
         editPostViewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
-        tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
+        tutorEmail = editPostViewModel.getCurrentUserEmail();
         postId = EditPostFragmentArgs.fromBundle(getArguments()).getIdPost();
         editPostViewModel.initial(postId);
 
@@ -107,7 +103,7 @@ public class EditPostFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
             else{
-                Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+                Post post = new Post(tutorEmail, description.getText().toString(), "");
                 post.setId(postId);
                 editPostViewModel.updatePost(post, imageBitmap,()->Navigation.findNavController(view).navigateUp());
             }

@@ -20,8 +20,6 @@ import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
-import com.example.smartutor.ui.available_tutor.AvailableTutorFragmentArgs;
-import com.example.smartutor.ui.available_tutor.AvailableTutorViewModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +45,7 @@ public class LessonDetailsTutorFragment extends Fragment {
         dateTime = LocalDate.now().atTime(LessonDetailsTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(LessonDetailsTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
 
         LessonDetailsTutorViewModel viewModel = new ViewModelProvider(this).get(LessonDetailsTutorViewModel.class);
-        viewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), dateTime);
+        viewModel.initial(dateTime);
 
         View root = inflater.inflate(R.layout.fragment_lesson_details_tutor, container, false);
 

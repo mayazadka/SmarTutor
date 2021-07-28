@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +24,9 @@ import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
-import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.home_student.HomeStudentFragmentDirections;
-import com.example.smartutor.ui.home_tutor.HomeTutorFragmentDirections;
-import com.example.smartutor.ui.schedule_lesson_student.ScheduleLessonStudentFragmentDirections;
-import com.example.smartutor.ui.student_feed.StudentFeedFragmentDirections;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class TutorDetailsFragment extends Fragment {
@@ -62,7 +52,7 @@ public class TutorDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         tutorDetailsViewModel = new ViewModelProvider(this).get(TutorDetailsViewModel.class);
         tutorEmail = TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail();
-        tutorDetailsViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), tutorEmail);
+        tutorDetailsViewModel.initial(tutorEmail);
 
         view = inflater.inflate(R.layout.fragment_tutor_details, container, false);
 

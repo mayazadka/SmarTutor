@@ -20,10 +20,6 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
-import com.example.smartutor.ui.available_tutor.AvailableTutorFragmentArgs;
-import com.example.smartutor.ui.available_tutor.AvailableTutorViewModel;
-import com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragmentDirections;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ScheduleLessonStudentFragment extends Fragment {
 
+    ScheduleLessonStudentViewModel scheduleLessonStudentViewModel;
     private TextView date;
     private TextView hour;
     private TextView tutorName;
@@ -48,8 +45,8 @@ public class ScheduleLessonStudentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ScheduleLessonStudentViewModel viewModel = new ViewModelProvider(this).get(ScheduleLessonStudentViewModel.class);
-        viewModel.initial(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
+        scheduleLessonStudentViewModel = new ViewModelProvider(this).get(ScheduleLessonStudentViewModel.class);
+        scheduleLessonStudentViewModel.initial(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
         View root = inflater.inflate(R.layout.fragment_schedule_lesson_student, container, false);
 
         date = root.findViewById(R.id.scheduleLessonStudent_date_tv);
@@ -67,7 +64,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
         hour.setText(dateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
         img.setImageResource(R.drawable.ic_subject_math);
 
-        viewModel.getTutor().observe(getViewLifecycleOwner(), t ->{
+        scheduleLessonStudentViewModel.getTutor().observe(getViewLifecycleOwner(), t ->{
             if(t!=null){
                 tutorName.setText(t.getFirstName() +" "+t.getLastName());
             }
@@ -87,7 +84,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
         schedule.setOnClickListener(v -> {
             v.setEnabled(false);
 
-            viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject, ()->{
+            scheduleLessonStudentViewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(), scheduleLessonStudentViewModel.getCurrentUserEmail(), subject, ()->{
                 ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
                 Navigation.findNavController(root).navigate(action);
             });
@@ -131,7 +128,6 @@ public class ScheduleLessonStudentFragment extends Fragment {
             }
 
         });
-
         swipeUp.setOnRefreshListener(()->Model.getInstance().refreshTutors());
         Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->{
             if(state == Model.LoadingState.loaded){
@@ -143,8 +139,6 @@ public class ScheduleLessonStudentFragment extends Fragment {
                 swipeUp.setRefreshing(true);
             }
         });
-
-
         return root;
     }
 }

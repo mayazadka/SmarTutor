@@ -5,10 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.model.Model;
-import com.example.smartutor.model.ModelFireBase;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
 
@@ -25,18 +23,10 @@ public class SignInViewModel extends ViewModel {
         students = model.getStudents();
         tutors = model.getTutors();
 
-        students.observeForever(ss -> {
-        });
-        tutors.observeForever(ts -> {
-        });
+        students.observeForever(ss -> { });
+        tutors.observeForever(ts -> { });
     }
 
-    public void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
-        model.checkCurrentUser(OnSuccess, OnFailure);
-    }
-    public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
-        model.createUserAccount(type, email, password, OnSuccess, OnFailure);
-    }
     public String getCurrentUserEmail(){
         return model.getCurrentUserEmail();
     }

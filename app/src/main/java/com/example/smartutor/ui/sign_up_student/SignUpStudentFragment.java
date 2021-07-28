@@ -105,7 +105,6 @@ public class SignUpStudentFragment extends Fragment {
                 Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
                 signUpStudentViewModel.addStudent(student, password.getText().toString(), ()->{
                     Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
-                    intent.putExtra("EMAIL", email.getText().toString());
                     Navigation.findNavController(view).navigate(R.id.action_global_signIn);
                     startActivity(intent);
                     }, ()->{

@@ -25,7 +25,6 @@ public class StudentMenuActivity extends AppCompatActivity {
 
     private StudentMenuViewModel studentMenuViewModel;
     private AppBarConfiguration mAppBarConfiguration;
-    private ImageButton logOutBtn;
     private TextView headerTitle;
     private TextView headerSubTiitle;
 
