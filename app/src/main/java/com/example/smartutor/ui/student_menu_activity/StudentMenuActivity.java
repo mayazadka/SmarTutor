@@ -25,7 +25,6 @@ public class StudentMenuActivity extends AppCompatActivity {
 
     private StudentMenuViewModel studentMenuViewModel;
     private AppBarConfiguration mAppBarConfiguration;
-    private ImageButton logOutBtn;
     private TextView headerTitle;
     private TextView headerSubTiitle;
 
@@ -70,6 +69,7 @@ public class StudentMenuActivity extends AppCompatActivity {
             studentMenuViewModel.signOut();
             Intent intent = new Intent(this, LogIn.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

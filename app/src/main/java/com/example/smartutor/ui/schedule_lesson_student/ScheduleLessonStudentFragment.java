@@ -88,8 +88,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
             v.setEnabled(false);
 
             viewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(),getActivity().getIntent().getStringExtra("EMAIL"), subject, ()->{
-                ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
-                Navigation.findNavController(root).navigate(action);
+                Navigation.findNavController(root).navigateUp();
             });
 
         });
