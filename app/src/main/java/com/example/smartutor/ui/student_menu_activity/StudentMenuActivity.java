@@ -69,6 +69,7 @@ public class StudentMenuActivity extends AppCompatActivity {
             studentMenuViewModel.signOut();
             Intent intent = new Intent(this, LogIn.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -51,6 +51,7 @@ public class TutorFeedStudentFragment extends Fragment {
         tutorFeedStudentViewModel.initial(tutorEmail);
 
         listPostsRecyclerView = view.findViewById(R.id.tutorFeedStudent_listPosts_rv);
+        swipeUp = view.findViewById(R.id.tutorFeedStudent_swipeUp);
         listPostsRecyclerView.setHasFixedSize(true);
 
         listPostsRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
@@ -62,8 +63,7 @@ public class TutorFeedStudentFragment extends Fragment {
         adapter.setOnItemClickListener((v, p) ->{
             if(enabled.get()){
                 enabled.set(false);
-                TutorFeedStudentFragmentDirections.ActionTutorFeedStudentFragmentToNavTutorDetailsStudent action = TutorFeedStudentFragmentDirections.actionTutorFeedStudentFragmentToNavTutorDetailsStudent(tutorEmail);
-                Navigation.findNavController(view).navigate(action);
+                Navigation.findNavController(view).navigateUp();
             }
         });
         listPostsRecyclerView.setAdapter(adapter);

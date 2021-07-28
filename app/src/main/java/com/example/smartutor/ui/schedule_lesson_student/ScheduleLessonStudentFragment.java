@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ScheduleLessonStudentFragment extends Fragment {
 
-    ScheduleLessonStudentViewModel scheduleLessonStudentViewModel;
+    private ScheduleLessonStudentViewModel scheduleLessonStudentViewModel;
     private TextView date;
     private TextView hour;
     private TextView tutorName;
@@ -85,8 +85,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
             v.setEnabled(false);
 
             scheduleLessonStudentViewModel.addLesson(dateTime, ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail(), scheduleLessonStudentViewModel.getCurrentUserEmail(), subject, ()->{
-                ScheduleLessonStudentFragmentDirections.ActionScheduleLessonStudentFragmentToNavTutorDetailsStudent action = ScheduleLessonStudentFragmentDirections.actionScheduleLessonStudentFragmentToNavTutorDetailsStudent(ScheduleLessonStudentFragmentArgs.fromBundle(getArguments()).getEmail());
-                Navigation.findNavController(root).navigate(action);
+                Navigation.findNavController(root).navigateUp();
             });
 
         });
@@ -96,8 +95,7 @@ public class ScheduleLessonStudentFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selected = (String)subjects.getSelectedItem();
-                selected = selected.replace(" ", "_");
-                selected = selected.toUpperCase();
+                selected = selected.replace(" ", "_");selected = selected.toUpperCase();
                 subject = Profession.valueOf(selected);
 
                 switch (subject) {

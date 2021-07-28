@@ -64,7 +64,7 @@
                     android:ems="10"
                     android:fontFamily="@font/quicksand_bold"
                     android:hint="Your email."
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="@dimen/text_size"
                     app:layout_constraintEnd_toEndOf="parent"
