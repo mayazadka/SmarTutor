@@ -99,7 +99,7 @@ public class TutorFeedStudentFragment extends Fragment {
             enabled.set(false);
         }
     }
-    static class TutorFeedStudentViewHolder extends RecyclerView.ViewHolder{
+    private static class TutorFeedStudentViewHolder extends RecyclerView.ViewHolder{
         TutorFeedStudentFragment.OnItemClickListener listener;
         TextView owner;
         ImageView postImg;
@@ -132,10 +132,10 @@ public class TutorFeedStudentFragment extends Fragment {
             }
         }
     }
-    public interface OnItemClickListener {
+    private interface OnItemClickListener {
         void onClick(View view, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<TutorFeedStudentFragment.TutorFeedStudentViewHolder>{
+    private class MyAdapter extends RecyclerView.Adapter<TutorFeedStudentFragment.TutorFeedStudentViewHolder>{
         TutorFeedStudentFragment.OnItemClickListener listener;
 
         public void setOnItemClickListener(TutorFeedStudentFragment.OnItemClickListener listener){

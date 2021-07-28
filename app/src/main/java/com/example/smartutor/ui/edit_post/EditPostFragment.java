@@ -40,7 +40,7 @@ public class EditPostFragment extends Fragment {
     // view model
     private EditPostViewModel editPostViewModel;
     private String tutorEmail;
-    String postId;
+    private String postId;
 
     // views
     private EditText description;
@@ -57,8 +57,8 @@ public class EditPostFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_LOAD_IMG = 2;
 
-    Bitmap imageBitmap;
-    View view;
+    private Bitmap imageBitmap;
+    private View view;
 
     public EditPostFragment(){
         // Required empty public constructor
@@ -141,11 +141,11 @@ public class EditPostFragment extends Fragment {
         return view;
     }
 
-    void takePicture() {
+    private void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
-    void loadPictureFromGallery(){
+    private void loadPictureFromGallery(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, REQUEST_LOAD_IMG);

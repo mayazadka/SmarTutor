@@ -115,7 +115,7 @@ public class SignUpTutorFragment extends Fragment {
                     Navigation.findNavController(view).navigate(R.id.action_global_signIn);
                     startActivity(intent);
                 }, () -> {
-                    Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(signUp, "email", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     v.setEnabled(true);
                 });
             }
@@ -136,7 +136,7 @@ public class SignUpTutorFragment extends Fragment {
         return view;
     }
 
-    public void  handleLoading(){
+    private void handleLoading(){
         if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
             signUp.setEnabled(true);
             swipeUp.setRefreshing(false);

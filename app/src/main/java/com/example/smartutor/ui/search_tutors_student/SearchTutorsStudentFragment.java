@@ -160,7 +160,7 @@ public class SearchTutorsStudentFragment extends Fragment {
     }
 
 
-    static class SearchTutorsViewHolder extends RecyclerView.ViewHolder{
+    private static class SearchTutorsViewHolder extends RecyclerView.ViewHolder{
         OnItemClickListener listener;
         TextView nameTv;
         LinearLayout subjectsList;
@@ -221,10 +221,10 @@ public class SearchTutorsStudentFragment extends Fragment {
             nameTv.setText(tutor.getFirstName() + " " + tutor.getLastName());
         }
     }
-    public interface OnItemClickListener {
+    private  interface OnItemClickListener {
         void onClick(View view, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<SearchTutorsViewHolder>{
+    private class MyAdapter extends RecyclerView.Adapter<SearchTutorsViewHolder>{
         OnItemClickListener listener;
 
         public void setOnItemClickListener(OnItemClickListener listener){

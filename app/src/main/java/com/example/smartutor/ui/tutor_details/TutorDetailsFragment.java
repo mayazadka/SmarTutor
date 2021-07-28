@@ -190,7 +190,7 @@ public class TutorDetailsFragment extends Fragment {
         return view;
     }
 
-    public void setCalendar(){
+    private void setCalendar(){
         for(int i=8;i<=20;i++){
             for(int j = 1;j<=7;j++){
                 LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
@@ -216,7 +216,7 @@ public class TutorDetailsFragment extends Fragment {
         }
     }
 
-    public void setCalendarByLessons(List<Lesson> lessons){
+    private void setCalendarByLessons(List<Lesson> lessons){
         for(Lesson lesson : Utilities.getRemainLessons(lessons)){
             LocalDateTime date = lesson.getDate();
             LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
@@ -226,7 +226,7 @@ public class TutorDetailsFragment extends Fragment {
         }
     }
 
-    public void setCalendarByEvents(List<Event> events){
+    private void setCalendarByEvents(List<Event> events){
         for(Event event : Utilities.getRemainEvents(events)){
             LocalDateTime date = event.getDate();
             LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
@@ -236,7 +236,7 @@ public class TutorDetailsFragment extends Fragment {
         }
     }
 
-    public void enableCalendar(boolean state){
+    private void enableCalendar(boolean state){
         for(int i=8;i<=20;i++){
             LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
             for(int j = 1;j<=7;j++){
@@ -246,7 +246,7 @@ public class TutorDetailsFragment extends Fragment {
         }
     }
 
-    public void handleLoading(){
+    private void handleLoading(){
         if(Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().eventLoadingState.getValue()== Model.LoadingState.loaded){
             enableCalendar(true);
             swipeUp.setRefreshing(false);

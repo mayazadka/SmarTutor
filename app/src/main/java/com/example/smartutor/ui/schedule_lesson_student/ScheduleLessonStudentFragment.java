@@ -31,16 +31,16 @@ import java.time.format.DateTimeFormatter;
 
 public class ScheduleLessonStudentFragment extends Fragment {
 
-    TextView date;
-    TextView hour;
-    TextView tutorName;
-    Button schedule;
-    ImageView img;
-    Spinner subjects;
-    SwipeRefreshLayout swipeUp;
+    private TextView date;
+    private TextView hour;
+    private TextView tutorName;
+    private Button schedule;
+    private ImageView img;
+    private Spinner subjects;
+    private SwipeRefreshLayout swipeUp;
 
-    LocalDateTime dateTime;
-    Profession subject;
+    private LocalDateTime dateTime;
+    private Profession subject;
 
     public ScheduleLessonStudentFragment() {
         // Required empty public constructor

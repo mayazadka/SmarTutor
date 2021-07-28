@@ -24,11 +24,11 @@ import java.time.format.DateTimeFormatter;
 
 public class AvailableTutorFragment extends Fragment {
 
-    TextView date;
-    TextView hour;
-    Button set;
-    LocalDateTime dateTime;
-    SwipeRefreshLayout swipeUp;
+    private TextView date;
+    private TextView hour;
+    private Button set;
+    private LocalDateTime dateTime;
+    private SwipeRefreshLayout swipeUp;
 
     public AvailableTutorFragment(){}
 

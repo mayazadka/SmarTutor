@@ -109,15 +109,13 @@ public class SignUpStudentFragment extends Fragment {
                     Navigation.findNavController(view).navigate(R.id.action_global_signIn);
                     startActivity(intent);
                     }, ()->{
-                        Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    v.setEnabled(true);
-
+                        Snackbar.make(signUp, "invalid email", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        v.setEnabled(true);
                 });
             }
             catch (Exception e) {
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 v.setEnabled(true);
-
             }
 
         });
@@ -132,7 +130,7 @@ public class SignUpStudentFragment extends Fragment {
         return view;
     }
 
-    public void handleLoading(){
+    private void handleLoading(){
         if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
             signUp.setEnabled(true);
             swipeUp.setRefreshing(false);

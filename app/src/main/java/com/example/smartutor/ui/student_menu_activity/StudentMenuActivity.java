@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.ui.LogIn;
+import com.example.smartutor.ui.login.LogIn;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,9 @@ public class StudentMenuActivity extends AppCompatActivity {
     private StudentMenuViewModel studentMenuViewModel;
     private AppBarConfiguration mAppBarConfiguration;
     private ImageButton logOutBtn;
+    private TextView headerTitle;
+    private TextView headerSubTiitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,12 @@ public class StudentMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.student_navhost);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        headerTitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_title_tv);
+        headerSubTiitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_subtitle_tv);
+
+        headerTitle.setText("SmarTutor");
+        headerSubTiitle.setText(getIntent().getStringExtra("EMAIL"));
     }
 
     @Override
