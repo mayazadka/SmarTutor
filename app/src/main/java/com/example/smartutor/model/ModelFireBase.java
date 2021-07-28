@@ -34,12 +34,8 @@ public class ModelFireBase {
     private static Long eventID = Long.valueOf(0);
     private static Long postID = Long.valueOf(0);
 
-    //********auth************
-    private static FirebaseAuth mAuth;
 
     public ModelFireBase(){
-        //********auth************
-        mAuth = FirebaseAuth.getInstance();
 
         FirebaseFirestore.getInstance().collection("lessons")
                 .orderBy("id", Query.Direction.DESCENDING)
@@ -305,7 +301,7 @@ public class ModelFireBase {
     public static void addPost(Post post, Consumer<String> listener){
         FirebaseFirestore.getInstance().collection("posts")
                 .add(post.toJson())
-                .addOnSuccessListener(dr->listener.accept(dr.getId()));
+                .addOnSuccessListener(dr-> listener.accept(dr.getId()));
     }
     public static void updatePost(Post post, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
@@ -389,7 +385,7 @@ public class ModelFireBase {
     }
 
     public static void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null){
             OnSuccess.onComplete();
         }
@@ -398,11 +394,11 @@ public class ModelFireBase {
     }
     public static void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // create user with email
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
             if(task.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("omer", "createUserWithEmail:success");
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user == null) {
                     OnFailure.onComplete();
                 }
@@ -425,18 +421,18 @@ public class ModelFireBase {
         });
     }
     public static String getCurrentUserEmail(){
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null)
             return user.getEmail();
         return null;
     }
     public static void signIn(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // sign in with email
-        mAuth.signInWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if(user == null) {
                             OnFailure.onComplete();
                         }
@@ -452,15 +448,14 @@ public class ModelFireBase {
     }
     public static void sendEmailVerification(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // Send verification email
-        final FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) { OnSuccess.onComplete(); }
                     else { OnFailure.onComplete(); }
                 });
     }
-    public static void signOut()
-    {
-        mAuth.signOut();
+    public static void signOut(){
+        FirebaseAuth.getInstance().signOut();
     }
 }
