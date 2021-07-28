@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.smartutor.MyApplication;
 import com.google.firebase.Timestamp;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Entity(primaryKeys = {"id"})
+@Entity(primaryKeys = {Post.ID})
 public class Post {
     @NonNull
     private String id;
@@ -24,6 +23,20 @@ public class Post {
     private String picture;
     private Long lastUpdated;
     private Boolean isDeleted;
+
+
+    //strings
+    public static final String ID = "id";
+    public static final String TUTOR_EMAIL = "tutorEmail";
+    public static final String TEXT = "text";
+    public static final String PICTURE = "picture";
+    public static final String LAST_UPDATED = "lastUpdated";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String POSTS = "posts";
+    public static final String TAG = "TAG";
+    public static final String POST_LAST_UPDATE = "PostLastUpdate";
+    public static final String PICTURES_FOLDER = "pictures";
+
 
     public Post() {}
     public Post(String tutorEmail, String text, String picture) {
@@ -34,14 +47,14 @@ public class Post {
         this.lastUpdated = Long.valueOf(0);
     }
     public Post(Map<String, Object> json){
-        tutorEmail =                (String)json.get("tutorEmail");
-        text =                      (String)json.get("text");
-        picture =                   (String)json.get("picture");
-        id =                        (String)json.get("id");
-        Timestamp ts =              (Timestamp)json.get("lastUpdated");
+        tutorEmail =                (String)json.get(TUTOR_EMAIL);
+        text =                      (String)json.get(TEXT);
+        picture =                   (String)json.get(PICTURE);
+        id =                        (String)json.get(ID);
+        Timestamp ts =              (Timestamp)json.get(LAST_UPDATED);
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
-        isDeleted =                 (Boolean)json.get("isDeleted");
+        isDeleted =                 (Boolean)json.get(IS_DELETED);
     }
 
     public String getId()                               { return id; }
@@ -73,12 +86,12 @@ public class Post {
 
     public Map<String, Object> toJson(){
         Map<String, Object> data = new HashMap<>();
-        data.put("tutorEmail", tutorEmail);
-        data.put("text", text);
-        data.put("picture", picture);
-        data.put("id", id);
-        data.put("lastUpdated", FieldValue.serverTimestamp());
-        data.put("isDeleted", isDeleted);
+        data.put(TUTOR_EMAIL, tutorEmail);
+        data.put(TEXT, text);
+        data.put(PICTURE, picture);
+        data.put(ID, id);
+        data.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        data.put(IS_DELETED, isDeleted);
 
         return data;
     }
@@ -88,12 +101,12 @@ public class Post {
     }
 
     static public void setLocalLatUpdateTime(Long timeStamp){
-        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong("PostLastUpdate", timeStamp);
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(POST_LAST_UPDATE, timeStamp);
         editor.commit();
     }
 
     static public Long getLocalLatUpdateTime(){
-        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostLastUpdate", 0);
+        return MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getLong(POST_LAST_UPDATE, 0);
     }
 }

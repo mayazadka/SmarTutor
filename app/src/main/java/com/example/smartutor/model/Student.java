@@ -1,12 +1,9 @@
 package com.example.smartutor.model;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -32,7 +29,18 @@ public class Student {
     private Long lastUpdated;
     private Boolean isDeleted;
 
+    //strings
     public static final String EMAIL = "email";
+    public static final String LAST_NAME = "lastName";
+    public static final String FIRST_NAME = "firstName";
+    public static final String GENDER = "gender";
+    public static final String BIRTHDAY_DATE = "birthdayDate";
+    public static final String GRADE = "grade";
+    public static final String LAST_UPDATED = "lastUpdated";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String STUDENTS = "students";
+    public static final String TAG = "TAG";
+    public static final String STUDENT_LAST_UPDATE = "StudentLastUpdate";
 
     public Student(){}
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade) {
@@ -46,16 +54,16 @@ public class Student {
         this.lastUpdated = Long.valueOf(0);
     }
     public Student(Map<String, Object> json){
-        email =             (String)json.get("email");
-        lastName =          (String)json.get("lastName");
-        firstName =         (String)json.get("firstName");
-        gender =            Converters.fromStringToGender((String)json.get("gender"));
-        birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
-        grade =             ((Long)json.get("grade")).intValue();
-        Timestamp ts =      (Timestamp)json.get("lastUpdated");
+        email =             (String)json.get(EMAIL);
+        lastName =          (String)json.get(LAST_NAME);
+        firstName =         (String)json.get(FIRST_NAME);
+        gender =            Converters.fromStringToGender((String)json.get(GENDER));
+        birthdayDate =      Converters.fromStringToDate((String)json.get(BIRTHDAY_DATE));
+        grade =             ((Long)json.get(GRADE)).intValue();
+        Timestamp ts =      (Timestamp)json.get(LAST_UPDATED);
         if(ts!=null)        {lastUpdated =ts.getSeconds();}
         else                {lastUpdated = Long.valueOf(0);}
-        isDeleted =         (Boolean)json.get("isDeleted");
+        isDeleted =         (Boolean)json.get(IS_DELETED);
     }
 
     public String getEmail()                            {return email;}
@@ -89,15 +97,14 @@ public class Student {
 
     public Map<String, Object> toJson(){
         Map<String, Object> data = new HashMap<>();
-        data.put("email", email);
-        data.put("lastName", lastName);
-        data.put("firstName",  firstName);
-        data.put("gender", Converters.fromGenderToString(gender));
-        data.put("birthdayDate",  Converters.fromDateToString(birthdayDate));
-        data.put("grade",  grade);
-        data.put("lastUpdated", FieldValue.serverTimestamp());
-        data.put("isDeleted", isDeleted);
-
+        data.put(EMAIL, email);
+        data.put(LAST_NAME, lastName);
+        data.put(FIRST_NAME,  firstName);
+        data.put(GENDER, Converters.fromGenderToString(gender));
+        data.put(BIRTHDAY_DATE,  Converters.fromDateToString(birthdayDate));
+        data.put(GRADE,  grade);
+        data.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        data.put(IS_DELETED, isDeleted);
         return data;
     }
 
@@ -106,12 +113,12 @@ public class Student {
     }
 
     static public void setLocalLatUpdateTime(Long timeStamp){
-        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong("StudentLastUpdate", timeStamp);
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(STUDENT_LAST_UPDATE, timeStamp);
         editor.commit();
     }
 
     static public Long getLocalLatUpdateTime(){
-        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("StudentLastUpdate", 0);
+        return MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getLong(STUDENT_LAST_UPDATE, 0);
     }
 }
