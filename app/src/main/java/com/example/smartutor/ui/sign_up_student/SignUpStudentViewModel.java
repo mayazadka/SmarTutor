@@ -1,8 +1,5 @@
 package com.example.smartutor.ui.sign_up_student;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,7 +9,6 @@ import com.example.smartutor.model.Tutor;
 
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class SignUpStudentViewModel  extends ViewModel {
 
     private Model model = Model.getInstance();
