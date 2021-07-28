@@ -69,12 +69,9 @@ public class MyFeedFragment extends Fragment {
         listPosts = new LinkedList<>();
 
         myFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){
-                listPosts = new LinkedList<Post>();
-            }
-            else {
-                listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
-            }
+            if(posts == null){posts = new LinkedList<>();}
+
+            listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
 
@@ -138,7 +135,11 @@ public class MyFeedFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);
-            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText()));
+            myFeedViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
+                if(tutor!=null){
+                    holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText());
+                }
+            });
         }
 
         @Override

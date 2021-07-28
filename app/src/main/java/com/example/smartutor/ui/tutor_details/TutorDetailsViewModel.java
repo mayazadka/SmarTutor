@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
@@ -19,14 +20,22 @@ public class TutorDetailsViewModel extends ViewModel {
 
     private Model model = Model.getInstance();
     private LiveData<Tutor> tutor;
-    private LiveData<List<Lesson>> lessons;
+    private LiveData<List<Lesson>> lessonsByTutor;
+    private LiveData<List<Lesson>> lessonsByStudent;
+    private LiveData<List<Event>> events;
+
 
     public TutorDetailsViewModel() {}
-    public void initial(String email){
-        tutor = model.getTutor(email);
-        lessons = model.getLessons();
+    public void initial(String studentEmail, String tutorEmail){
+        tutor = model.getTutor(tutorEmail);
+        lessonsByStudent = model.getLessonsByStudent(studentEmail);
+        lessonsByTutor = model.getLessonsByTutor(tutorEmail);
+        events = model.getEventsByTutor(tutorEmail);
     }
 
-    public LiveData<Tutor> getTutor()               { return tutor; }
-    public LiveData<List<Lesson>> getLessons()      { return lessons; }
+    public LiveData<Tutor> getTutor()                       { return tutor; }
+    public LiveData<List<Lesson>> getLessonsByTutor()       { return lessonsByTutor; }
+    public LiveData<List<Lesson>> getLessonsByStudent()     { return lessonsByStudent; }
+    public LiveData<List<Event>> getEvents()                { return events; }
+
 }

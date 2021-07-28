@@ -15,10 +15,12 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +40,7 @@ public class EditDetailsStudentFragment extends Fragment {
     private Button chooseDate;
     private EditText date;
     private Button save;
+    private SwipeRefreshLayout swipeUp;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
@@ -55,6 +58,7 @@ public class EditDetailsStudentFragment extends Fragment {
         chooseDate = root.findViewById(R.id.editDetailsStudent_birthdayDate_btn);
         date = root.findViewById(R.id.editDetailsStudent_birthdayDate_et);
         save = root.findViewById(R.id.editDetailsStudent_save_btn);
+        swipeUp = root.findViewById(R.id.editDetailsStudent_swipeUp);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
@@ -74,27 +78,30 @@ public class EditDetailsStudentFragment extends Fragment {
         });
 
         editDetailsStudentViewModel.getStudent().observe(getViewLifecycleOwner(), student -> {
-            lastName.setText(student.getLastName());
-            firstName.setText(student.getFirstName());
-            switch (student.getGender()){
-                case MALE:
-                    gender.setSelection(0);
-                    break;
-                case FEMALE:
-                    gender.setSelection(1);
-                    break;
-                case OTHER:
-                    gender.setSelection(2);
-                    break;
+            if(student!=null){
+                lastName.setText(student.getLastName());
+                firstName.setText(student.getFirstName());
+                switch (student.getGender()){
+                    case MALE:
+                        gender.setSelection(0);
+                        break;
+                    case FEMALE:
+                        gender.setSelection(1);
+                        break;
+                    case OTHER:
+                        gender.setSelection(2);
+                        break;
+                }
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat.setLenient(false);
+                date.setText(dateFormat.format(student.getBirthdayDate()));
+                grade.setSelection(student.getGrade() - 1);
             }
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            dateFormat.setLenient(false);
-            date.setText(dateFormat.format(student.getBirthdayDate()));
-            grade.setSelection(student.getGrade() - 1);
         });
 
 
         save.setOnClickListener(v -> {
+            v.setEnabled(false);
             try {
                 Utilities.validateLastName(lastName.getText().toString());
                 Utilities.validateFirstName(firstName.getText().toString());
@@ -110,6 +117,17 @@ public class EditDetailsStudentFragment extends Fragment {
 
         });
 
+        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshStudents());
+        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> {
+            if(state == Model.LoadingState.loaded){
+                save.setEnabled(true);
+                swipeUp.setRefreshing(false);
+            }
+            else{
+                save.setEnabled(false);
+                swipeUp.setRefreshing(true);
+            }
+        });
         return root;
     }
 }

@@ -81,43 +81,45 @@ public class HomeStudentFragment extends Fragment {
             @Override
             public void onChanged(List<Lesson> lessons) {
                 if(tutor!=null){tutor.removeObservers(getViewLifecycleOwner());}
+                if(lessons != null) {
+                    lessonsThisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
+                    lessonsRemain.setText(String.valueOf(Utilities.getRemainLessons(lessons).size()));
+                    lessonsTotal.setText(String.valueOf(lessons.size()));
 
-
-                lessonsThisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
-                lessonsRemain.setText(String.valueOf(Utilities.getRemainLessons(lessons).size()));
-                lessonsTotal.setText(String.valueOf(lessons.size()));
-
-                Lesson nextLesson = Utilities.getNextLesson(lessons);
-                if(nextLesson == null){
-                    nextLessonSubject.setText("");
-                    nextLessonDate.setText("");
-                    nextLessonTutor.setText("");
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_baseline_block_24);
-                }
-                else{
-                    nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
-                    nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE)+" - "+nextLesson.getDate().getHour()+":00");
-                    tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
-                    tutor.observe(getViewLifecycleOwner(), t -> {if(t!=null)nextLessonTutor.setText(t.getFirstName()+" "+t.getLastName());});
-                    switch (nextLesson.getSubject()) {
-                        case MATH:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-                            break;
-                        case HISTORY:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-                            break;
-                        case SCIENCE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-                            break;
-                        case LANGUAGE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-                            break;
-                        case LITERATURE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-                            break;
-                        case COMPUTER_SCIENCE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-                            break;
+                    Lesson nextLesson = Utilities.getNextLesson(lessons);
+                    if (nextLesson == null) {
+                        nextLessonSubject.setText("");
+                        nextLessonDate.setText("");
+                        nextLessonTutor.setText("");
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_baseline_block_24);
+                    } else {
+                        nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
+                        nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ISO_DATE) + " - " + nextLesson.getDate().getHour() + ":00");
+                        tutor = homeStudentViewModel.getTutor(nextLesson.getTutorEmail());
+                        tutor.observe(getViewLifecycleOwner(), t -> {
+                            if (t != null)
+                                nextLessonTutor.setText(t.getFirstName() + " " + t.getLastName());
+                        });
+                        switch (nextLesson.getSubject()) {
+                            case MATH:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+                                break;
+                            case HISTORY:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
+                                break;
+                            case SCIENCE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
+                                break;
+                            case LANGUAGE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
+                                break;
+                            case LITERATURE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
+                                break;
+                            case COMPUTER_SCIENCE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
+                                break;
+                        }
                     }
                 }
 

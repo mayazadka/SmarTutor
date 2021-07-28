@@ -15,11 +15,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,6 +45,7 @@ public class EditDetailsTutorFragment extends Fragment {
     private MultiSpinner professions;
     private EditText aboutMe;
     private Button save;
+    private SwipeRefreshLayout swipeUp;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
@@ -61,6 +64,7 @@ public class EditDetailsTutorFragment extends Fragment {
         professions = root.findViewById(R.id.editDetailsTutor_professions_spn);
         aboutMe = root.findViewById(R.id.signUpTutor_aboutMe_etml);
         save = root.findViewById(R.id.editDetailsTutor_save_btn);
+        swipeUp = root.findViewById(R.id.editDetailsTutor_swipeUp);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.gender, R.layout.spinner_item);
         gender.setAdapter(genderAdapter);
@@ -108,6 +112,7 @@ public class EditDetailsTutorFragment extends Fragment {
         });
 
         save.setOnClickListener(v -> {
+            v.setEnabled(false);
             try{
                 Utilities.validateLastName(lastName.getText().toString());
                 Utilities.validateFirstName(firstName.getText().toString());
@@ -123,25 +128,17 @@ public class EditDetailsTutorFragment extends Fragment {
             }
         });
 
-//        save.setOnClickListener(v -> {
-//
-//            //TODO: validation
-//            if(true){
-//                Tutor t = new Tutor();
-//                t.setAboutMe(aboutMe.getText().toString());
-//                //TODO: t.setBirthdayDate();
-//                t.setFirstName(firstName.getText().toString());
-//                //TODO: t.setGender();
-//                t.setLastName(lastName.getText().toString());
-//                t.setPassword(password.getText().toString());
-//                //TODO: t.setProfessions();
-//                editDetailsTutorViewModel.updateTutor(t);
-//                //TODO: navigate to home
-//            }
-//            else{
-//                Snackbar.make(save, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-//            }
-//        });
+        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshTutors());
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> {
+            if(state == Model.LoadingState.loaded){
+                save.setEnabled(true);
+                swipeUp.setRefreshing(false);
+            }
+            else{
+                save.setEnabled(false);
+                swipeUp.setRefreshing(true);
+            }
+        });
 
         return root;
     }

@@ -99,7 +99,7 @@ public class SignUpTutorFragment extends Fragment {
         });
         signUp.setOnClickListener(v -> {
             v.setEnabled(false);
-            try{
+            try {
                 Utilities.validateEmail(email.getText().toString());
                 Utilities.validateLastName(lastName.getText().toString());
                 Utilities.validateFirstName(firstName.getText().toString());
@@ -109,18 +109,21 @@ public class SignUpTutorFragment extends Fragment {
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
                 Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString());
-                signUpTutorViewModel.addTutor(tutor, password.getText().toString(), ()->{
+                signUpTutorViewModel.addTutor(tutor, password.getText().toString(), () -> {
                     Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
                     intent.putExtra("EMAIL", email.getText().toString());
                     Navigation.findNavController(view).navigate(R.id.action_global_signIn);
                     startActivity(intent);
-                    }, () -> {
-                        Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    });
+                }, () -> {
+                    Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    v.setEnabled(true);
+                });
             }
             catch (Exception e){
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                v.setEnabled(true);
             }
+
         });
 
         Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());

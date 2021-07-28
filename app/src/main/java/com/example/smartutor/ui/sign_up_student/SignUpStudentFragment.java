@@ -110,10 +110,14 @@ public class SignUpStudentFragment extends Fragment {
                     startActivity(intent);
                     }, ()->{
                         Snackbar.make(signUp, "email in use", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    });
+                    v.setEnabled(true);
+
+                });
             }
             catch (Exception e) {
                 Snackbar.make(signUp, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                v.setEnabled(true);
+
             }
 
         });

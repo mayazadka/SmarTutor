@@ -6,17 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.smartutor.R;
-import com.example.smartutor.ui.delete_account_student.DeleteAccountStudentViewModel;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class DeleteAccountTutorFragment extends Fragment {
@@ -35,6 +31,7 @@ public class DeleteAccountTutorFragment extends Fragment {
         no = root.findViewById(R.id.deleteAccountTutor_no_btn);
 
         yes.setOnClickListener(v -> {
+            v.setEnabled(false);
             deleteAccountTutorViewModel.deleteTutor(()->getActivity().finish());
         });
 

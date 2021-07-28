@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -82,15 +81,12 @@ public class EditPostFragment extends Fragment {
         editImage = view.findViewById(R.id.editPost_camera_btn);
         galleryBtn = view.findViewById(R.id.editPost_gallery_btn);
 
-        editPostViewModel.getPost().observe(getViewLifecycleOwner(), new Observer<Post>() {
-            @Override
-            public void onChanged(Post post) {
-                if(post != null){
-                    description.setText(post.getText());
-                    image.setImageResource(R.drawable.ic_gender_male);
-                    if(post.getPicture() != null && post.getPicture() != ""){
-                        Picasso.get().load(post.getPicture()).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(image);
-                    }
+        editPostViewModel.getPost().observe(getViewLifecycleOwner(), post -> {
+            if(post != null){
+                description.setText(post.getText());
+                image.setImageResource(R.drawable.ic_baseline_hourglass_empty_24);
+                if(post.getPicture() != null && post.getPicture() != ""){
+                    Picasso.get().load(post.getPicture()).placeholder(R.drawable.ic_baseline_hourglass_empty_24).error(R.drawable.ic_baseline_report_problem_24).into(image);
                 }
             }
         });

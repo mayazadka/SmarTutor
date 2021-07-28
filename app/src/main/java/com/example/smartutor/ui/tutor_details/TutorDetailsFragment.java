@@ -5,8 +5,10 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +21,9 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
+import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.home_student.HomeStudentFragmentDirections;
@@ -47,6 +51,8 @@ public class TutorDetailsFragment extends Fragment {
     private TextView aboutMeTv;
     private LinearLayout calendarLinearLayout;
     private Button myPostsBtn;
+    private View view;
+    private SwipeRefreshLayout swipeUp;
 
     public TutorDetailsFragment() {
         // Required empty public constructor
@@ -56,9 +62,9 @@ public class TutorDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         tutorDetailsViewModel = new ViewModelProvider(this).get(TutorDetailsViewModel.class);
         tutorEmail = TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail();
-        tutorDetailsViewModel.initial(tutorEmail);
+        tutorDetailsViewModel.initial(getActivity().getIntent().getStringExtra("EMAIL"), tutorEmail);
 
-        View view = inflater.inflate(R.layout.fragment_tutor_details, container, false);
+        view = inflater.inflate(R.layout.fragment_tutor_details, container, false);
 
         emailTv = view.findViewById(R.id.tutorDetails_email_tv);
         ageTv = view.findViewById(R.id.tutorDetails_age_tv);
@@ -67,29 +73,9 @@ public class TutorDetailsFragment extends Fragment {
         aboutMeTv = view.findViewById(R.id.tutorDetails_aboutMe_tv);
         calendarLinearLayout = view.findViewById(R.id.tutorDetails_calendar_ll);
         myPostsBtn = view.findViewById(R.id.tutorDetails_my_posts_btn);
+        swipeUp = view.findViewById(R.id.tutorDetails_swipeUp);
 
-        for(int i=8;i<=20;i++){
-            for(int j = 1;j<=7;j++){
-                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
-                ImageView img = (ImageView)hourRow.getChildAt(j);
-                int hour = i;
-                int day = j;
-
-                if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 > day){
-                    img.setImageResource(R.drawable.ic_baseline_block_24);
-                }
-                else if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 == day && LocalDateTime.now().getHour() > hour){
-                    img.setImageResource(R.drawable.ic_baseline_block_24);
-                }
-                else{
-                    img.setOnClickListener(v -> {
-                        TutorDetailsFragmentDirections.ActionNavTutorDetailsStudentToScheduleLessonStudentFragment action = TutorDetailsFragmentDirections.actionNavTutorDetailsStudentToScheduleLessonStudentFragment(hour, day);
-                        action.setEmail(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail());
-                        Navigation.findNavController(view).navigate(action);
-                    });
-                }
-            }
-        }
+        setCalendar();
 
         tutorDetailsViewModel.getTutor().observe(getViewLifecycleOwner(), tutor -> {
             if(tutor != null) {
@@ -110,6 +96,8 @@ public class TutorDetailsFragment extends Fragment {
                     break;
             }
             genderImg.setImageResource(imageID);
+
+            subjectsLL.removeAllViews();
             if (tutor.getProfessions().contains(Profession.COMPUTER_SCIENCE)) {
                 addImageToLL(view, R.drawable.ic_subject_computer_science);
             }
@@ -131,31 +119,142 @@ public class TutorDetailsFragment extends Fragment {
             aboutMeTv.setText(tutor.getAboutMe());
         });
 
-        tutorDetailsViewModel.getLessons().observe(getViewLifecycleOwner(), lessons -> {
-            List<Lesson> tutorLessons = lessons.stream().filter(lesson -> lesson.getTutorEmail().equals(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail())).collect(Collectors.toList());
-            for(Lesson lesson : Utilities.getRemainLessons(tutorLessons)){
-                LocalDateTime date = lesson.getDate();
-                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
-                ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
-                img.setImageResource(R.drawable.ic_baseline_block_24);
-                img.setOnClickListener(null);
+        tutorDetailsViewModel.getLessonsByTutor().observe(getViewLifecycleOwner(), lessons -> {
+            if(lessons != null){
+                setCalendar();
+                setCalendarByLessons(lessons);
+                LiveData<List<Lesson>> listLiveData1 = tutorDetailsViewModel.getLessonsByStudent();
+                if(listLiveData1.getValue()!= null){
+                    List<Lesson> studentLessons = listLiveData1.getValue();
+                    setCalendarByLessons(studentLessons);
+                }
+                LiveData<List<Event>> listLiveData2 = tutorDetailsViewModel.getEvents();
+                if(listLiveData2.getValue()!= null){
+                    List<Event> events = listLiveData2.getValue();
+                    setCalendarByEvents(events);
+                }
             }
-            List<Lesson> studentLessons = lessons.stream().filter(lesson -> lesson.getStudentEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
-            for(Lesson lesson : Utilities.getRemainLessons(studentLessons)){
-                LocalDateTime date = lesson.getDate();
-                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
-                ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
-                img.setImageResource(R.drawable.ic_baseline_block_24);
-                img.setOnClickListener(null);
-            }
+
+
         });
+        tutorDetailsViewModel.getLessonsByStudent().observe(getViewLifecycleOwner(), lessons -> {
+            if(lessons == null){
+                setCalendar();
+                setCalendarByLessons(lessons);
+                LiveData<List<Lesson>> listLiveData = tutorDetailsViewModel.getLessonsByTutor();
+                if(listLiveData.getValue()!= null){
+                    List<Lesson> tutorLessons = listLiveData.getValue();
+                    setCalendarByLessons(tutorLessons);
+                }
+                LiveData<List<Event>> listLiveData2 = tutorDetailsViewModel.getEvents();
+                if(listLiveData2.getValue()!= null){
+                    List<Event> events = listLiveData2.getValue();
+                    setCalendarByEvents(events);
+                }
+            }
+
+        });
+        tutorDetailsViewModel.getEvents().observe(getViewLifecycleOwner(), events -> {
+            if(events!=null){
+                setCalendar();
+                setCalendarByEvents(events);
+                LiveData<List<Lesson>> listLiveData = tutorDetailsViewModel.getLessonsByTutor();
+                if(listLiveData.getValue()!= null){
+                    List<Lesson> tutorLessons = listLiveData.getValue();
+                    setCalendarByLessons(tutorLessons);
+                }
+                LiveData<List<Lesson>> listLiveData2 = tutorDetailsViewModel.getLessonsByStudent();
+                if(listLiveData2.getValue()!= null){
+                    List<Lesson> studentLessons = listLiveData2.getValue();
+                    setCalendarByLessons(studentLessons);
+                }
+            }
+
+        });
+
 
         myPostsBtn.setOnClickListener(v -> {
             TutorDetailsFragmentDirections.ActionNavTutorDetailsStudentToTutorFeedStudentFragment action = TutorDetailsFragmentDirections.actionNavTutorDetailsStudentToTutorFeedStudentFragment(tutorEmail);
             Navigation.findNavController(view).navigate(action);
         });
 
+        swipeUp.setOnRefreshListener(()->{
+            Model.getInstance().refreshTutors();
+            Model.getInstance().refreshLessons();
+            Model.getInstance().refreshEvents();
+        });
+
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        Model.getInstance().eventLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
         return view;
+    }
+
+    public void setCalendar(){
+        for(int i=8;i<=20;i++){
+            for(int j = 1;j<=7;j++){
+                LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                int hour = i;
+                int day = j;
+
+                if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 > day){
+                    img.setImageResource(R.drawable.ic_baseline_block_24);
+                }
+                else if((LocalDateTime.now().getDayOfWeek().getValue() % 7) + 1 == day && LocalDateTime.now().getHour() > hour){
+                    img.setImageResource(R.drawable.ic_baseline_block_24);
+                }
+                else{
+                    img.setOnClickListener(v -> {
+                        img.setImageResource(R.drawable.ic_baseline_add_24);
+                        TutorDetailsFragmentDirections.ActionNavTutorDetailsStudentToScheduleLessonStudentFragment action = TutorDetailsFragmentDirections.actionNavTutorDetailsStudentToScheduleLessonStudentFragment(hour, day);
+                        action.setEmail(TutorDetailsFragmentArgs.fromBundle(getArguments()).getEmail());
+                        Navigation.findNavController(view).navigate(action);
+                    });
+                }
+            }
+        }
+    }
+
+    public void setCalendarByLessons(List<Lesson> lessons){
+        for(Lesson lesson : Utilities.getRemainLessons(lessons)){
+            LocalDateTime date = lesson.getDate();
+            LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+            ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+            img.setImageResource(R.drawable.ic_baseline_block_24);
+            img.setOnClickListener(null);
+        }
+    }
+
+    public void setCalendarByEvents(List<Event> events){
+        for(Event event : Utilities.getRemainEvents(events)){
+            LocalDateTime date = event.getDate();
+            LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(date.getHour() - 8);
+            ImageView img = (ImageView)hourRow.getChildAt((date.getDayOfWeek().getValue() % 7) + 1);
+            img.setImageResource(R.drawable.ic_baseline_block_24);
+            img.setOnClickListener(null);
+        }
+    }
+
+    public void enableCalendar(boolean state){
+        for(int i=8;i<=20;i++){
+            LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
+            for(int j = 1;j<=7;j++){
+                ImageView img = (ImageView)hourRow.getChildAt(j);
+                img.setEnabled(state);
+            }
+        }
+    }
+
+    public void handleLoading(){
+        if(Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().eventLoadingState.getValue()== Model.LoadingState.loaded){
+            enableCalendar(true);
+            swipeUp.setRefreshing(false);
+        }
+        else{
+            enableCalendar(false);
+            swipeUp.setRefreshing(true);
+        }
     }
 
     private void addImageToLL(View view, int resId){
@@ -166,4 +265,5 @@ public class TutorDetailsFragment extends Fragment {
         image.getLayoutParams().height = 80;
         image.getLayoutParams().width = 80;
     }
+
 }

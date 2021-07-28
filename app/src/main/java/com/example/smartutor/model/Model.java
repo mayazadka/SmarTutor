@@ -45,6 +45,10 @@ public class Model {
 
     private Model(){
         new ModelFireBase(); //TODO:delete
+        Student.setLocalLatUpdateTime(Long.valueOf(0));
+        Tutor.setLocalLatUpdateTime(Long.valueOf(0));
+        Lesson.setLocalLatUpdateTime(Long.valueOf(0));
+        Event.setLocalLatUpdateTime(Long.valueOf(0));
     }
     public static Model getInstance(){
         if(model == null){
@@ -94,6 +98,7 @@ public class Model {
     public void deleteStudent(Student student, OnCompleteListener listener){
         studentLoadingState.setValue(LoadingState.loading);
         student.setDeleted(true);
+        student.update();
         ModelFireBase.deleteStudent(student, ()->{
             refreshStudents();
             listener.onComplete();
@@ -142,7 +147,8 @@ public class Model {
     }
     public void deleteTutor(Tutor tutor, OnCompleteListener listener){
         tutorLoadingState.setValue(LoadingState.loading);
-        tutor.setDeleted((true));
+        tutor.setDeleted(true);
+        tutor.update();
         ModelFireBase.deleteTutor(tutor, ()->{
             refreshTutors();
             listener.onComplete();
@@ -200,6 +206,8 @@ public class Model {
     }
     public void deleteLesson(Lesson lesson, OnCompleteListener listener){
         lessonLoadingState.setValue(LoadingState.loading);
+        lesson.setDeleted(true);
+        lesson.update();
         ModelFireBase.deleteLesson(lesson, ()->{
             refreshLessons();
             listener.onComplete();
@@ -295,6 +303,8 @@ public class Model {
     }
     public void deletePost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
+        post.setDeleted(true);
+        post.update();
         ModelFireBase.deletePost(post, ()->{
             refreshPosts();
             listener.onComplete();

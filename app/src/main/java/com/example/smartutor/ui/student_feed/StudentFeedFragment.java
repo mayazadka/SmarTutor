@@ -64,10 +64,8 @@ public class StudentFeedFragment extends Fragment {
         listPosts = new LinkedList<>();
 
         studentFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){
-                listPosts = new LinkedList<Post>();
-            }
-            else { listPosts = posts; }
+            if(posts == null){posts = new LinkedList<>();}
+            listPosts = posts;
             postListRecyclerView.getAdapter().notifyDataSetChanged();
         });
         return view;

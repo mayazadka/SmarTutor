@@ -15,22 +15,19 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.tutor_details.TutorDetailsFragment;
-import com.example.smartutor.ui.tutor_details.TutorDetailsFragmentDirections;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -51,6 +48,7 @@ public class SearchTutorsStudentFragment extends Fragment {
     private List<Tutor> tutorsByName;
     private List<Tutor> tutorsByProfessions;
     private List<Tutor> tutors;
+    private SwipeRefreshLayout swipeUp;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchTutorsStudentViewModel = new ViewModelProvider(this).get(SearchTutorsStudentViewModel.class);
@@ -60,6 +58,7 @@ public class SearchTutorsStudentFragment extends Fragment {
         professions = root.findViewById(R.id.searchTutorsStudent_subjects_multiSpinner);
         name = root.findViewById(R.id.searchTutorsStudent_tutor_et);
         tutorsList.setHasFixedSize(true);
+        swipeUp = root.findViewById(R.id.searchTutorsStudent_swipeUp);
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
         tutorsList.setLayoutManager(manager);
@@ -80,6 +79,7 @@ public class SearchTutorsStudentFragment extends Fragment {
         Profession[] allProfessions = Profession.values();
 
         searchTutorsStudentViewModel.getTutors().observe(getViewLifecycleOwner(), ts -> {
+            if(ts==null){ts = new LinkedList<>();}
             tutors = ts;
             tutorsByName = new LinkedList<>();
             tutorsByProfessions = new LinkedList<>();
@@ -154,6 +154,8 @@ public class SearchTutorsStudentFragment extends Fragment {
             tutorsList.getAdapter().notifyDataSetChanged();
         });
 
+        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state-> swipeUp.setRefreshing(state != Model.LoadingState.loaded));
+        swipeUp.setOnRefreshListener(()->Model.getInstance().refreshTutors());
         return root;
     }
 

@@ -81,6 +81,10 @@ public class Post {
         return data;
     }
 
+    public void update(){
+        this.lastUpdated = Timestamp.now().getSeconds();
+    }
+
     static public void setLocalLatUpdateTime(Long timeStamp){
         SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         editor.putLong("PostLastUpdate", timeStamp);

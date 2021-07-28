@@ -73,7 +73,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/ic_menu_delete"
-        android:tint="?android:attr/textColorTertiary"
+        app:tint="?android:attr/textColorTertiary"
         app:layout_constraintBottom_toTopOf="@+id/deleteAccountStudent_yes_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

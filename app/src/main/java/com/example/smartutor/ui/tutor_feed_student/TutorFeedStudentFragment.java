@@ -63,10 +63,8 @@ public class TutorFeedStudentFragment extends Fragment {
         listPosts = new LinkedList<>();
 
         tutorFeedStudentViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){
-                listPosts = new LinkedList<Post>();
-            }
-            else { listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList()); }
+            if(posts == null){posts = new LinkedList<Post>();}
+            listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
             listPostsRecyclerView.getAdapter().notifyDataSetChanged();
         });
 

@@ -24,8 +24,6 @@ import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
-import com.example.smartutor.model.Tutor;
-import com.example.smartutor.ui.search_tutors_student.SearchTutorsStudentFragmentDirections;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -83,45 +81,47 @@ public class HomeTutorFragment extends Fragment {
             public void onChanged(List<Lesson> lessons) {
                 if(student!=null){student.removeObservers(getViewLifecycleOwner());}
 
-                thisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
-                remain.setText(String.valueOf(Utilities.getRemainLessons(lessons).size()));
-                total.setText(String.valueOf(lessons.size()));
+                if(lessons!=null) {
 
-                Lesson nextLesson = Utilities.getNextLesson(lessons);
-                if(nextLesson == null){
-                    nextLessonSubject.setText("");
-                    nextLessonDate.setText("");
-                    nextLessonStudent.setText("");
-                    nextLessonSubjectImg.setImageResource(R.drawable.ic_baseline_block_24);
-                }
-                else {
-                    nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
-                    nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
-                    student = homeTutorViewModel.getStudent(nextLesson.getStudentEmail());
-                    student.observe(getViewLifecycleOwner(), s -> {
-                        if (s != null)
-                            nextLessonStudent.setText(s.getFirstName() + " " + s.getLastName());
-                    });
+                    thisWeek.setText(String.valueOf(Utilities.getThisWeekLessons(lessons).size()));
+                    remain.setText(String.valueOf(Utilities.getRemainLessons(lessons).size()));
+                    total.setText(String.valueOf(lessons.size()));
 
-                    switch (nextLesson.getSubject()) {
-                        case MATH:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
-                            break;
-                        case HISTORY:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
-                            break;
-                        case SCIENCE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
-                            break;
-                        case LANGUAGE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
-                            break;
-                        case LITERATURE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
-                            break;
-                        case COMPUTER_SCIENCE:
-                            nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
-                            break;
+                    Lesson nextLesson = Utilities.getNextLesson(lessons);
+                    if (nextLesson == null) {
+                        nextLessonSubject.setText("");
+                        nextLessonDate.setText("");
+                        nextLessonStudent.setText("");
+                        nextLessonSubjectImg.setImageResource(R.drawable.ic_baseline_block_24);
+                    } else {
+                        nextLessonSubject.setText(nextLesson.getSubject().toString().replace("_", " ").toLowerCase());
+                        nextLessonDate.setText(nextLesson.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")));
+                        student = homeTutorViewModel.getStudent(nextLesson.getStudentEmail());
+                        student.observe(getViewLifecycleOwner(), s -> {
+                            if (s != null)
+                                nextLessonStudent.setText(s.getFirstName() + " " + s.getLastName());
+                        });
+
+                        switch (nextLesson.getSubject()) {
+                            case MATH:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_math);
+                                break;
+                            case HISTORY:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_history);
+                                break;
+                            case SCIENCE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_science);
+                                break;
+                            case LANGUAGE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_english);
+                                break;
+                            case LITERATURE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_literature);
+                                break;
+                            case COMPUTER_SCIENCE:
+                                nextLessonSubjectImg.setImageResource(R.drawable.ic_subject_computer_science);
+                                break;
+                        }
                     }
                 }
 
@@ -129,7 +129,7 @@ public class HomeTutorFragment extends Fragment {
                 setCalendarByLessons(lessons);
                 LiveData<List<Event>> eventsLiveData = homeTutorViewModel.getEventsByTutor();
                 if(eventsLiveData.getValue()!=null){
-                    List<Event> events = eventsLiveData.getValue().stream().filter(e -> e.getTutorEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
+                    List<Event> events = eventsLiveData.getValue();
                     setCalendarByEvents(events);
                 }
             }
@@ -137,12 +137,14 @@ public class HomeTutorFragment extends Fragment {
         });
 
         homeTutorViewModel.getEventsByTutor().observe(getViewLifecycleOwner(), events ->{
-            setCalendar();
-            setCalendarByEvents(events);
-            LiveData<List<Lesson>> lessonsLiveData = homeTutorViewModel.getLessonsByTutor();
-            if(lessonsLiveData.getValue()!=null){
-                List<Lesson> lessons = lessonsLiveData.getValue().stream().filter(e -> e.getTutorEmail().equals(getActivity().getIntent().getStringExtra("EMAIL"))).collect(Collectors.toList());
-                setCalendarByLessons(lessons);
+            if(events!=null){
+                setCalendar();
+                setCalendarByEvents(events);
+                LiveData<List<Lesson>> lessonsLiveData = homeTutorViewModel.getLessonsByTutor();
+                if(lessonsLiveData.getValue()!=null){
+                    List<Lesson> lessons = lessonsLiveData.getValue();
+                    setCalendarByLessons(lessons);
+                }
             }
         });
 

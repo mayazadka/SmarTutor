@@ -77,6 +77,10 @@ public class Event {
         return data;
     }
 
+    public void update(){
+        this.lastUpdated = Timestamp.now().getSeconds();
+    }
+
     static public void setLocalLatUpdateTime(Long timeStamp){
         SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         editor.putLong("EventLastUpdate", timeStamp);
