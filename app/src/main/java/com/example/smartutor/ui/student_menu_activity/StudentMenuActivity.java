@@ -54,7 +54,7 @@ public class StudentMenuActivity extends AppCompatActivity {
         headerSubTiitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_subtitle_tv);
 
         headerTitle.setText("SmarTutor");
-        headerSubTiitle.setText(getIntent().getStringExtra("EMAIL"));
+        headerSubTiitle.setText(studentMenuViewModel.getCurrentUserEmail());
     }
 
     @Override

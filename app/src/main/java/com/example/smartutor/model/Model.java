@@ -11,9 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Model {
-    public enum LoadingState{loaded, loading, error}
+    public enum LoadingState{loaded, loading}
     public interface OnCompleteListener{
-        public void onComplete();
+        void onComplete();
     }
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -152,10 +152,6 @@ public class Model {
             lessonLoadingState.postValue(LoadingState.loaded);
         }));
     }
-    public LiveData<List<Lesson>> getLessons(){
-        refreshLessons();
-        return AppLocalDB.db.lessonDao().getLessons();
-    }
     public LiveData<List<Lesson>> getLessonsByTutor(String email){
         refreshLessons();
         return AppLocalDB.db.lessonDao().getLessonsByTutor(email);
@@ -255,6 +251,10 @@ public class Model {
         refreshPosts();
         return AppLocalDB.db.postDao().getPosts();
     }
+    public LiveData<List<Post>> getPostsByTutor(String email) {
+        refreshPosts();
+        return AppLocalDB.db.postDao().getPostsByTutor(email);
+    }
     public LiveData<Post> getPost(String id) {
         refreshPosts();
         return AppLocalDB.db.postDao().getPostById(id);
@@ -287,9 +287,6 @@ public class Model {
         });
     }
 
-    public void checkCurrentUser(OnCompleteListener OnSuccess, OnCompleteListener OnFailure){
-        ModelFireBase.checkCurrentUser(OnSuccess, OnFailure);
-    }
     public void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         ModelFireBase.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }

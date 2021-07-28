@@ -47,7 +47,6 @@ public class HomeTutorFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeTutorViewModel = new ViewModelProvider(this).get(HomeTutorViewModel.class);
-        homeTutorViewModel.initial();
 
         root = inflater.inflate(R.layout.fragment_home_tutor, container, false);
 

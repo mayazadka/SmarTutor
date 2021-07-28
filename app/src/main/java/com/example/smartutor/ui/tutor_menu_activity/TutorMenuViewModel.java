@@ -8,4 +8,5 @@ public class TutorMenuViewModel extends ViewModel {
 
     public TutorMenuViewModel() {}
     public void signOut()       { model.signOut(); }
+    public String getCurrentUserEmail()                 { return model.getCurrentUserEmail(); }
 }

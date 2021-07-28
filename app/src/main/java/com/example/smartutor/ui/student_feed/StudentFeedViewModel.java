@@ -14,12 +14,10 @@ public class StudentFeedViewModel extends ViewModel {
     private LiveData<List<Post>> posts;
     private LiveData<List<Tutor>> tutors;
 
-    public StudentFeedViewModel(){}
-    public void initial(){
+    public StudentFeedViewModel(){
         posts = model.getPosts();
         tutors = model.getTutors();
     }
-
     public LiveData<List<Post>> getPosts()          {return posts;}
     public LiveData<Tutor> getTutor(String email)   {return model.getTutor(email);}
 }

@@ -8,4 +8,6 @@ public class StudentMenuViewModel extends ViewModel {
 
     public StudentMenuViewModel() {}
     public void signOut() {model.signOut();}
+    public String getCurrentUserEmail()                 { return model.getCurrentUserEmail(); }
+
 }

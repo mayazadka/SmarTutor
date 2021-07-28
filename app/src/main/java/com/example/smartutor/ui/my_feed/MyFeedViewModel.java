@@ -14,13 +14,12 @@ public class MyFeedViewModel extends ViewModel {
     private LiveData<List<Post>> posts;
     private LiveData<Tutor> tutor;
 
-    public MyFeedViewModel() {}
-    public void initial(){
+    public MyFeedViewModel() {
         tutor = model.getTutor(getCurrentUserEmail());
-        posts = model.getPosts();
+        posts = model.getPostsByTutor(getCurrentUserEmail());
     }
 
-    public LiveData<List<Post>> getPosts()  { return posts; }
-    public LiveData<Tutor> getTutor()       { return tutor; }
-    public String getCurrentUserEmail()     { return model.getCurrentUserEmail(); }
+    public LiveData<List<Post>> getPostsByTutor()   { return posts; }
+    public LiveData<Tutor> getTutor()               { return tutor; }
+    public String getCurrentUserEmail()             { return model.getCurrentUserEmail(); }
 }

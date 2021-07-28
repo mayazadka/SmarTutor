@@ -284,7 +284,6 @@ public class ModelFireBase {
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
     }
-
     public static void deletePostsByTutor(String email){
         FirebaseFirestore.getInstance()
                 .collection(Post.POSTS)
@@ -359,14 +358,6 @@ public class ModelFireBase {
         }
     }
 
-    public static void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null){
-            OnSuccess.onComplete();
-        }
-        else
-            OnFailure.onComplete();
-    }
     public static void createUserAccount(String type, String email, String password, Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure) {
         // create user with email
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{

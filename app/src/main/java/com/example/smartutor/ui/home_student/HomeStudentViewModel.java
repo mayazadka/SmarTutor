@@ -14,8 +14,7 @@ public class HomeStudentViewModel extends ViewModel {
     private Model model = Model.getInstance();
     private LiveData<Student> student;
     private LiveData<List<Lesson>> lessons;
-    public HomeStudentViewModel() {}
-    public void initial(){
+    public HomeStudentViewModel() {
         String email = getCurrentUserEmail();
         student = model.getStudent(email);
         lessons = model.getLessonsByStudent(email);

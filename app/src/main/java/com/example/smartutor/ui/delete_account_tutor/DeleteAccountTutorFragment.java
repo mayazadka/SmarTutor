@@ -24,7 +24,6 @@ public class DeleteAccountTutorFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         deleteAccountTutorViewModel = new ViewModelProvider(this).get(DeleteAccountTutorViewModel.class);
-        deleteAccountTutorViewModel.initial();
         View root = inflater.inflate(R.layout.fragment_delete_account_tutor, container, false);
 
         yes = root.findViewById(R.id.deleteAccountTutor_yes_btn);

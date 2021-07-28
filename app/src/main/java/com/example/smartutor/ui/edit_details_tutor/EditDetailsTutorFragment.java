@@ -50,7 +50,6 @@ public class EditDetailsTutorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // view model
         editDetailsTutorViewModel = new ViewModelProvider(this).get(EditDetailsTutorViewModel.class);
-        editDetailsTutorViewModel.initial();
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_edit_details_tutor, container, false);

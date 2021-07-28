@@ -45,7 +45,6 @@ public class StudentFeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         studentFeedViewModel = new ViewModelProvider(this).get(StudentFeedViewModel.class);
-        studentFeedViewModel.initial();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student_feed, container, false);

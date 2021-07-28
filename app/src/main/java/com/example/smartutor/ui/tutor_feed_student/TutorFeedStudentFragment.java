@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class TutorFeedStudentFragment extends Fragment {
 
-    TutorFeedStudentViewModel tutorFeedStudentViewModel;
+    private TutorFeedStudentViewModel tutorFeedStudentViewModel;
     private List<Post> listPosts;
     private String tutorEmail;
     private SwipeRefreshLayout swipeUp;
@@ -70,10 +70,12 @@ public class TutorFeedStudentFragment extends Fragment {
 
         listPosts = new LinkedList<>();
 
-        tutorFeedStudentViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){posts = new LinkedList<Post>();}
-            listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
-            listPostsRecyclerView.getAdapter().notifyDataSetChanged();
+        tutorFeedStudentViewModel.getPostsByTutor(tutorEmail).observe(getViewLifecycleOwner(), posts -> {
+            if(posts != null){
+                listPosts = posts;
+                listPostsRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+
         });
 
 

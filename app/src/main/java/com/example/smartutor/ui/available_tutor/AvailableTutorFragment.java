@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 
 public class AvailableTutorFragment extends Fragment {
 
-    AvailableTutorViewModel availableTutorViewModel;
+    private AvailableTutorViewModel availableTutorViewModel;
     private TextView date;
     private TextView hour;
     private Button set;

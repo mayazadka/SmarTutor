@@ -24,8 +24,7 @@ public class EditDetailsTutorViewModel extends ViewModel {
     private Model model = Model.getInstance();
     private LiveData<Tutor> tutor;
 
-    public EditDetailsTutorViewModel() { }
-    public void initial(){
+    public EditDetailsTutorViewModel() {
         tutor = model.getTutor(getCurrentUserEmail());
     }
 

@@ -16,8 +16,7 @@ public class DeleteAccountStudentViewModel extends ViewModel {
     private Model model = Model.getInstance();;
     private LiveData<Student> student;
 
-    public DeleteAccountStudentViewModel() {}
-    public void initial(){
+    public DeleteAccountStudentViewModel() {
         student = model.getStudent(getCurrentUserEmail());
         student.observeForever(student -> {});
     }

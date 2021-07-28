@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 
 public class MyFeedFragment extends Fragment {
@@ -44,7 +43,6 @@ public class MyFeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myFeedViewModel = new ViewModelProvider(this).get(MyFeedViewModel.class);
-        myFeedViewModel.initial();
         tutorEmail = myFeedViewModel.getCurrentUserEmail();
         View view = inflater.inflate(R.layout.fragment_my_feed, container, false);
 
@@ -72,11 +70,13 @@ public class MyFeedFragment extends Fragment {
 
         listPosts = new LinkedList<>();
 
-        myFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){posts = new LinkedList<>();}
+        myFeedViewModel.getPostsByTutor().observe(getViewLifecycleOwner(), posts -> {
+            if(posts != null){
+                listPosts = posts;
+                postListRecyclerView.getAdapter().notifyDataSetChanged();
+            }
 
-            listPosts = posts.stream().filter(post->post.getTutorEmail().equals(tutorEmail)).collect(Collectors.toList());
-            postListRecyclerView.getAdapter().notifyDataSetChanged();
+
         });
 
         swipeUp.setOnRefreshListener(()->{

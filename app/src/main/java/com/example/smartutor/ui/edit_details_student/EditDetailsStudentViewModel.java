@@ -19,8 +19,7 @@ public class EditDetailsStudentViewModel extends ViewModel {
     private Model model = Model.getInstance();
     private LiveData<Student> student;
 
-    public EditDetailsStudentViewModel() { }
-    public void initial() {
+    public EditDetailsStudentViewModel() {
         student = model.getStudent(getCurrentUserEmail());
     }
 

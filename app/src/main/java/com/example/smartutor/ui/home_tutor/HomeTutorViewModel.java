@@ -29,8 +29,7 @@ public class HomeTutorViewModel extends ViewModel {
     private LiveData<List<Event>> events;
 
 
-    public HomeTutorViewModel() {}
-    public void initial(){
+    public HomeTutorViewModel() {
         String email = getCurrentUserEmail();
         tutor = model.getTutor(email);
         lessons = model.getLessonsByTutor(email);
