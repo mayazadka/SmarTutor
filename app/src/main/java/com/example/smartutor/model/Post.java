@@ -10,6 +10,7 @@ import com.example.smartutor.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +22,7 @@ public class Post {
     private String tutorEmail;
     private String text;
     private String picture;
+    private LocalDateTime date;
     private Long lastUpdated;
     private Boolean isDeleted;
 
@@ -36,21 +38,24 @@ public class Post {
     public static final String TAG = "TAG";
     public static final String POST_LAST_UPDATE = "PostLastUpdate";
     public static final String PICTURES_FOLDER = "pictures";
+    public static final String DATE = "date";
 
 
     public Post() {}
-    public Post(String tutorEmail, String text, String picture) {
+    public Post(String tutorEmail, String text, String picture, LocalDateTime date) {
         this.tutorEmail = tutorEmail;
         this.text = text;
         this.picture = picture;
         this.isDeleted = false;
         this.lastUpdated = Long.valueOf(0);
+        this.date = date;
     }
     public Post(Map<String, Object> json){
         tutorEmail =                (String)json.get(TUTOR_EMAIL);
         text =                      (String)json.get(TEXT);
         picture =                   (String)json.get(PICTURE);
         id =                        (String)json.get(ID);
+        date =                      Converters.fromStringToLocalDateTime((String)json.get(DATE));
         Timestamp ts =              (Timestamp)json.get(LAST_UPDATED);
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
@@ -65,6 +70,8 @@ public class Post {
     public void setTutorEmail(String tutorEmail)        { this.tutorEmail = tutorEmail; }
     public void setText(String text)                    { this.text = text; }
     public void setPicture(String picture)              { this.picture = picture;}
+    public LocalDateTime getDate()                      { return this.date; }
+    public void setDate(LocalDateTime date)             { this.date = date; }
     public Long getLastUpdated()                        {return lastUpdated;}
     public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
     public Boolean getDeleted()                         {return isDeleted;}
@@ -90,14 +97,11 @@ public class Post {
         data.put(TEXT, text);
         data.put(PICTURE, picture);
         data.put(ID, id);
+        data.put(DATE,  Converters.fromLocalDateTimeToString(date));
         data.put(LAST_UPDATED, FieldValue.serverTimestamp());
         data.put(IS_DELETED, isDeleted);
 
         return data;
-    }
-
-    public void update(){
-        this.lastUpdated = Timestamp.now().getSeconds();
     }
 
     static public void setLocalLatUpdateTime(Long timeStamp){

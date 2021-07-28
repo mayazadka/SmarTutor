@@ -108,10 +108,6 @@ public class Student {
         return data;
     }
 
-    public void update(){
-        this.lastUpdated = Timestamp.now().getSeconds();
-    }
-
     static public void setLocalLatUpdateTime(Long timeStamp){
         SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
         editor.putLong(STUDENT_LAST_UPDATE, timeStamp);

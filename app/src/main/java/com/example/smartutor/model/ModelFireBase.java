@@ -279,12 +279,22 @@ public class ModelFireBase {
                 .addOnSuccessListener(dr-> listener.accept(dr.getId()));
     }
     public static void updatePost(Post post, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection(Post.POSTS).document(post.getId().toString())
+        FirebaseFirestore.getInstance().collection(Post.POSTS).document(post.getId())
                 .set(post.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
     }
-    public static void deletePostsByTutor(String email){
+    public static void updatePost(String id, String description, Model.OnCompleteListener listener) {
+        FirebaseFirestore.getInstance().collection(Post.POSTS).document(id)
+                .update(Post.TEXT, description)
+                .addOnSuccessListener(v->{
+                    FirebaseFirestore.getInstance().collection(Post.POSTS).document(id)
+                            .update(Post.LAST_UPDATED, FieldValue.serverTimestamp())
+                            .addOnSuccessListener(v1->listener.onComplete())
+                            .addOnFailureListener(v1->listener.onComplete());
+                }).addOnFailureListener(v->listener.onComplete());
+    }
+        public static void deletePostsByTutor(String email){
         FirebaseFirestore.getInstance()
                 .collection(Post.POSTS)
                 .whereEqualTo(Post.TUTOR_EMAIL, email)

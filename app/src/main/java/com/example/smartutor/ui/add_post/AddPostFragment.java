@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 public class AddPostFragment extends Fragment {
     // view model
@@ -78,7 +79,7 @@ public class AddPostFragment extends Fragment {
                 enableButtons(true);
             }
             else {
-                Post post = new Post(addPostViewModel.getCurrentUserEmail(), description.getText().toString(), "");
+                Post post = new Post(addPostViewModel.getCurrentUserEmail(), description.getText().toString(), "", LocalDateTime.now());
                 addPostViewModel.addPost(post, imageBitmap, () -> Navigation.findNavController(view).navigateUp());
             }
         });

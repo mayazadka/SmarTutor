@@ -22,6 +22,7 @@ public class EditPostViewModel extends ViewModel {
 
     public LiveData<Post> getPost()                                                     { return post; }
     public void updatePost(Post post, Bitmap bitmap, Model.OnCompleteListener listener) { model.updatePost(post, bitmap, listener); }
+    public void updatePost(String id, String description, Model.OnCompleteListener listener)  { model.updatePost(id, description, listener);}
     public void deletePost(Model.OnCompleteListener listener)                           { model.deletePost(post.getValue(), listener); }
     public String getCurrentUserEmail()                                                 { return model.getCurrentUserEmail(); }
 

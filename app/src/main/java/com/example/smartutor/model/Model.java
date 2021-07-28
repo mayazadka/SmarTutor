@@ -278,6 +278,13 @@ public class Model {
             });
         }));
     }
+    public void updatePost(String id, String description, OnCompleteListener listener) {
+        postLoadingState.setValue(LoadingState.loading);
+        ModelFireBase.updatePost(id, description, ()->{
+            refreshPosts();
+            listener.onComplete();
+        });
+    }
     public void deletePost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
         ModelFireBase.deletePost(post, ()->{

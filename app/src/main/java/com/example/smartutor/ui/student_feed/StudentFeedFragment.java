@@ -24,6 +24,7 @@ import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -72,9 +73,11 @@ public class StudentFeedFragment extends Fragment {
         postListRecyclerView.setAdapter(adapter);
         listPosts = new LinkedList<>();
         studentFeedViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if(posts == null){posts = new LinkedList<>();}
-            listPosts = posts;
-            postListRecyclerView.getAdapter().notifyDataSetChanged();
+            if(posts != null){
+                Collections.sort(posts, (p1, p2) -> p1.getDate().isBefore(p2.getDate())?1:-1);
+                listPosts = posts;
+                postListRecyclerView.getAdapter().notifyDataSetChanged();
+            }
         });
 
         swipeUp.setOnRefreshListener(()-> studentFeedViewModel.refresh());

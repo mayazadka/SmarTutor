@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 public class EditPostFragment extends Fragment {
     // view model
@@ -100,11 +101,13 @@ public class EditPostFragment extends Fragment {
                 Snackbar.make(saveBtn, "you must enter description", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 enableButtons(true);
             }
-            if(imageBitmap==null){
-                Navigation.findNavController(view).navigateUp();
+            else if(imageBitmap==null){
+                editPostViewModel.updatePost(postId, description.getText().toString(), ()->{
+                    Navigation.findNavController(view).navigateUp();
+                });
             }
             else{
-                Post post = new Post(tutorEmail, description.getText().toString(), "");
+                Post post = new Post(tutorEmail, description.getText().toString(), "", LocalDateTime.now());
                 post.setId(postId);
                 editPostViewModel.updatePost(post, imageBitmap,()->Navigation.findNavController(view).navigateUp());
             }
