@@ -11,23 +11,13 @@ import com.example.smartutor.model.Post;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AddPostViewModel extends ViewModel {
 
     private Model model = Model.getInstance();
-    MutableLiveData<List<Post>> Posts = new MutableLiveData<List<Post>>(new LinkedList<Post>());
 
     public AddPostViewModel() { }
 
-    public LiveData<List<Post>> getPosts()                                                      { return model.getPosts(); }
-    public void addPost(Post post, Model.OnCompleteListener listener) {
-        model.addPost(post, listener);
-    }
-    public interface UploadImageListener                                                        { void onComplete(String url);}
-    public void uploadImage(Bitmap imageBmp, String name, final UploadImageListener listener)   { Model.getInstance().uploadImage(imageBmp, name, listener); }
-    public LiveData<Post> getPost(Long postId)                                                  {return model.getPost(postId);}
-    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
-        post.setId(postId);
-        model.updatePost(post, listener);
-    }
+    public void addPost(Post post, Bitmap ImageBit,  Model.OnCompleteListener listener) {model.addPost(post, ImageBit, listener);}
 }

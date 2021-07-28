@@ -20,12 +20,5 @@ public class StudentFeedViewModel extends ViewModel {
     }
 
     public LiveData<List<Post>> getPosts()          {return posts;}
-    // TODO: change this function
-    public Tutor getTutor(String email)   {
-        for(int i = 0; i < tutors.getValue().size(); i++) {
-            if (tutors.getValue().get(i).getEmail().compareTo(email) == 0)
-                return tutors.getValue().get(i);
-        }
-        return null;
-    }
+    public LiveData<Tutor> getTutor(String email)   {return model.getTutor(email);}
 }

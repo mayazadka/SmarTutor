@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,6 +56,7 @@ public class MyFeedFragment extends Fragment {
         add = view.findViewById(R.id.myFeed_addPost_btn);
         postListRecyclerView.setHasFixedSize(true);
 
+        postListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         MyFeedFragment.MyAdapter adapter = new MyFeedFragment.MyAdapter();
 

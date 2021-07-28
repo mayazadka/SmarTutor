@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,8 @@ public class StudentFeedFragment extends Fragment {
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StudentFeedFragment.MyAdapter adapter = new StudentFeedFragment.MyAdapter();
 
+        postListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
         adapter.setOnItemClickListener((v, p) ->{
             String tutorEmail = listPosts.get(p).getTutorEmail();
             StudentFeedFragmentDirections.ActionNavFeedStudentToNavTutorDetailsStudent action = StudentFeedFragmentDirections.actionNavFeedStudentToNavTutorDetailsStudent(tutorEmail);
@@ -99,9 +102,9 @@ public class StudentFeedFragment extends Fragment {
         public void bind(String owner, String image, String description){
             this.owner.setText(owner);
             this.description.setText(description);
-            this.postImg.setImageResource(R.drawable.ic_gender_male);
+            this.postImg.setImageResource(R.drawable.ic_baseline_hourglass_empty_24);
             if(image != null && image != ""){
-                Picasso.get().load(image).placeholder(R.drawable.ic_gender_male).error(R.drawable.ic_gender_male).into(this.postImg);
+                Picasso.get().load(image).placeholder(R.drawable.ic_baseline_hourglass_empty_24).error(R.drawable.ic_baseline_report_problem_24).into(this.postImg);
             }
         }
     }
@@ -128,8 +131,9 @@ public class StudentFeedFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull StudentFeedFragment.StudentFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);
-            Tutor tutor = studentFeedViewModel.getTutor(post.getTutorEmail());
-            holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText());
+            studentFeedViewModel.getTutor(post.getTutorEmail()).observe(getViewLifecycleOwner(), tutor->{
+                holder.bind(tutor.getFirstName() + " " + tutor.getLastName(), post.getPicture(), post.getText());
+            });
         }
 
         @Override

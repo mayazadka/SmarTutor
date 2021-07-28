@@ -16,28 +16,20 @@ import com.example.smartutor.ui.add_post.AddPostViewModel;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class EditPostViewModel extends ViewModel {
 
     private Model model = Model.getInstance();
     private LiveData<Post> post;
-    private LiveData<Tutor> tutor;
 
     public EditPostViewModel() { }
-    public void initial(String email, Long id){
-        tutor = model.getTutor(email);
+    public void initial(String id){
         post = model.getPost(id);
         post.observeForever(p->{});
     }
 
     public LiveData<Post> getPost()                                                                             {return post;}
-    public LiveData<Tutor> getTutor()                                                                           {return tutor;}
-    public void updatePost(Long postId, Post post, Model.OnCompleteListener listener){
-        if(this.post.getValue()!=null){
-            post.setId(postId);
-            model.updatePost(post, listener);
-        }
-    }
+    public void updatePost(Post post, Bitmap bitmap, Model.OnCompleteListener listener)                         {model.updatePost(post, bitmap, listener);}
     public void deletePost(Model.OnCompleteListener listener)                                                   {model.deletePost(post.getValue(), listener);}
-    public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener)  { Model.getInstance().uploadImage(imageBmp, name, listener); }
 }

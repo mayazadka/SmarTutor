@@ -90,7 +90,7 @@
             app:destination="@id/nav_my_feed_tutor" />
         <argument
             android:name="idPost"
-            app:argType="long" />
+            app:argType="string" />
     </fragment>
     <action
         android:id="@+id/action_global_nav_home_tutor"

@@ -32,6 +32,8 @@ public class Student {
     private Long lastUpdated;
     private Boolean isDeleted;
 
+    public static final String EMAIL = "email";
+
     public Student(){}
     public Student(String email, String lastName, String firstName, Gender gender, Date birthdayDate, int grade) {
         this.email = email;

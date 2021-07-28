@@ -3,6 +3,7 @@ package com.example.smartutor.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -16,7 +17,8 @@ import java.util.Objects;
 
 @Entity(primaryKeys = {"id"})
 public class Post {
-    private Long id;
+    @NonNull
+    private String id;
     private String tutorEmail;
     private String text;
     private String picture;
@@ -32,21 +34,21 @@ public class Post {
         this.lastUpdated = Long.valueOf(0);
     }
     public Post(Map<String, Object> json){
-        tutorEmail =              (String)json.get("tutorEmail");
-        text =                    (String)json.get("text");
-        picture =                 (String)json.get("picture");
-        id =                      (long)json.get("id");
+        tutorEmail =                (String)json.get("tutorEmail");
+        text =                      (String)json.get("text");
+        picture =                   (String)json.get("picture");
+        id =                        (String)json.get("id");
         Timestamp ts =              (Timestamp)json.get("lastUpdated");
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
         isDeleted =                 (Boolean)json.get("isDeleted");
     }
 
-    public Long getId()                                 { return id; }
+    public String getId()                               { return id; }
     public String getTutorEmail()                       { return tutorEmail; }
     public String getText()                             { return text; }
     public String getPicture()                          { return picture; }
-    public void setId(Long id)                          { this.id = id; }
+    public void setId(String id)                        { this.id = id; }
     public void setTutorEmail(String tutorEmail)        { this.tutorEmail = tutorEmail; }
     public void setText(String text)                    { this.text = text; }
     public void setPicture(String picture)              { this.picture = picture;}

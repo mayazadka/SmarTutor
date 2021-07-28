@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ public class TutorFeedStudentFragment extends Fragment {
         listPostsRecyclerView = view.findViewById(R.id.tutorFeedStudent_listPosts_rv);
         listPostsRecyclerView.setHasFixedSize(true);
 
+        listPostsRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         listPostsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         TutorFeedStudentFragment.MyAdapter adapter = new TutorFeedStudentFragment.MyAdapter();
 

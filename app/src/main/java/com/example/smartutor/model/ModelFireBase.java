@@ -63,17 +63,6 @@ public class ModelFireBase {
                         }
                     } else {}
                 });
-        FirebaseFirestore.getInstance().collection("posts")
-                .orderBy("id", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            postID = (Long)document.get("id")+1;
-                        }
-                    } else {}
-                });
     }
 
     public static void getStudents(Long since, Consumer<List<Student>> consumer){
@@ -313,14 +302,10 @@ public class ModelFireBase {
                     consumer.accept(posts);
                 });
     }
-    public static Long addPost(Post post, Model.OnCompleteListener listener){
-        post.setId(postID);
-        postID++;
-        FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
-                .set(post.toJson())
-                .addOnSuccessListener(v->listener.onComplete())
-                .addOnFailureListener(v->listener.onComplete());
-        return post.getId();
+    public static void addPost(Post post, Consumer<String> listener){
+        FirebaseFirestore.getInstance().collection("posts")
+                .add(post.toJson())
+                .addOnSuccessListener(dr->listener.accept(dr.getId()));
     }
     public static void updatePost(Post post, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
@@ -328,18 +313,7 @@ public class ModelFireBase {
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
     }
-    public static void deletePost(Post post, Model.OnCompleteListener listener){
-        if(post.getPicture().equals("") || post.getPicture() == null){
-            deletePostDetails(post, listener);
-        }
-        else{
-            FirebaseStorage.getInstance()
-                    .getReferenceFromUrl(post.getPicture())
-                    .delete()
-                    .addOnSuccessListener(aVoid -> deletePostDetails(post, listener))
-                    .addOnFailureListener(aVoid -> deletePostDetails(post, listener));
-        }
-    }
+
     public static void deletePostsByTutor(String email){
         FirebaseFirestore.getInstance()
                 .collection("Posts")
@@ -367,8 +341,15 @@ public class ModelFireBase {
                 })
                 .addOnFailureListener(aVoid -> listener.onComplete());
     }
-
-    public static void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
+    public static void deletePost(Post post, Model.OnCompleteListener listener){
+        if(post.getPicture() == null || post.getPicture().equals("")){
+            deletePostDetails(post, listener);
+        }
+        else{
+            deleteImage(post.getPicture(), ()-> deletePostDetails(post, listener));
+        }
+    }
+    public static void uploadImage(Bitmap imageBmp, String name, final Consumer<String> listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imagesRef = storage.getReference().child("pictures").child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -378,7 +359,7 @@ public class ModelFireBase {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                listener.onComplete(null);
+                listener.accept(null);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -387,11 +368,24 @@ public class ModelFireBase {
                     @Override
                     public void onSuccess(Uri uri) {
                         Uri downloadUrl = uri;
-                        listener.onComplete(downloadUrl.toString());
+                        listener.accept(downloadUrl.toString());
                     }
                 });
             }
         });
+    }
+    public static void  deleteImage(String url, Model.OnCompleteListener listener){
+        if(url != null && !url.equals(""))
+        {
+            FirebaseStorage.getInstance()
+                    .getReferenceFromUrl(url)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> listener.onComplete())
+                    .addOnFailureListener(aVoid -> listener.onComplete());
+        }
+        else{
+            listener.onComplete();
+        }
     }
 
     public static void checkCurrentUser(Model.OnCompleteListener OnSuccess, Model.OnCompleteListener OnFailure){

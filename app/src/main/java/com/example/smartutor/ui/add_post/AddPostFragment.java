@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -67,27 +66,30 @@ public class AddPostFragment extends Fragment {
         galleryBtn = view.findViewById(R.id.addPost_gallery_btn);
 
         addBtn.setOnClickListener(v -> {
-            savePost();
-        });
-        editImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePicture();
+            v.setEnabled(false);
+            editImage.setEnabled(false);
+            galleryBtn.setEnabled(false);
+
+            if(imageBitmap == null || description.getText().toString().trim().equals("")) {
+                //TODO: validation
+                v.setEnabled(true);
+                editImage.setEnabled(true);
+                galleryBtn.setEnabled(true);
+                return;
             }
+            Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+
+            addPostViewModel.addPost(post, imageBitmap, () -> Navigation.findNavController(view).navigateUp());
         });
-        galleryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { loadPictureFromGallery(); }
-        });
+
+        editImage.setOnClickListener(v -> takePicture());
+        galleryBtn.setOnClickListener(v -> loadPictureFromGallery());
         return view;
     }
 
     void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-        /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
-        }*/
     }
     void loadPictureFromGallery(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -114,36 +116,11 @@ public class AddPostFragment extends Fragment {
                     image.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     // TODO: display on the view
-                    Log.d("TAG", "Something went wrong");
+                    Log.d("omer", "Something went wrong");
                 }
             }else {
-                Log.d("TAG", "You haven't picked Image");
+                Log.d("omer", "You haven't picked Image");
             }
         }
-    }
-    private void savePicture(Long postId){
-        addPostViewModel.getPost(postId).observe(getViewLifecycleOwner(), post ->{
-            if(post!=null){
-                if(imageBitmap != null && view != null){
-                    addPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), url -> addPostViewModel.updatePost(postId, new Post(post.getTutorEmail(), post.getText(), url), ()->{
-                        Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
-                    }));
-                } else{
-                    Navigation.findNavController(view).navigate(R.id.action_addPostFragment_to_nav_my_feed_tutor);
-                }
-            }
-        });
-
-
-    }
-    private void savePost(){
-        // progress bar visible
-        addBtn.setEnabled(false);
-        editImage.setEnabled(false);
-        Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
-
-        addPostViewModel.addPost(post, ()->{
-            savePicture(post.getId());
-        });
     }
 }

@@ -37,7 +37,7 @@ public class EditPostFragment extends Fragment {
     // view model
     private EditPostViewModel editPostViewModel;
     private String tutorEmail;
-    Long postId;
+    String postId;
 
     // views
     private EditText description;
@@ -66,8 +66,7 @@ public class EditPostFragment extends Fragment {
         editPostViewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
         tutorEmail = getActivity().getIntent().getStringExtra("EMAIL");
         postId = EditPostFragmentArgs.fromBundle(getArguments()).getIdPost();
-        Log.d("TAG", "post id: " + postId + " email: " + tutorEmail);
-        editPostViewModel.initial(tutorEmail, postId);
+        editPostViewModel.initial(postId);
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_post, container, false);
@@ -90,39 +89,40 @@ public class EditPostFragment extends Fragment {
                 }
             }
         });
-        saveBtn.setOnClickListener(v -> { savePicture(); });
+
+        saveBtn.setOnClickListener(v -> {
+            v.setEnabled(false);
+            enableButtons(false);
+
+            if(description.getText().toString().trim().equals("") || imageBitmap == null){
+                //TODO:validation
+                enableButtons(true);
+                return;
+            }
+            Post post = new Post(getActivity().getIntent().getStringExtra("EMAIL"), description.getText().toString(), "");
+            post.setId(postId);
+            editPostViewModel.updatePost(post, imageBitmap,()->Navigation.findNavController(view).navigateUp());
+        });
+
         cancelBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
+            v.setEnabled(false);
+            enableButtons(false);
+            Navigation.findNavController(view).navigateUp();
         });
+
         deleteBtn.setOnClickListener(v -> {
-            saveBtn.setEnabled(false);
-            editImage.setEnabled(false);
-            cancelBtn.setEnabled(false);
-            deleteBtn.setEnabled(false);
-            galleryBtn.setEnabled(false);
-            editPostViewModel.deletePost(() -> {Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);});
+            v.setEnabled(false);
+            enableButtons(false);
+            editPostViewModel.deletePost(() -> Navigation.findNavController(view).navigateUp());
         });
-        editImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePicture();
-            }
-        });
-        galleryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPictureFromGallery();
-            }
-        });
+        editImage.setOnClickListener(v -> takePicture());
+        galleryBtn.setOnClickListener(v -> loadPictureFromGallery());
         return view;
     }
 
     void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-        /*if(takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null){
-        }*/
     }
     void loadPictureFromGallery(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -156,36 +156,11 @@ public class EditPostFragment extends Fragment {
         }
     }
 
-    private void savePicture(){
-        // progress bar visible
-        saveBtn.setEnabled(false);
-        editImage.setEnabled(false);
-        cancelBtn.setEnabled(false);
-        deleteBtn.setEnabled(false);
-        galleryBtn.setEnabled(false);
-
-        Long postId = editPostViewModel.getPost().getValue().getId();
-
-        if(imageBitmap != null){
-            editPostViewModel.uploadImage(imageBitmap, String.valueOf(postId), new AddPostViewModel.UploadImageListener() {
-                @Override
-                public void onComplete(String url) {
-                    savePost(url);
-                }
-            });
-        } else{ savePost(null); }
-    }
-    private void savePost(String url) {
-        Post post = new Post(editPostViewModel.getPost().getValue().getTutorEmail(), description.getText().toString(), null);
-        post.setId(editPostViewModel.getPost().getValue().getId());
-        if (url == null) {
-            post.setPicture(editPostViewModel.getPost().getValue().getPicture());
-        }else{
-            post.setPicture(url);
-        }
-
-        editPostViewModel.updatePost(post.getId(), post, ()->{
-            Navigation.findNavController(view).navigate(R.id.action_editPostFragment_to_nav_my_feed_tutor);
-        });
+    private void enableButtons(boolean state){
+        saveBtn.setEnabled(state);
+        cancelBtn.setEnabled(state);
+        deleteBtn.setEnabled(state);
+        galleryBtn.setEnabled(state);
+        editImage.setEnabled(state);
     }
 }

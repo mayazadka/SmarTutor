@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class Model {
     public enum LoadingState{loaded, loading, error}
@@ -97,8 +98,6 @@ public class Model {
     }
     public void deleteStudent(Student student, OnCompleteListener listener){
         studentLoadingState.setValue(LoadingState.loading);
-        student.setDeleted(true);
-        student.update();
         ModelFireBase.deleteStudent(student, ()->{
             refreshStudents();
             listener.onComplete();
@@ -147,8 +146,6 @@ public class Model {
     }
     public void deleteTutor(Tutor tutor, OnCompleteListener listener){
         tutorLoadingState.setValue(LoadingState.loading);
-        tutor.setDeleted(true);
-        tutor.update();
         ModelFireBase.deleteTutor(tutor, ()->{
             refreshTutors();
             listener.onComplete();
@@ -206,8 +203,6 @@ public class Model {
     }
     public void deleteLesson(Lesson lesson, OnCompleteListener listener){
         lessonLoadingState.setValue(LoadingState.loading);
-        lesson.setDeleted(true);
-        lesson.update();
         ModelFireBase.deleteLesson(lesson, ()->{
             refreshLessons();
             listener.onComplete();
@@ -282,36 +277,39 @@ public class Model {
         refreshPosts();
         return AppLocalDB.db.postDao().getPosts();
     }
-    public LiveData<Post> getPost(Long id) {
+    public LiveData<Post> getPost(String id) {
         refreshPosts();
         return AppLocalDB.db.postDao().getPostById(id);
     }
-    public Long addPost(Post post, OnCompleteListener listener){
+    public void addPost(Post post, Bitmap imageBmp, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        Long id = ModelFireBase.addPost(post, ()->{
-            refreshPosts();
-            listener.onComplete();
+        ModelFireBase.addPost(post, id-> {
+            post.setId(id);
+            updatePost(post, imageBmp, ()->{
+                refreshPosts();
+                listener.onComplete();
+            });
         });
-        return id;
     }
-    public void updatePost(Post post, OnCompleteListener listener){
+    public void updatePost(Post post, Bitmap bitmap, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        ModelFireBase.updatePost(post, ()->{
-            refreshPosts();
-            listener.onComplete();
-        });
+        ModelFireBase.deleteImage(post.getPicture(), ()-> ModelFireBase.uploadImage(bitmap, post.getId(), url ->{
+            post.setPicture(url);
+            ModelFireBase.updatePost(post, ()->{
+                refreshPosts();
+                listener.onComplete();
+            });
+        }));
     }
     public void deletePost(Post post, OnCompleteListener listener){
         postLoadingState.setValue(LoadingState.loading);
-        post.setDeleted(true);
-        post.update();
         ModelFireBase.deletePost(post, ()->{
             refreshPosts();
             listener.onComplete();
         });
     }
 
-    public void uploadImage(Bitmap imageBmp, String name, final AddPostViewModel.UploadImageListener listener){
+    private void uploadImage(Bitmap imageBmp, String name, Consumer<String> listener){
         ModelFireBase.uploadImage(imageBmp, name, listener);
     }
 
