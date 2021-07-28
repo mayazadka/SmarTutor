@@ -16,6 +16,31 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/lessonDetailsTutor_email_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="omer@gmail.com"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsTutor_emailTitle_tv"
+                app:layout_constraintStart_toStartOf="@+id/lessonDetailsTutor_student_tv"
+                app:layout_constraintTop_toTopOf="@+id/lessonDetailsTutor_emailTitle_tv" />
+
+            <TextView
+                android:id="@+id/lessonDetailsTutor_emailTitle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Email:"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessonDetailsTutor_studentTitle_tv" />
+
+            <TextView
                 android:id="@+id/lessonDetailsTutor_hour_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +103,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsTutor_studentTitle_tv"
                 app:layout_constraintStart_toEndOf="@+id/lessonDetailsTutor_studentTitle_tv"
                 app:layout_constraintTop_toTopOf="@+id/lessonDetailsTutor_studentTitle_tv"
-                app:layout_constraintVertical_bias="0.555" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/lessonDetailsTutor_dateTitle_tv"
@@ -95,13 +120,13 @@
 
             <ImageView
                 android:id="@+id/lessonDetailsTutor_subject_img"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="207dp"
+                android:layout_height="152dp"
+                android:layout_marginTop="32dp"
                 android:src="@drawable/ic_subject_math"
-                app:layout_constraintBottom_toBottomOf="@+id/lessonDetailsTutor_student_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/lessonDetailsTutor_student_tv"
-                app:layout_constraintTop_toTopOf="@+id/lessonDetailsTutor_date_tv" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessonDetailsTutor_email_tv" />
 
             <Button
                 android:id="@+id/lessonDetailsTutor_cancel_btn"

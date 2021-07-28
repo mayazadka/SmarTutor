@@ -32,6 +32,7 @@ public class LessonDetailsTutorFragment extends Fragment {
     TextView date;
     TextView hour;
     TextView studentName;
+    TextView email;
     ImageView image;
     Button cancel;
     SwipeRefreshLayout swipeUp;
@@ -53,6 +54,7 @@ public class LessonDetailsTutorFragment extends Fragment {
         date = root.findViewById(R.id.lessonDetailsTutor_date_tv);
         hour = root.findViewById(R.id.lessonDetailsTutor_hour_tv);
         studentName = root.findViewById(R.id.lessonDetailsTutor_student_tv);
+        email = root.findViewById(R.id.lessonDetailsTutor_email_tv);
         image = root.findViewById(R.id.lessonDetailsTutor_subject_img);
         cancel = root.findViewById(R.id.lessonDetailsTutor_cancel_btn);
         swipeUp = root.findViewById(R.id.lessonDetailsTutor_swipeUp);
@@ -91,6 +93,7 @@ public class LessonDetailsTutorFragment extends Fragment {
                     student.observe(getViewLifecycleOwner(), s -> {
                         if (s != null) {
                             studentName.setText(s.getFirstName() + " " + s.getLastName());
+                            email.setText(s.getEmail());
                         }
                     });
                 }
