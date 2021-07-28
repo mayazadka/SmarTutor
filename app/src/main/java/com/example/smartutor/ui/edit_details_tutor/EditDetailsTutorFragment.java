@@ -122,6 +122,7 @@ public class EditDetailsTutorFragment extends Fragment {
             }
             catch (Exception e){
                 Snackbar.make(save, e.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                v.setEnabled(true);
             }
         });
 
