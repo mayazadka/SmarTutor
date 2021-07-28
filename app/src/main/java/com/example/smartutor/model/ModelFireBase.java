@@ -6,18 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.smartutor.ui.add_post.AddPostViewModel;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -26,40 +22,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class ModelFireBase {
-    private static Long lessonID = Long.valueOf(0);
-    private static Long eventID = Long.valueOf(0);
-    private static Long postID = Long.valueOf(0);
-
-
-    public ModelFireBase(){
-
-        FirebaseFirestore.getInstance().collection("lessons")
-                .orderBy("id", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            lessonID = (Long)document.get("id")+1;
-                        }
-                    } else {}
-                });
-        FirebaseFirestore.getInstance().collection("events")
-                .orderBy("id", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            eventID = (Long)document.get("id")+1;
-                        }
-                    } else {}
-                });
-    }
 
     public static void getStudents(Long since, Consumer<List<Student>> consumer){
         FirebaseFirestore.getInstance().collection("students")
@@ -180,8 +145,14 @@ public class ModelFireBase {
                 });
     }
     public static void addLesson(Lesson lesson, Model.OnCompleteListener listener){
-        lesson.setId(lessonID);
-        lessonID++;
+        FirebaseFirestore.getInstance().collection("lessons")
+                .add(lesson.toJson())
+                .addOnSuccessListener(dr->{
+                    lesson.setId(dr.getId());
+                    updateLesson(lesson, listener);
+                });
+    }
+    public static void updateLesson(Lesson lesson, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance().collection("lessons").document(lesson.getId().toString())
                 .set(lesson.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
@@ -247,8 +218,14 @@ public class ModelFireBase {
                 });
     }
     public static void addEvent(Event event, Model.OnCompleteListener listener){
-        event.setId(eventID);
-        eventID++;
+        FirebaseFirestore.getInstance().collection("events")
+                .add(event.toJson())
+                .addOnSuccessListener(dr->{
+                    event.setId(dr.getId());
+                    updateEvent(event, listener);
+                });
+    }
+    public static void updateEvent(Event event, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance().collection("events").document(event.getId().toString())
                 .set(event.toJson())
                 .addOnSuccessListener(v->listener.onComplete())

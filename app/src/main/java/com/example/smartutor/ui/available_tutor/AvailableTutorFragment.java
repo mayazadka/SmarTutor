@@ -51,6 +51,7 @@ public class AvailableTutorFragment extends Fragment {
         if(!AvailableTutorFragmentArgs.fromBundle(getArguments()).getAvailable()){
             set.setText("Set Unavailable");
             set.setOnClickListener(v -> {
+                v.setEnabled(false);
                 viewModel.addEvent(dateTime, getActivity().getIntent().getStringExtra("EMAIL"), ()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
             });
         }

@@ -20,22 +20,21 @@ import java.util.Objects;
 public class Event {
     @NonNull private String tutorEmail;
     @NonNull private LocalDateTime date;
-    private Long id;
+    private String id;
     private Long lastUpdated;
     private Boolean isDeleted;
 
     public Event(){}
-    public Event(String tutorEmail, LocalDateTime date, Long id) {
+    public Event(String tutorEmail, LocalDateTime date) {
         this.tutorEmail = tutorEmail;
         this.date = date;
-        this.id = id;
         this.isDeleted = false;
         this.lastUpdated = Long.valueOf(0);
     }
     public Event(Map<String, Object> json){
         tutorEmail =                (String)json.get("tutorEmail");
         date =                      Converters.fromStringToLocalDateTime((String)json.get("date"));
-        id =                        (long)json.get("id");
+        id =                        (String)json.get("id");
         Timestamp ts =              (Timestamp)json.get("lastUpdated");
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
@@ -46,8 +45,8 @@ public class Event {
     public void setTutorEmail(String tutorEmail)        {this.tutorEmail = tutorEmail;}
     public LocalDateTime getDate()                      {return date;}
     public void setDate(LocalDateTime date)             {this.date = date;}
-    public Long getId()                                 {return id;}
-    public void setId(Long id)                          {this.id = id;}
+    public String getId()                               {return id;}
+    public void setId(String id)                        {this.id = id;}
     public Long getLastUpdated()                        {return lastUpdated;}
     public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
     public Boolean getDeleted()                         {return isDeleted;}

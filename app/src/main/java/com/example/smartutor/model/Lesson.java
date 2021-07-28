@@ -22,17 +22,16 @@ public class Lesson {
     @NonNull private String tutorEmail;
     @NonNull private LocalDateTime date;
     private Profession subject;
-    private Long id;
+    private String id;
     private Long lastUpdated;
     private Boolean isDeleted;
 
     public Lesson(){}
-    public Lesson(String studentEmail, String tutorEmail, LocalDateTime date, Profession subject, Long id) {
+    public Lesson(String studentEmail, String tutorEmail, LocalDateTime date, Profession subject) {
         this.studentEmail = studentEmail;
         this.tutorEmail = tutorEmail;
         this.date = date;
         this.subject = subject;
-        this.id = id;
         this.isDeleted = false;
         this.lastUpdated = Long.valueOf(0);
     }
@@ -41,7 +40,7 @@ public class Lesson {
         tutorEmail =                (String)json.get("tutorEmail");
         date =                      Converters.fromStringToLocalDateTime((String)json.get("date"));
         subject =                   Converters.fromStringToProfession((String)json.get("subject"));
-        id =                        (long)json.get("id");
+        id =                        (String)json.get("id");
         Timestamp ts =              (Timestamp)json.get("lastUpdated");
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
@@ -56,8 +55,8 @@ public class Lesson {
     public void setDate(LocalDateTime date)             {this.date = date;}
     public Profession getSubject()                      {return subject;}
     public void setSubject(Profession subject)          {this.subject = subject;}
-    public Long getId()                                 {return id;}
-    public void setId(Long id)                          {this.id = id;}
+    public String getId()                               {return id;}
+    public void setId(String id)                        {this.id = id;}
     public Long getLastUpdated()                        {return lastUpdated;}
     public void setLastUpdated(Long lastUpdated)        {this.lastUpdated = lastUpdated;}
     public Boolean getDeleted()                         {return isDeleted;}

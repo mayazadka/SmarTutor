@@ -23,7 +23,7 @@ public class AvailableTutorViewModel extends ViewModel {
         event = model.getEvent(email, dateTime);
         event.observeForever(e-> {});
     }
-    public void addEvent(LocalDateTime when, String email, Model.OnCompleteListener listener)   {model.addEvent(new Event(email, when, null), listener);}
+    public void addEvent(LocalDateTime when, String email, Model.OnCompleteListener listener)   {model.addEvent(new Event(email, when), listener);}
     public void deleteEvent(Model.OnCompleteListener listener){model.deleteEvent(event.getValue(), listener);}
 
 }
