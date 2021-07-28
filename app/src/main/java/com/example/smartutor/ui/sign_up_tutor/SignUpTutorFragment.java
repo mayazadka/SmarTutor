@@ -108,7 +108,7 @@ public class SignUpTutorFragment extends Fragment {
                 Utilities.validateAboutMe(aboutMe.getText().toString());
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
-                Tutor tutor = new Tutor(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString());
+                Tutor tutor = new Tutor(email.getText().toString().toLowerCase(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToProfessions(professions.getSelectedItem()), aboutMe.getText().toString());
                 signUpTutorViewModel.addTutor(tutor, password.getText().toString(), () -> {
                     Intent intent = new Intent(getActivity(), TutorMenuActivity.class);
                     LogInNavGraphDirections.ActionGlobalSignIn action = SignUpTutorFragmentDirections.actionGlobalSignIn();
@@ -116,7 +116,7 @@ public class SignUpTutorFragment extends Fragment {
                     Navigation.findNavController(view).navigate(action);
                     startActivity(intent);
                 }, () -> {
-                    Snackbar.make(signUp, "email", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(signUp, "invalid email", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     v.setEnabled(true);
                 });
             }

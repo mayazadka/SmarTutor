@@ -102,7 +102,7 @@ public class SignUpStudentFragment extends Fragment {
                 Utilities.validateDate(date.getText().toString());
                 Utilities.validatePassword(password.getText().toString(), confirm.getText().toString());
 
-                Student student = new Student(email.getText().toString(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
+                Student student = new Student(email.getText().toString().toLowerCase(), lastName.getText().toString(), firstName.getText().toString(), Gender.valueOf(gender.getSelectedItem().toString().toUpperCase()), Utilities.convertToDate(date.getText().toString()), Utilities.convertToGrade(grade.getSelectedItem().toString()));
                 signUpStudentViewModel.addStudent(student, password.getText().toString(), ()->{
                     Intent intent = new Intent(getActivity(), StudentMenuActivity.class);
                     LogInNavGraphDirections.ActionGlobalSignIn action = SignUpStudentFragmentDirections.actionGlobalSignIn();

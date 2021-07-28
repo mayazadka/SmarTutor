@@ -65,7 +65,6 @@ public class StudentMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.tutor_menu_exit){
-            studentMenuViewModel.signOut();
             Intent intent = new Intent(this, LogIn.class);
             startActivity(intent);
             finish();
