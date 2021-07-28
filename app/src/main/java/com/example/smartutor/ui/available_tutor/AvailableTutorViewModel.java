@@ -8,7 +8,6 @@ import com.example.smartutor.model.Model;
 
 import java.time.LocalDateTime;
 
-
 public class AvailableTutorViewModel extends ViewModel {
     private Model model = Model.getInstance();
     private LiveData<Event> event;
