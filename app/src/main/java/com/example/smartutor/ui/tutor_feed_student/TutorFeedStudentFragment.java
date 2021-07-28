@@ -1,10 +1,8 @@
 package com.example.smartutor.ui.tutor_feed_student;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -27,7 +25,6 @@ import com.squareup.picasso.Picasso;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class TutorFeedStudentFragment extends Fragment {
 
@@ -150,7 +147,6 @@ public class TutorFeedStudentFragment extends Fragment {
             return holder;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(@NonNull TutorFeedStudentFragment.TutorFeedStudentViewHolder holder, int position) {
             Post post = listPosts.get(position);

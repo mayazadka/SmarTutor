@@ -1,6 +1,5 @@
 package com.example.smartutor.ui.search_tutors_student;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -32,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class SearchTutorsStudentFragment extends Fragment {
 
     private SearchTutorsStudentViewModel searchTutorsStudentViewModel;
@@ -105,11 +102,8 @@ public class SearchTutorsStudentFragment extends Fragment {
         name.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {}
-
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {

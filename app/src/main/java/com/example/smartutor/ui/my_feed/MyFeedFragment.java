@@ -1,10 +1,8 @@
 package com.example.smartutor.ui.my_feed;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -153,7 +151,6 @@ public class MyFeedFragment extends Fragment {
             return holder;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onBindViewHolder(@NonNull MyFeedFragment.MyFeedViewHolder holder, int position) {
             Post post = listPosts.get(position);

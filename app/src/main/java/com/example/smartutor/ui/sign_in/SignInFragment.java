@@ -1,10 +1,8 @@
 package com.example.smartutor.ui.sign_in;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -27,7 +25,6 @@ import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
 import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
 import com.google.android.material.snackbar.Snackbar;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class SignInFragment extends Fragment {
     //view model
     private SignInViewModel signInViewModel;
