@@ -1,6 +1,5 @@
 package com.example.smartutor.ui.edit_details_student;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -29,7 +27,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class EditDetailsStudentFragment extends Fragment {
 
     private EditDetailsStudentViewModel editDetailsStudentViewModel;

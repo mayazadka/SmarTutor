@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 
-
 public class EditDetailsStudentViewModel extends ViewModel {
 
     private Model model = Model.getInstance();

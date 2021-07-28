@@ -1,20 +1,17 @@
 package com.example.smartutor.ui.delete_account_student;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.smartutor.R;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class DeleteAccountStudentFragment extends Fragment {
 
     private DeleteAccountStudentViewModel deleteAccountStudentViewModel;

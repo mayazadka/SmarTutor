@@ -165,10 +165,8 @@ public class EditPostFragment extends Fragment {
                     imageBitmap = BitmapFactory.decodeStream(imageStream);
                     image.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
-                    Log.d("TAG", "Something went wrong");
                 }
             }else {
-                Log.d("TAG", "You haven't picked Image");
             }
         }
     }
