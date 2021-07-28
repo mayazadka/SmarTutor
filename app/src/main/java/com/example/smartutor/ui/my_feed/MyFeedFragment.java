@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.squareup.picasso.Picasso;
@@ -77,26 +78,19 @@ public class MyFeedFragment extends Fragment {
 
         });
 
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshTutors();
-            Model.getInstance().refreshPosts();
-        });
+        swipeUp.setOnRefreshListener(()-> myFeedViewModel.refresh());
 
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
-        Model.getInstance().postLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        myFeedViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
+        myFeedViewModel.getPostLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
 
         return view;
     }
 
     private void handleLoading(){
-        if(Model.getInstance().postLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded){
-            swipeUp.setRefreshing(false);
-            enabled.set(true);
-        }
-        else{
-            swipeUp.setRefreshing(true);
-            enabled.set(false);
-        }
+        boolean b = myFeedViewModel.getTutorLoadingState().getValue() == LoadingState.loaded &&
+                    myFeedViewModel.getPostLoadingState().getValue() == LoadingState.loaded;
+        enabled.set(b);
+        swipeUp.setRefreshing(!b);
     }
 
     private static class MyFeedViewHolder extends RecyclerView.ViewHolder{

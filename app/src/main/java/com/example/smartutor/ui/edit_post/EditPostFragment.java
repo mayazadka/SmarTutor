@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 import com.google.android.material.snackbar.Snackbar;
@@ -123,16 +124,11 @@ public class EditPostFragment extends Fragment {
         editImage.setOnClickListener(v -> takePicture());
         galleryBtn.setOnClickListener(v -> loadPictureFromGallery());
 
-        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshPosts());
-        Model.getInstance().postLoadingState.observeForever(state->{
-            if(state == Model.LoadingState.loaded){
-                enableButtons(true);
-                swipeUp.setRefreshing(false);
-            }
-            else{
-                enableButtons(false);
-                swipeUp.setRefreshing(true);
-            }
+        swipeUp.setOnRefreshListener(()-> editPostViewModel.refresh());
+        editPostViewModel.getPostLoadingState().observeForever(state->{
+            boolean b = (state == LoadingState.loaded);
+            enableButtons(b);
+            swipeUp.setRefreshing(!b);
         });
         return view;
     }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
@@ -116,24 +117,17 @@ public class SignUpStudentFragment extends Fragment {
 
         });
 
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshStudents();
-            Model.getInstance().refreshTutors();
-        });
+        signUpStudentViewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        signUpStudentViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->signUpStudentViewModel.refresh());
 
         return view;
     }
 
     private void handleLoading(){
-        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
-            signUp.setEnabled(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            signUp.setEnabled(false);
-            swipeUp.setRefreshing(true);
-        }
+        boolean b = signUpStudentViewModel.getStudentLoadingState().getValue() == LoadingState.loaded &&
+                    signUpStudentViewModel.getTutorLoadingState().getValue() == LoadingState.loaded;
+        signIn.setEnabled(b);
+        swipeUp.setRefreshing(!b);
     }
 }

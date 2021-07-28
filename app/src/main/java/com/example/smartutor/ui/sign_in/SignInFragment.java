@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.ui.student_menu_activity.StudentMenuActivity;
 import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
@@ -122,12 +123,9 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshStudents();
-            Model.getInstance().refreshTutors();
-        });
+        signInViewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        signInViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->signInViewModel.refresh());
 
         return view;
     }
@@ -141,14 +139,10 @@ public class SignInFragment extends Fragment {
         password.setEnabled(state);
     }
     private void handleLoading(){
-        if(Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded){
-            enableButtons(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            enableButtons(false);
-            swipeUp.setRefreshing(true);
-        }
+        boolean b = signInViewModel.getStudentLoadingState().getValue() == LoadingState.loaded &&
+                    signInViewModel.getTutorLoadingState().getValue() == LoadingState.loaded;
+        enableButtons(b);
+        swipeUp.setRefreshing(!b);
     }
 
     @Override

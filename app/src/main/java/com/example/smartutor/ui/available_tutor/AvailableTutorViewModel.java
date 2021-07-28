@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.smartutor.model.Event;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,8 @@ public class AvailableTutorViewModel extends ViewModel {
     public void addEvent(LocalDateTime when, Model.OnCompleteListener listener)     { model.addEvent(new Event(getCurrentUserEmail(), when), listener); }
     public void deleteEvent(Model.OnCompleteListener listener)                      { model.deleteEvent(event.getValue(), listener); }
     public String getCurrentUserEmail()                                             { return model.getCurrentUserEmail(); }
+
+    public void refresh(){model.refreshEvents(); }
+
+    public LiveData<LoadingState> getEventLoadingState()                      {return model.eventLoadingState;}
 }

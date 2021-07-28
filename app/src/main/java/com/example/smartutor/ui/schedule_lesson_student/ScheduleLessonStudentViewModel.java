@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
@@ -20,4 +21,8 @@ public class ScheduleLessonStudentViewModel extends ViewModel {
     public void addLesson(LocalDateTime when, String tutorEmail, String studentEmail, Profession subject, Model.OnCompleteListener listener)   { model.addLesson(new Lesson(studentEmail, tutorEmail, when, subject), listener); }
     public LiveData<Tutor> getTutor()       { return tutor; }
     public String getCurrentUserEmail()     { return model.getCurrentUserEmail(); }
+
+    public void refresh() {model.refreshTutors();}
+
+    public LiveData<LoadingState> getTutorLoadingState() {return model.tutorLoadingState; }
 }

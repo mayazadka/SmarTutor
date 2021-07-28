@@ -1,7 +1,6 @@
 package com.example.smartutor.ui.sign_up_tutor;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,6 +22,7 @@ import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
 import com.example.smartutor.ui.tutor_menu_activity.TutorMenuActivity;
@@ -123,24 +123,17 @@ public class SignUpTutorFragment extends Fragment {
 
         });
 
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshStudents();
-            Model.getInstance().refreshTutors();
-        });
+        signUpTutorViewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        signUpTutorViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
+        swipeUp.setOnRefreshListener(()->signUpTutorViewModel.refresh());
 
         return view;
     }
 
     private void handleLoading(){
-        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
-            signUp.setEnabled(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            signUp.setEnabled(false);
-            swipeUp.setRefreshing(true);
-        }
+        boolean b = signUpTutorViewModel.getStudentLoadingState().getValue() == LoadingState.loaded &&
+                    signUpTutorViewModel.getTutorLoadingState().getValue() == LoadingState.loaded;
+        signIn.setEnabled(b);
+        swipeUp.setRefreshing(!b);
     }
 }

@@ -3,6 +3,7 @@ package com.example.smartutor.ui.sign_up_tutor;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
@@ -34,4 +35,12 @@ public class SignUpTutorViewModel  extends ViewModel {
         model.createUserAccount(type, email, password, OnSuccess, OnFailure);
     }
     public String getCurrentUserEmail() { return model.getCurrentUserEmail(); }
+
+    public void refresh() {
+        model.refreshStudents();
+        model.refreshTutors();
+    }
+
+    public LiveData<LoadingState> getStudentLoadingState() {return model.studentLoadingState; }
+    public LiveData<LoadingState> getTutorLoadingState() {return model.tutorLoadingState; }
 }

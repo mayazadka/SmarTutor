@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
@@ -143,8 +144,8 @@ public class SearchTutorsStudentFragment extends Fragment {
             tutorsList.getAdapter().notifyDataSetChanged();
         });
 
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state-> swipeUp.setRefreshing(state != Model.LoadingState.loaded));
-        swipeUp.setOnRefreshListener(()->Model.getInstance().refreshTutors());
+        searchTutorsStudentViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state-> swipeUp.setRefreshing(state != LoadingState.loaded));
+        swipeUp.setOnRefreshListener(()->searchTutorsStudentViewModel.refresh());
         return root;
     }
 

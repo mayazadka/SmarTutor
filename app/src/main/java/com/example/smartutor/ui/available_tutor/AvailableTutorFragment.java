@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 
 import java.time.LocalDate;
@@ -62,20 +63,12 @@ public class AvailableTutorFragment extends Fragment {
             });
         }
 
-        Model.getInstance().eventLoadingState.observe(getViewLifecycleOwner(), state->{
-            if(state == Model.LoadingState.loaded){
-                set.setEnabled(true);
-                swipeUp.setRefreshing(false);
-            }
-            else{
-                set.setEnabled(false);
-                swipeUp.setRefreshing(true);
-            }
+        availableTutorViewModel.getEventLoadingState().observe(getViewLifecycleOwner(), state->{
+            boolean b = (state == LoadingState.loaded);
+            set.setEnabled(b);
+            swipeUp.setRefreshing(!b);
         });
-
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshEvents();
-        });
+        swipeUp.setOnRefreshListener(()->availableTutorViewModel.refresh());
 
         return root;
     }

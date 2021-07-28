@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
 
@@ -129,15 +130,11 @@ public class HomeStudentFragment extends Fragment {
 
         });
 
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
-        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state-> handleLoading());
+        homeStudentViewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state-> handleLoading());
+        homeStudentViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state-> handleLoading());
+        homeStudentViewModel.getLessonLoadingState().observe(getViewLifecycleOwner(), state-> handleLoading());
 
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshStudents();
-            Model.getInstance().refreshLessons();
-            Model.getInstance().refreshTutors();
-        });
+        swipeUp.setOnRefreshListener(()-> homeStudentViewModel.refresh());
         return root;
     }
 
@@ -162,14 +159,11 @@ public class HomeStudentFragment extends Fragment {
         }
     }
 
-    private void handleLoading(){
-        if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().lessonLoadingState.getValue() == Model.LoadingState.loaded  && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
-            enableCalendar(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            enableCalendar(false);
-            swipeUp.setRefreshing(true);
-        }
+    private void handleLoading() {
+        boolean b = (homeStudentViewModel.getStudentLoadingState().getValue() == LoadingState.loaded &&
+                homeStudentViewModel.getTutorLoadingState().getValue() == LoadingState.loaded &&
+                homeStudentViewModel.getLessonLoadingState().getValue() == LoadingState.loaded);
+        enableCalendar(b);
+        swipeUp.setRefreshing(!b);
     }
 }

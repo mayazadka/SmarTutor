@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.example.smartutor.model.Tutor;
@@ -31,4 +32,17 @@ public class HomeTutorViewModel extends ViewModel {
     public LiveData<List<Event>> getEventsByTutor()     { return events; }
     public LiveData<Student> getStudent(String email)   { return model.getStudent(email); }
     public String getCurrentUserEmail()                 { return model.getCurrentUserEmail(); }
+
+    public void refresh() {
+        model.refreshTutors();
+        model.refreshEvents();
+        model.refreshLessons();
+        model.refreshStudents();
+    }
+
+    public LiveData<LoadingState> getTutorLoadingState() {return model.tutorLoadingState; }
+    public LiveData<LoadingState> getStudentLoadingState() {return model.studentLoadingState; }
+    public LiveData<LoadingState> getLessonLoadingState() {return model.lessonLoadingState; }
+    public LiveData<LoadingState> getEventLoadingState() {return model.eventLoadingState; }
+
 }

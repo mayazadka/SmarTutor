@@ -19,6 +19,7 @@ import com.example.smartutor.MultiSpinner;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 import com.example.smartutor.model.Tutor;
@@ -124,16 +125,11 @@ public class EditDetailsTutorFragment extends Fragment {
             }
         });
 
-        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshTutors());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state -> {
-            if(state == Model.LoadingState.loaded){
-                save.setEnabled(true);
-                swipeUp.setRefreshing(false);
-            }
-            else{
-                save.setEnabled(false);
-                swipeUp.setRefreshing(true);
-            }
+        swipeUp.setOnRefreshListener(()-> editDetailsTutorViewModel.refresh());
+        editDetailsTutorViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state -> {
+            boolean b = (state == LoadingState.loaded);
+            save.setEnabled(b);
+            swipeUp.setRefreshing(!b);
         });
 
         return root;

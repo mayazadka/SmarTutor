@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Post;
 
@@ -23,4 +24,8 @@ public class EditPostViewModel extends ViewModel {
     public void updatePost(Post post, Bitmap bitmap, Model.OnCompleteListener listener) { model.updatePost(post, bitmap, listener); }
     public void deletePost(Model.OnCompleteListener listener)                           { model.deletePost(post.getValue(), listener); }
     public String getCurrentUserEmail()                                                 { return model.getCurrentUserEmail(); }
+
+    public void refresh() { model.refreshPosts(); }
+
+    public LiveData<LoadingState> getPostLoadingState() {return model.postLoadingState; }
 }

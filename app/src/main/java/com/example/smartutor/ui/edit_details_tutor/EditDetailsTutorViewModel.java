@@ -3,6 +3,7 @@ package com.example.smartutor.ui.edit_details_tutor;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Tutor;
 
@@ -23,4 +24,8 @@ public class EditDetailsTutorViewModel extends ViewModel {
             model.updateTutor(tutor, listener);
         }
     }
+
+    public void refresh() {model.refreshTutors();}
+
+    public LiveData<LoadingState> getTutorLoadingState() {return model.tutorLoadingState;}
 }

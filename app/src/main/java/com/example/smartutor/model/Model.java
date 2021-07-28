@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Model {
-    public enum LoadingState{loaded, loading}
     public interface OnCompleteListener{
         void onComplete();
     }

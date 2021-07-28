@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 
@@ -126,16 +127,11 @@ public class ScheduleLessonStudentFragment extends Fragment {
             }
 
         });
-        swipeUp.setOnRefreshListener(()->Model.getInstance().refreshTutors());
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->{
-            if(state == Model.LoadingState.loaded){
-                schedule.setEnabled(true);
-                swipeUp.setRefreshing(false);
-            }
-            else{
-                schedule.setEnabled(false);
-                swipeUp.setRefreshing(true);
-            }
+        swipeUp.setOnRefreshListener(()->scheduleLessonStudentViewModel.refresh());
+        scheduleLessonStudentViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state->{
+            boolean b = (state == LoadingState.loaded);
+            schedule.setEnabled(b);
+            swipeUp.setRefreshing(!b);
         });
         return root;
     }

@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Gender;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -113,16 +114,11 @@ public class EditDetailsStudentFragment extends Fragment {
 
         });
 
-        swipeUp.setOnRefreshListener(()-> Model.getInstance().refreshStudents());
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state -> {
-            if(state == Model.LoadingState.loaded){
-                save.setEnabled(true);
-                swipeUp.setRefreshing(false);
-            }
-            else{
-                save.setEnabled(false);
-                swipeUp.setRefreshing(true);
-            }
+        swipeUp.setOnRefreshListener(()-> editDetailsStudentViewModel.refresh());
+        editDetailsStudentViewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state -> {
+            boolean b = (state == LoadingState.loaded);
+            save.setEnabled(b);
+            swipeUp.setRefreshing(!b);
         });
         return root;
     }

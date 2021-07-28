@@ -3,6 +3,7 @@ package com.example.smartutor.ui.edit_details_student;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 
@@ -24,4 +25,7 @@ public class EditDetailsStudentViewModel extends ViewModel {
         }
     }
 
+    public void refresh() {model.refreshStudents();}
+
+    public LiveData<LoadingState> getStudentLoadingState() {return model.studentLoadingState; }
 }

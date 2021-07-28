@@ -20,6 +20,7 @@ import com.example.smartutor.R;
 import com.example.smartutor.Utilities;
 import com.example.smartutor.model.Event;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Profession;
 
@@ -165,15 +166,11 @@ public class TutorDetailsFragment extends Fragment {
             Navigation.findNavController(view).navigate(action);
         });
 
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshTutors();
-            Model.getInstance().refreshLessons();
-            Model.getInstance().refreshEvents();
-        });
+        swipeUp.setOnRefreshListener(()->{tutorDetailsViewModel.refresh(); });
 
-        Model.getInstance().tutorLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
-        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
-        Model.getInstance().eventLoadingState.observe(getViewLifecycleOwner(), state -> handleLoading());
+        tutorDetailsViewModel.getTutorLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
+        tutorDetailsViewModel.getLessonLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
+        tutorDetailsViewModel.getEventLoadingState().observe(getViewLifecycleOwner(), state -> handleLoading());
         return view;
     }
 
@@ -233,15 +230,12 @@ public class TutorDetailsFragment extends Fragment {
         }
     }
 
-    private void handleLoading(){
-        if(Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded&&Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().eventLoadingState.getValue()== Model.LoadingState.loaded){
-            enableCalendar(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            enableCalendar(false);
-            swipeUp.setRefreshing(true);
-        }
+    private void handleLoading() {
+        boolean b = tutorDetailsViewModel.getTutorLoadingState().getValue() == LoadingState.loaded &&
+                tutorDetailsViewModel.getLessonLoadingState().getValue() == LoadingState.loaded &&
+                tutorDetailsViewModel.getEventLoadingState().getValue() == LoadingState.loaded;
+        enableCalendar(b);
+        swipeUp.setRefreshing(!b);
     }
 
     private void addImageToLL(View view, int resId){

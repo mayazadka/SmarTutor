@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.smartutor.R;
 import com.example.smartutor.model.Lesson;
+import com.example.smartutor.model.LoadingState;
 import com.example.smartutor.model.Model;
 import com.example.smartutor.model.Student;
 
@@ -26,6 +27,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LessonDetailsTutorFragment extends Fragment {
+
+    private LessonDetailsTutorViewModel viewModel;
 
     private TextView date;
     private TextView hour;
@@ -44,7 +47,7 @@ public class LessonDetailsTutorFragment extends Fragment {
         LocalDateTime now = LocalDateTime.now();
         dateTime = LocalDate.now().atTime(LessonDetailsTutorFragmentArgs.fromBundle(getArguments()).getHour(), 0).plusDays(LessonDetailsTutorFragmentArgs.fromBundle(getArguments()).getDay() - ((now.getDayOfWeek().getValue() % 7) +1));
 
-        LessonDetailsTutorViewModel viewModel = new ViewModelProvider(this).get(LessonDetailsTutorViewModel.class);
+        viewModel = new ViewModelProvider(this).get(LessonDetailsTutorViewModel.class);
         viewModel.initial(dateTime);
 
         View root = inflater.inflate(R.layout.fragment_lesson_details_tutor, container, false);
@@ -103,25 +106,18 @@ public class LessonDetailsTutorFragment extends Fragment {
             viewModel.deleteLesson(()->Navigation.findNavController(root).navigate(R.id.action_global_nav_home_tutor));
         });
 
-        swipeUp.setOnRefreshListener(()->{
-            Model.getInstance().refreshStudents();
-            Model.getInstance().refreshLessons();
-        });
+        swipeUp.setOnRefreshListener(()-> viewModel.refresh());
 
-        Model.getInstance().studentLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
-        Model.getInstance().lessonLoadingState.observe(getViewLifecycleOwner(), state->handleLoading());
+        viewModel.getStudentLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
+        viewModel.getLessonLoadingState().observe(getViewLifecycleOwner(), state->handleLoading());
 
         return root;
     }
 
     void handleLoading(){
-        if(Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().studentLoadingState.getValue()== Model.LoadingState.loaded){
-            cancel.setEnabled(true);
-            swipeUp.setRefreshing(false);
-        }
-        else{
-            cancel.setEnabled(false);
-            swipeUp.setRefreshing(true);
-        }
+        boolean b = viewModel.getStudentLoadingState().getValue() == LoadingState.loaded &&
+                    viewModel.getLessonLoadingState().getValue()== LoadingState.loaded;
+        cancel.setEnabled(b);
+        swipeUp.setRefreshing(!b);
     }
 }
