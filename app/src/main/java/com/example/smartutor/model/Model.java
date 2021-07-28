@@ -1,29 +1,11 @@
 package com.example.smartutor.model;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
 
-import com.example.smartutor.MyApplication;
-import com.example.smartutor.ui.add_post.AddPostViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,7 +27,6 @@ public class Model {
     public MutableLiveData<LoadingState> postLoadingState = new MutableLiveData<>(LoadingState.loaded);
 
     private Model(){
-        new ModelFireBase(); //TODO:delete
         Student.setLocalLatUpdateTime(Long.valueOf(0));
         Tutor.setLocalLatUpdateTime(Long.valueOf(0));
         Lesson.setLocalLatUpdateTime(Long.valueOf(0));
@@ -154,9 +135,7 @@ public class Model {
 
     public void refreshLessons(){
         lessonLoadingState.setValue(LoadingState.loading);
-
         Long localLastTimeUpdate = Lesson.getLocalLatUpdateTime();
-
         ModelFireBase.getLessons(localLastTimeUpdate, l -> executorService.execute(()->{
             Long lastUpdate = Long.valueOf(0);
             for(Lesson le: l){
@@ -308,7 +287,6 @@ public class Model {
             listener.onComplete();
         });
     }
-
     private void uploadImage(Bitmap imageBmp, String name, Consumer<String> listener){
         ModelFireBase.uploadImage(imageBmp, name, listener);
     }

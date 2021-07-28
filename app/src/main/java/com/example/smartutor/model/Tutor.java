@@ -33,6 +33,20 @@ public class Tutor  {
     private Long lastUpdated;
     private Boolean isDeleted;
 
+    //strings
+    public static final String EMAIL = "email";
+    public static final String LAST_NAME = "lastName";
+    public static final String FIRST_NAME = "firstName";
+    public static final String GENDER = "gender";
+    public static final String BIRTHDAY_DATE = "birthdayDate";
+    public static final String PROFESSIONS = "professions";
+    public static final String ABOUT_ME = "aboutMe";
+    public static final String LAST_UPDATED = "lastUpdated";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String TUTORS = "tutors";
+    public static final String TAG = "TAG";
+    public static final String TUTOR_LAST_UPDATE = "TutorLastUpdate";
+
     public Tutor(){}
     public Tutor(String email, String lastName, String firstName, Gender gender, Date birthdayDate, List<Profession> professions, String aboutMe) {
         this.email = email;
@@ -46,17 +60,17 @@ public class Tutor  {
         this.lastUpdated = Long.valueOf(0);
     }
     public Tutor(Map<String, Object> json){
-        email =             (String)json.get("email");
-        lastName =          (String)json.get("lastName");
-        firstName =         (String)json.get("firstName");
-        gender =            Converters.fromStringToGender((String)json.get("gender"));
-        birthdayDate =      Converters.fromStringToDate((String)json.get("birthdayDate"));
-        professions =       Converters.fromStringToProfessions((String)json.get("professions"));
-        aboutMe =           (String)json.get("aboutMe");
-        Timestamp ts =      (Timestamp)json.get("lastUpdated");
+        email =             (String)json.get(EMAIL);
+        lastName =          (String)json.get(LAST_NAME);
+        firstName =         (String)json.get(FIRST_NAME);
+        gender =            Converters.fromStringToGender((String)json.get(GENDER));
+        birthdayDate =      Converters.fromStringToDate((String)json.get(BIRTHDAY_DATE));
+        professions =       Converters.fromStringToProfessions((String)json.get(PROFESSIONS));
+        aboutMe =           (String)json.get(ABOUT_ME);
+        Timestamp ts =      (Timestamp)json.get(LAST_UPDATED);
         if(ts!=null)        {lastUpdated =ts.getSeconds();}
         else                {lastUpdated = Long.valueOf(0);}
-        isDeleted =         (Boolean)json.get("isDeleted");
+        isDeleted =         (Boolean)json.get(IS_DELETED);
     }
 
     public String getEmail()                                    {return email;}
@@ -92,29 +106,26 @@ public class Tutor  {
 
     public Map<String, Object> toJson(){
         Map<String, Object> data = new HashMap<>();
-        data.put("email", email);
-        data.put("lastName",  lastName);
-        data.put("firstName", firstName);
-        data.put("birthdayDate", Converters.fromDateToString(birthdayDate));
-        data.put("gender", Converters.fromGenderToString(gender));
-        data.put("professions",  Converters.fromProfessionsToString(professions));
-        data.put("aboutMe",  aboutMe);
-        data.put("lastUpdated", FieldValue.serverTimestamp());
-        data.put("isDeleted", isDeleted);
+        data.put(EMAIL, email);
+        data.put(LAST_NAME,  lastName);
+        data.put(FIRST_NAME, firstName);
+        data.put(BIRTHDAY_DATE, Converters.fromDateToString(birthdayDate));
+        data.put(GENDER, Converters.fromGenderToString(gender));
+        data.put(PROFESSIONS,  Converters.fromProfessionsToString(professions));
+        data.put(ABOUT_ME,  aboutMe);
+        data.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        data.put(IS_DELETED, isDeleted);
         return data;
     }
-
     public void update(){
         this.lastUpdated = Timestamp.now().getSeconds();
     }
-
     static public void setLocalLatUpdateTime(Long timeStamp){
-        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong("TutorLastUpdate", timeStamp);
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(TUTOR_LAST_UPDATE, timeStamp);
         editor.commit();
     }
-
     static public Long getLocalLatUpdateTime(){
-        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("TutorLastUpdate", 0);
+        return MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getLong(TUTOR_LAST_UPDATE, 0);
     }
 }

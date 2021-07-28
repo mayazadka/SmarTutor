@@ -2,8 +2,6 @@ package com.example.smartutor.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,8 +25,8 @@ import java.util.function.Consumer;
 public class ModelFireBase {
 
     public static void getStudents(Long since, Consumer<List<Student>> consumer){
-        FirebaseFirestore.getInstance().collection("students")
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+        FirebaseFirestore.getInstance().collection(Student.STUDENTS)
+                .whereGreaterThanOrEqualTo(Student.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Student> students = new LinkedList<>();
@@ -41,13 +39,13 @@ public class ModelFireBase {
                 });
     }
     public static void addStudent(Student student, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("students").document(student.getEmail())
+        FirebaseFirestore.getInstance().collection(Student.STUDENTS).document(student.getEmail())
             .set(student.toJson())
             .addOnSuccessListener(v->listener.onComplete())
             .addOnFailureListener(v->listener.onComplete());
     }
     public static void updateStudent(Student student, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("students").document(student.getEmail())
+        FirebaseFirestore.getInstance().collection(Student.STUDENTS).document(student.getEmail())
                 .set(student.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
@@ -61,12 +59,12 @@ public class ModelFireBase {
                     if (task.isSuccessful()) {
                         if(student!=null){
                             FirebaseFirestore.getInstance()
-                                    .collection("students").document(student.getEmail())
-                                    .update("isDeleted", true)
+                                    .collection(Student.STUDENTS).document(student.getEmail())
+                                    .update(Student.IS_DELETED, true)
                                     .addOnSuccessListener(aVoid -> {
                                         FirebaseFirestore.getInstance()
-                                                .collection("students").document(student.getEmail().toString())
-                                                .update("lastUpdated", FieldValue.serverTimestamp())
+                                                .collection(Student.STUDENTS).document(student.getEmail().toString())
+                                                .update(Student.LAST_UPDATED, FieldValue.serverTimestamp())
                                                 .addOnSuccessListener(v -> listener.onComplete())
                                                 .addOnFailureListener(v -> listener.onComplete());
                                     })
@@ -78,8 +76,8 @@ public class ModelFireBase {
     }
 
     public static void getTutors(Long since, Consumer<List<Tutor>> consumer){
-        FirebaseFirestore.getInstance().collection("tutors")
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+        FirebaseFirestore.getInstance().collection(Tutor.TUTORS)
+                .whereGreaterThanOrEqualTo(Tutor.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Tutor> tutors = new LinkedList<>();
@@ -92,13 +90,13 @@ public class ModelFireBase {
                 });
     }
     public static void addTutor(Tutor tutor, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("tutors").document(tutor.getEmail())
+        FirebaseFirestore.getInstance().collection(Tutor.TUTORS).document(tutor.getEmail())
                 .set(tutor.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
     }
     public static void updateTutor(Tutor tutor, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("tutors").document(tutor.getEmail())
+        FirebaseFirestore.getInstance().collection(Tutor.TUTORS).document(tutor.getEmail())
                 .set(tutor.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
@@ -114,12 +112,12 @@ public class ModelFireBase {
                     if (task.isSuccessful()) {
                         if(tutor!=null){
                             FirebaseFirestore.getInstance()
-                                    .collection("tutors").document(tutor.getEmail())
-                                    .update("isDeleted", true)
+                                    .collection(Tutor.TUTORS).document(tutor.getEmail())
+                                    .update(Tutor.IS_DELETED, true)
                                     .addOnSuccessListener(aVoid -> {
                                         FirebaseFirestore.getInstance()
-                                                .collection("tutors").document(tutor.getEmail().toString())
-                                                .update("lastUpdated", FieldValue.serverTimestamp())
+                                                .collection(Tutor.TUTORS).document(tutor.getEmail().toString())
+                                                .update(Tutor.LAST_UPDATED, FieldValue.serverTimestamp())
                                                 .addOnSuccessListener(v -> listener.onComplete())
                                                 .addOnFailureListener(v -> listener.onComplete());
                                     })
@@ -131,8 +129,8 @@ public class ModelFireBase {
     }
 
     public static void getLessons(Long since, Consumer<List<Lesson>> consumer){
-        FirebaseFirestore.getInstance().collection("lessons")
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+        FirebaseFirestore.getInstance().collection(Lesson.LESSONS)
+                .whereGreaterThanOrEqualTo(Lesson.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Lesson> lessons = new LinkedList<>();
@@ -145,7 +143,7 @@ public class ModelFireBase {
                 });
     }
     public static void addLesson(Lesson lesson, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("lessons")
+        FirebaseFirestore.getInstance().collection(Lesson.LESSONS)
                 .add(lesson.toJson())
                 .addOnSuccessListener(dr->{
                     lesson.setId(dr.getId());
@@ -153,7 +151,7 @@ public class ModelFireBase {
                 });
     }
     public static void updateLesson(Lesson lesson, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("lessons").document(lesson.getId().toString())
+        FirebaseFirestore.getInstance().collection(Lesson.LESSONS).document(lesson.getId().toString())
                 .set(lesson.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
@@ -161,12 +159,12 @@ public class ModelFireBase {
     public static void deleteLesson(Lesson lesson, Model.OnCompleteListener listener){
         if(lesson != null){
             FirebaseFirestore.getInstance()
-                    .collection("lessons").document(lesson.getId().toString())
-                    .update("isDeleted", true)
+                    .collection(Lesson.LESSONS).document(lesson.getId().toString())
+                    .update(Lesson.IS_DELETED, true)
                     .addOnSuccessListener(aVoid -> {
                         FirebaseFirestore.getInstance()
-                                .collection("lessons").document(lesson.getId().toString())
-                                .update("lastUpdated", FieldValue.serverTimestamp())
+                                .collection(Lesson.LESSONS).document(lesson.getId().toString())
+                                .update(Lesson.LAST_UPDATED, FieldValue.serverTimestamp())
                                 .addOnSuccessListener(v -> listener.onComplete())
                                 .addOnFailureListener(v -> listener.onComplete());
                     })
@@ -176,8 +174,8 @@ public class ModelFireBase {
     }
     public static void deleteLessonsByTutor(String email){
         FirebaseFirestore.getInstance()
-            .collection("lessons")
-            .whereEqualTo("tutorEmail", email)
+            .collection(Lesson.LESSONS)
+            .whereEqualTo(Lesson.TUTOR_EMAIL, email)
             .get()
             .addOnCompleteListener(task->{
                 if (task.isSuccessful()) {
@@ -190,8 +188,8 @@ public class ModelFireBase {
     }
     public static void deleteLessonsByStudent(String email){
         FirebaseFirestore.getInstance()
-                .collection("lessons")
-                .whereEqualTo("studentEmail", email)
+                .collection(Lesson.LESSONS)
+                .whereEqualTo(Lesson.STUDENT_EMAIL, email)
                 .get()
                 .addOnCompleteListener(task->{
                     if (task.isSuccessful()) {
@@ -204,8 +202,8 @@ public class ModelFireBase {
     }
 
     public static void getEvents(Long since, Consumer<List<Event>> consumer){
-        FirebaseFirestore.getInstance().collection("events")
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+        FirebaseFirestore.getInstance().collection(Event.EVENTS)
+                .whereGreaterThanOrEqualTo(Event.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Event> events = new LinkedList<>();
@@ -218,7 +216,7 @@ public class ModelFireBase {
                 });
     }
     public static void addEvent(Event event, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("events")
+        FirebaseFirestore.getInstance().collection(Event.EVENTS)
                 .add(event.toJson())
                 .addOnSuccessListener(dr->{
                     event.setId(dr.getId());
@@ -226,7 +224,7 @@ public class ModelFireBase {
                 });
     }
     public static void updateEvent(Event event, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("events").document(event.getId().toString())
+        FirebaseFirestore.getInstance().collection(Event.EVENTS).document(event.getId().toString())
                 .set(event.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
@@ -234,12 +232,12 @@ public class ModelFireBase {
     public static void deleteEvent(Event event, Model.OnCompleteListener listener){
         if(event != null){
             FirebaseFirestore.getInstance()
-                    .collection("events").document(event.getId().toString())
-                    .update("isDeleted", true)
+                    .collection(Event.EVENTS).document(event.getId().toString())
+                    .update(Event.IS_DELETED, true)
                     .addOnSuccessListener(aVoid -> {
                         FirebaseFirestore.getInstance()
-                                .collection("events").document(event.getId().toString())
-                                .update("lastUpdated", FieldValue.serverTimestamp())
+                                .collection(Event.EVENTS).document(event.getId().toString())
+                                .update(Event.LAST_UPDATED, FieldValue.serverTimestamp())
                                 .addOnSuccessListener(v -> listener.onComplete())
                                 .addOnFailureListener(v -> listener.onComplete());
                     })
@@ -249,8 +247,8 @@ public class ModelFireBase {
     }
     public static void deleteEventsByTutor(String email){
         FirebaseFirestore.getInstance()
-                .collection("events")
-                .whereEqualTo("tutorEmail", email)
+                .collection(Event.EVENTS)
+                .whereEqualTo(Event.TUTOR_EMAIL, email)
                 .get()
                 .addOnCompleteListener(task->{
                     if (task.isSuccessful()) {
@@ -262,8 +260,8 @@ public class ModelFireBase {
     }
 
     public static void getPosts(Long since, Consumer<List<Post>> consumer){
-        FirebaseFirestore.getInstance().collection("posts")
-                .whereGreaterThanOrEqualTo("lastUpdated", new Timestamp(since, 0))
+        FirebaseFirestore.getInstance().collection(Post.POSTS)
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> posts = new LinkedList<>();
@@ -276,12 +274,12 @@ public class ModelFireBase {
                 });
     }
     public static void addPost(Post post, Consumer<String> listener){
-        FirebaseFirestore.getInstance().collection("posts")
+        FirebaseFirestore.getInstance().collection(Post.POSTS)
                 .add(post.toJson())
                 .addOnSuccessListener(dr-> listener.accept(dr.getId()));
     }
     public static void updatePost(Post post, Model.OnCompleteListener listener){
-        FirebaseFirestore.getInstance().collection("posts").document(post.getId().toString())
+        FirebaseFirestore.getInstance().collection(Post.POSTS).document(post.getId().toString())
                 .set(post.toJson())
                 .addOnSuccessListener(v->listener.onComplete())
                 .addOnFailureListener(v->listener.onComplete());
@@ -289,8 +287,8 @@ public class ModelFireBase {
 
     public static void deletePostsByTutor(String email){
         FirebaseFirestore.getInstance()
-                .collection("Posts")
-                .whereEqualTo("tutorEmail", email)
+                .collection(Post.POSTS)
+                .whereEqualTo(Post.TUTOR_EMAIL, email)
                 .get()
                 .addOnCompleteListener(task->{
                     if (task.isSuccessful()) {
@@ -303,12 +301,12 @@ public class ModelFireBase {
     }
     private static void deletePostDetails(Post post, Model.OnCompleteListener listener){
         FirebaseFirestore.getInstance()
-                .collection("posts").document(post.getId().toString())
-                .update("isDeleted", true)
+                .collection(Post.POSTS).document(post.getId().toString())
+                .update(Post.IS_DELETED, true)
                 .addOnSuccessListener(aVoid -> {
                     FirebaseFirestore.getInstance()
-                            .collection("posts").document(post.getId().toString())
-                            .update("lastUpdated",FieldValue.serverTimestamp())
+                            .collection(Post.POSTS).document(post.getId().toString())
+                            .update(Post.LAST_UPDATED,FieldValue.serverTimestamp())
                             .addOnSuccessListener(v -> listener.onComplete())
                             .addOnFailureListener(v -> listener.onComplete());
                 })
@@ -324,7 +322,7 @@ public class ModelFireBase {
     }
     public static void uploadImage(Bitmap imageBmp, String name, final Consumer<String> listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference imagesRef = storage.getReference().child("pictures").child(name);
+        final StorageReference imagesRef = storage.getReference().child(Post.PICTURES_FOLDER).child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -374,7 +372,6 @@ public class ModelFireBase {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener((task)->{
             if(task.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
-                Log.d("omer", "createUserWithEmail:success");
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user == null) {
                     OnFailure.onComplete();

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.smartutor.MyApplication;
 import com.google.firebase.Timestamp;
@@ -16,13 +15,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Entity(primaryKeys = {"tutorEmail", "date"})
+@Entity(primaryKeys = {Event.TUTOR_EMAIL, Event.DATE})
 public class Event {
     @NonNull private String tutorEmail;
     @NonNull private LocalDateTime date;
     private String id;
     private Long lastUpdated;
     private Boolean isDeleted;
+
+    //strings
+    public static final String TUTOR_EMAIL = "tutorEmail";
+    public static final String DATE = "date";
+    public static final String ID = "id";
+    public static final String LAST_UPDATED = "lastUpdated";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String EVENTS = "events";
+    public static final String TAG = "TAG";
+    public static final String EVENT_LAST_UPDATE = "EventLastUpdate";
+
 
     public Event(){}
     public Event(String tutorEmail, LocalDateTime date) {
@@ -32,13 +42,13 @@ public class Event {
         this.lastUpdated = Long.valueOf(0);
     }
     public Event(Map<String, Object> json){
-        tutorEmail =                (String)json.get("tutorEmail");
-        date =                      Converters.fromStringToLocalDateTime((String)json.get("date"));
-        id =                        (String)json.get("id");
-        Timestamp ts =              (Timestamp)json.get("lastUpdated");
+        tutorEmail =                (String)json.get(TUTOR_EMAIL);
+        date =                      Converters.fromStringToLocalDateTime((String)json.get(DATE));
+        id =                        (String)json.get(ID);
+        Timestamp ts =              (Timestamp)json.get(LAST_UPDATED);
         if(ts!=null)                {lastUpdated =ts.getSeconds();}
         else                        {lastUpdated = Long.valueOf(0);}
-        isDeleted =                 (Boolean)json.get("isDeleted");
+        isDeleted =                 (Boolean)json.get(IS_DELETED);
     }
 
     public String getTutorEmail()                       {return tutorEmail;}
@@ -67,12 +77,11 @@ public class Event {
 
     public Map<String, Object> toJson(){
         Map<String, Object> data = new HashMap<>();
-        data.put("tutorEmail", tutorEmail);
-        data.put("date",  Converters.fromLocalDateTimeToString(date));
-        data.put("id", id);
-        data.put("lastUpdated", FieldValue.serverTimestamp());
-        data.put("isDeleted", isDeleted);
-
+        data.put(TUTOR_EMAIL, tutorEmail);
+        data.put(DATE,  Converters.fromLocalDateTimeToString(date));
+        data.put(ID, id);
+        data.put(LAST_UPDATED, FieldValue.serverTimestamp());
+        data.put(IS_DELETED, isDeleted);
         return data;
     }
 
@@ -81,12 +90,12 @@ public class Event {
     }
 
     static public void setLocalLatUpdateTime(Long timeStamp){
-        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong("EventLastUpdate", timeStamp);
+        SharedPreferences.Editor editor = MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(EVENT_LAST_UPDATE, timeStamp);
         editor.commit();
     }
 
     static public Long getLocalLatUpdateTime(){
-        return MyApplication.context.getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("EventLastUpdate", 0);
+        return MyApplication.context.getSharedPreferences(TAG, Context.MODE_PRIVATE).getLong(EVENT_LAST_UPDATE, 0);
     }
 }

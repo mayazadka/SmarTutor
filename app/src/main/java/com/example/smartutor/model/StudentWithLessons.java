@@ -9,8 +9,8 @@ public class StudentWithLessons {
     @Embedded
     private Student student;
     @Relation(
-            parentColumn = "email",
-            entityColumn = "studentEmail"
+            parentColumn = Student.EMAIL,
+            entityColumn = Lesson.STUDENT_EMAIL
     )
     private List<Lesson> lessons;
 
