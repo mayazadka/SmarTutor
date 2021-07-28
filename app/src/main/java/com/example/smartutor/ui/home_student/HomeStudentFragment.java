@@ -154,7 +154,7 @@ public class HomeStudentFragment extends Fragment {
     }
 
 
-    public void enableCalendar(boolean state){
+    private void enableCalendar(boolean state){
         for(int i=8;i<=20;i++){
             LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
             for(int j = 1;j<=7;j++){
@@ -164,7 +164,7 @@ public class HomeStudentFragment extends Fragment {
         }
     }
 
-    public void setCalendar(){
+    private void setCalendar(){
         for(int i=8;i<=20;i++){
             for(int j = 1;j<=7;j++){
                 LinearLayout hourRow = (LinearLayout)calendarLinearLayout.getChildAt(i - 8);
@@ -174,7 +174,7 @@ public class HomeStudentFragment extends Fragment {
         }
     }
 
-    public void handleLoading(){
+    private void handleLoading(){
         if(Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().lessonLoadingState.getValue() == Model.LoadingState.loaded  && Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded){
             enableCalendar(true);
             swipeUp.setRefreshing(false);

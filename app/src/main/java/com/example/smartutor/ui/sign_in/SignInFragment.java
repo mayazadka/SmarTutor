@@ -65,6 +65,8 @@ public class SignInFragment extends Fragment {
         email = view.findViewById(R.id.signIn_email_et);
         swipeUp = view.findViewById(R.id.signIn_swipeUp);
 
+        enableButtons(true);
+
         // events setup
         signUp.setOnClickListener(v -> {
             if(isStudent.isChecked()){Navigation.findNavController(view).navigate(R.id.action_global_studentSignUp);}
@@ -83,77 +85,46 @@ public class SignInFragment extends Fragment {
             });
         signIn.setOnClickListener(v -> {
             v.setEnabled(false);
+            enableButtons(false);
             try {
                 if (isStudent.isChecked()) {
-                    isStudent.setEnabled(false);
-                    isTutor.setEnabled(false);
-                    signIn.setEnabled(false);
-                    signUp.setEnabled(false);
-                    email.setEnabled(false);
-                    password.setEnabled(false);
                     signInViewModel.signIn("student", email.getText().toString(), password.getText().toString(), () -> {
                         Intent intent = null;
                         intent = new Intent(getActivity(), StudentMenuActivity.class);
                         if (intent != null) {
-                            isStudent.setEnabled(true);
-                            isTutor.setEnabled(true);
-                            signIn.setEnabled(true);
-                            signUp.setEnabled(true);
-                            email.setEnabled(true);
-                            password.setEnabled(true);
                             intent.putExtra("EMAIL", email.getText().toString());
                             startActivity(intent);
                             email.setText("");
                             password.setText("");
                         }
                     }, () -> {
-                        isStudent.setEnabled(true);
-                        isTutor.setEnabled(true);
-                        signIn.setEnabled(true);
-                        signUp.setEnabled(true);
-                        email.setEnabled(true);
-                        password.setEnabled(true);
                         email.setText("");
                         password.setText("");
                         Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        enableButtons(true);
                     });
                 } else if (isTutor.isChecked()) {
-                    isStudent.setEnabled(false);
-                    isTutor.setEnabled(false);
-                    signIn.setEnabled(false);
-                    signUp.setEnabled(false);
-                    email.setEnabled(false);
-                    password.setEnabled(false);
                     signInViewModel.signIn("tutor", email.getText().toString(), password.getText().toString(), () -> {
                         Intent intent = null;
                         intent = new Intent(getActivity(), TutorMenuActivity.class);
                         if (intent != null) {
-                            isStudent.setEnabled(true);
-                            isTutor.setEnabled(true);
-                            signIn.setEnabled(true);
-                            signUp.setEnabled(true);
-                            email.setEnabled(true);
-                            password.setEnabled(true);
+
                             intent.putExtra("EMAIL", email.getText().toString());
                             startActivity(intent);
                             email.setText("");
                             password.setText("");
                         }
                         }, () -> {
-                            isStudent.setEnabled(true);
-                            isTutor.setEnabled(true);
-                            signIn.setEnabled(true);
-                            signUp.setEnabled(true);
-                            email.setEnabled(true);
-                            password.setEnabled(true);
-                            email.setText("");
-                            password.setText("");
-                            Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        });
+                        email.setText("");
+                        password.setText("");
+                        Snackbar.make(signIn, "wrong details", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        enableButtons(true);
+                    });
                 }
             }
             catch (Exception e){
                 Snackbar.make(signIn, "error", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                enableButtons(true);
             }
         });
 
@@ -167,13 +138,21 @@ public class SignInFragment extends Fragment {
         return view;
     }
 
-    public void handleLoading(){
+    private void enableButtons(boolean state){
+        isStudent.setEnabled(state);
+        isTutor.setEnabled(state);
+        signIn.setEnabled(state);
+        signUp.setEnabled(state);
+        email.setEnabled(state);
+        password.setEnabled(state);
+    }
+    private void handleLoading(){
         if(Model.getInstance().studentLoadingState.getValue() == Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue() == Model.LoadingState.loaded){
-            signIn.setEnabled(true);
+            enableButtons(true);
             swipeUp.setRefreshing(false);
         }
         else{
-            signIn.setEnabled(false);
+            enableButtons(false);
             swipeUp.setRefreshing(true);
         }
     }

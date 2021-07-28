@@ -42,10 +42,10 @@ public class AddPostFragment extends Fragment {
     private ImageButton galleryBtn;
 
     // images
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_LOAD_IMG = 2;
-    Bitmap imageBitmap;
-    View view;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_LOAD_IMG = 2;
+    private Bitmap imageBitmap;
+    private View view;
 
     public AddPostFragment(){
         // Required empty public constructor

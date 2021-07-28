@@ -30,15 +30,15 @@ import java.time.format.DateTimeFormatter;
 
 public class LessonDetailsStudentFragment extends Fragment {
 
-    TextView date;
-    TextView hour;
-    TextView tutorName;
-    TextView email;
-    ImageView image;
-    Button cancel;
-    SwipeRefreshLayout swipeUp;
+    private TextView date;
+    private TextView hour;
+    private TextView tutorName;
+    private TextView email;
+    private ImageView image;
+    private Button cancel;
+    private SwipeRefreshLayout swipeUp;
 
-    LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     public  LessonDetailsStudentFragment(){}
 
@@ -117,7 +117,7 @@ public class LessonDetailsStudentFragment extends Fragment {
         return root;
     }
 
-    void handleLoading(){
+    private void handleLoading(){
         if(Model.getInstance().lessonLoadingState.getValue()== Model.LoadingState.loaded && Model.getInstance().tutorLoadingState.getValue()== Model.LoadingState.loaded){
             cancel.setEnabled(true);
             swipeUp.setRefreshing(false);

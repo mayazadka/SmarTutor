@@ -1,4 +1,4 @@
-package com.example.smartutor.ui;
+package com.example.smartutor.ui.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 

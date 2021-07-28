@@ -110,7 +110,7 @@ public class MyFeedFragment extends Fragment {
         }
     }
 
-    static class MyFeedViewHolder extends RecyclerView.ViewHolder{
+    private static class MyFeedViewHolder extends RecyclerView.ViewHolder{
         MyFeedFragment.OnItemClickListener listener;
         TextView owner;
         ImageView postImg;
@@ -143,10 +143,10 @@ public class MyFeedFragment extends Fragment {
             }
         }
     }
-    public interface OnItemClickListener {
+    private interface OnItemClickListener {
         void onClick(View view, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<MyFeedFragment.MyFeedViewHolder>{
+    private class MyAdapter extends RecyclerView.Adapter<MyFeedFragment.MyFeedViewHolder>{
         MyFeedFragment.OnItemClickListener listener;
 
         public void setOnItemClickListener(MyFeedFragment.OnItemClickListener listener){

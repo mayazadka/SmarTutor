@@ -21,7 +21,7 @@
             android:label="@string/title_activity_student_menu"
             android:theme="@style/Theme.SmarTutor.NoActionBar" >
         </activity>
-        <activity android:name=".ui.LogIn" >
+        <activity android:name=".ui.login.LogIn" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

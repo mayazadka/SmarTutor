@@ -7,9 +7,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.smartutor.R;
-import com.example.smartutor.ui.LogIn;
-import com.example.smartutor.ui.home_tutor.HomeTutorViewModel;
-import com.example.smartutor.ui.student_menu_activity.StudentMenuViewModel;
+import com.example.smartutor.ui.login.LogIn;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +51,9 @@ public class TutorMenuActivity extends AppCompatActivity {
 
         headerTitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_title_tv);
         headerSubTiitle = navigationView.getHeaderView(0).findViewById(R.id.tutorHeader_subtitle_tv);
+
+        headerTitle.setText("SmarTutor");
+        headerSubTiitle.setText(getIntent().getStringExtra("EMAIL"));
     }
 
     @Override

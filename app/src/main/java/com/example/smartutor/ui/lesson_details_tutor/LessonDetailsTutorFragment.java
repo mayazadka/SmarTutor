@@ -29,15 +29,15 @@ import java.time.format.DateTimeFormatter;
 
 public class LessonDetailsTutorFragment extends Fragment {
 
-    TextView date;
-    TextView hour;
-    TextView studentName;
-    TextView email;
-    ImageView image;
-    Button cancel;
-    SwipeRefreshLayout swipeUp;
+    private TextView date;
+    private TextView hour;
+    private TextView studentName;
+    private TextView email;
+    private ImageView image;
+    private Button cancel;
+    private SwipeRefreshLayout swipeUp;
 
-    LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     public LessonDetailsTutorFragment(){}
 
