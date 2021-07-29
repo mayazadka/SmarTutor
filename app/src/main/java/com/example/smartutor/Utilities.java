@@ -87,7 +87,7 @@ public class Utilities {
 
     public static List<Lesson> getRemainLessons(List<Lesson> lessons) {
         List<Lesson> remainLessons = new LinkedList<>();
-        Collections.sort(lessons, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
+        Collections.sort(lessons, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?-1:1);
         for(int i = 0; i < lessons.size(); i++){
             if(lessons.get(i).getDate().plusHours(1).isAfter(LocalDateTime.now())) {
                 remainLessons.add(lessons.get(i));
@@ -97,7 +97,7 @@ public class Utilities {
     }
     public static List<Event> getRemainEvents(List<Event> events) {
         List<Event> remainEvents = new LinkedList<>();
-        Collections.sort(events, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?1:0);
+        Collections.sort(events, (l1, l2) -> l1.getDate().isBefore(l2.getDate())?-1:1);
         for(int i = 0; i < events.size(); i++){
             if(events.get(i).getDate().plusHours(1).isAfter(LocalDateTime.now())) {
                 remainEvents.add(events.get(i));
